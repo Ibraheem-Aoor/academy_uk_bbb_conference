@@ -1,5 +1,5 @@
 @extends('layouts.admin.master')
-@section('page-title', __('user.contacts'))
+@section('page-title', __('general.meetings'))
 @push('css')
     <link rel="stylesheet" href="https://cdn.datatables.net/2.0.0/css/dataTables.dataTables.css">
     <style>
