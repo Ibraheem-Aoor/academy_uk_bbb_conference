@@ -94,7 +94,7 @@
         <script src="{{ asset('assets/user/js/datatable-en.js') }}"></script>
     @endif
     <script src="https://cdn.datatables.net/2.0.0/js/dataTables.min.js"></script>
-    <script src="{{ asset('assets/user/js/admin/meeting.js') }}"></script>
+    <script src="{{ asset('assets/user/js/admin/meeting.js') }}?v=0.01"></script>
 
     <script>
         let userTable = document.getElementById('userTable').getElementsByTagName('tbody')[0];
