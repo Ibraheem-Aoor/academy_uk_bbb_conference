@@ -4,9 +4,7 @@
            <div class="sidebar-brand">
                <a href="routes('admin.dashboard')">
                    <img loading="lazy" src="{{ asset('assets/common/logo.png') }}" height="24">
-                   <span class="sidebar-colored d=none">
-                       <img src="{{ getAppLogo('light') }}" height="24" alt="">
-                   </span>
+                   
                </a>
            </div>
 
