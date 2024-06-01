@@ -50,6 +50,7 @@ class MeetingService extends BaseModelService
     protected function createBigBlueButtonMeeting(array $data)
     {
         $bbb = new BigBlueButton();
+        $bbb->setTimeOut(180);
         $meeting_params = new CreateMeetingParameters($data['name'], $data['name']);
         $meeting_params->setWelcomeMessage($data['welcome_message']);
         $meeting_params->setMaxParticipants($data['max_participants']);
