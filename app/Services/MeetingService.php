@@ -69,7 +69,9 @@ class MeetingService extends BaseModelService
 
     public function activate($meeting)
     {
+        ini_set('max_execution_time', 500);
         $bbb = new BigBlueButton();
+        $bbb->setTimeOut(180);
 
         if (!$this->isMeetingExists($meeting, $bbb) && !$this->isMeetingRunning($meeting, $bbb)) {
             $this->createBigBlueButtonMeeting($meeting->toArray());

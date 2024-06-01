@@ -80,7 +80,6 @@ class HomeController extends Controller
     {
         try {
             $db_meeting = Meeting::query()->findOrFail(decrypt($meeting));
-            ini_set('max_execution_time', 500);
             $this->activateMeeting($db_meeting);
             if (Participant::query()->where('name', $request->name)->where('meeting_id', $db_meeting->id)->exists()) {
                 return generateResponse(status: false, message: "Participant Already Exists.Enter Your Full Name");
