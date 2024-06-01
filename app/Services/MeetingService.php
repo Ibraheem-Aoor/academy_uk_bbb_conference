@@ -2,6 +2,7 @@
 namespace App\Services;
 
 use App\Services\BaseModelService;
+use BigBlueButton\Parameters\IsMeetingRunningParameters;
 use BigBlueButton\Parameters\JoinMeetingParameters;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
@@ -13,7 +14,9 @@ use App\Models\Participant;
 use BigBlueButton\BigBlueButton;
 use BigBlueButton\Parameters\CreateMeetingParameters;
 use BigBlueButton\Parameters\EndMeetingParameters;
+use BigBlueButton\Parameters\GetMeetingInfoParameters;
 use Exception;
+use SimpleXMLElement;
 use Yajra\DataTables\Contracts\DataTable;
 
 class MeetingService extends BaseModelService
@@ -58,6 +61,38 @@ class MeetingService extends BaseModelService
         } else {
             return $response;
         }
+    }
+
+
+
+    public function activate($meeting)
+    {
+        $bbb = new BigBlueButton();
+        $get_meeting_info_params = new GetMeetingInfoParameters($meeting->name);
+        $response = $bbb->getMeetingInfo($get_meeting_info_params);
+        if ($response->getReturnCode() == 'FAILED' && !$this->isMeetingRunning($meeting, $bbb)) {
+            $this->createBigBlueButtonMeeting($meeting->toArray());
+        }
+        return true;
+    }
+
+    protected function isMeetingRunning($meeting, BigBlueButton $bbb)
+    {
+        $params = new IsMeetingRunningParameters($meeting->name);
+        $response = $bbb->isMeetingRunning($params);
+        return $response->getReturnCode() == 'SUCCESS' && $this->getAttributeFromXml('running') == 'true';
+    }
+
+
+    protected function getAttributeFromXml($attribute)
+    {
+        // Assuming you have the SimpleXMLElement object
+        $xmlObject = new SimpleXMLElement('<response><returncode>SUCCESS</returncode><running>false</running></response>');
+
+        // Access the running attribute directly
+        $result = (string) $xmlObject->$attribute;
+
+        return $result;
     }
 
 

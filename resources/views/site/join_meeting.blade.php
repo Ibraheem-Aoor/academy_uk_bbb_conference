@@ -6,6 +6,7 @@
         <div class="modal-content rounded shadow border-0">
             <form action="{{ $form_url }}" method="POST" class="custom-form">
                 <div class="modal-header border-bottom">
+                    <img src="{{ asset('assets/common/logo.png') }}" alt="" width="15%"> &nbsp;
                     <h5 class="modal-title" id="modal-title">{{ __('general.join_bbb_meeting' , ['meeting' => $meeting->name]) }}</h5>
                     <button type="button" class="btn btn-icon btn-close" data-bs-dismiss="modal" id="close-modal"><i
                             class="uil uil-times fs-4 text-dark"></i></button>

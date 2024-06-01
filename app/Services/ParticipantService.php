@@ -62,7 +62,7 @@ class ParticipantService extends BaseModelService
     }
 
 
-    protected function createJoinUrl(array $participant, Meeting $meeting)
+    public function createJoinUrl(array $participant, Meeting $meeting)
     {
         $bbb = new BigBlueButton();
 

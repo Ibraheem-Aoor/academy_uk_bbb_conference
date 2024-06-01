@@ -3,7 +3,7 @@ $(document).ready(function () {
     if (table_data_url !== 'undefined') {
         renderDataTable();
     }
-  
+
 
 });
 
@@ -102,3 +102,27 @@ $('#add-meeting-users-modal').on('show.bs.modal', function (e) {
 });
 
 
+
+
+$(document).on('click', '.link-to-copy', function (e) {
+    event.preventDefault();
+    const link = this.getAttribute('data-url');
+
+    // Create a temporary input element
+    const tempInput = document.createElement('input');
+    tempInput.value = link;
+    document.body.appendChild(tempInput);
+
+    // Select the text
+    tempInput.select();
+    tempInput.setSelectionRange(0, 99999); // For mobile devices
+
+    // Copy the text to clipboard
+    document.execCommand('copy');
+
+    // Remove the temporary input element
+    document.body.removeChild(tempInput);
+
+    // Optionally, you can show a message to the user indicating the link was copied
+    alert('Link copied to clipboard!');
+});
