@@ -16,6 +16,7 @@
                                     <th>{{ __('general.name') }}</th>
                                     <th>{{ __('general.role') }}</th>
                                     <th>{{ __('general.is_guest') }}</th>
+                                    <th>{{ __('general.password') }}</th>
                                     <th>{{ __('general.actions') }}</th>
                                 </tr>
                             </thead>

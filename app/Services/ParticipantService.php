@@ -36,6 +36,8 @@ class ParticipantService extends BaseModelService
             }
             foreach ($request->participants as $participant) {
                 $join_url = $this->createJoinUrl($participant, $meeting);
+                $bridge_url = route('site.join_meeting', ['meeting' => encrypt($meeting->id), 'user' => encrypt($participant['name'])]);
+                $participant['bridge_password'] = @$participant['password'];
                 Participant::query()->updateOrCreate(
                     [
                         'name' => $participant['name'],
@@ -46,6 +48,7 @@ class ParticipantService extends BaseModelService
                         'role' => $participant['role'],
                         'is_guest' => isset($participant['is_guest']) ? true : false,
                         'join_url' => $join_url,
+                        'bridge_url' => $bridge_url,
                         'meeting_id' => $meeting->id,
                     ]
                 );
@@ -83,6 +86,8 @@ class ParticipantService extends BaseModelService
             $existingIds = collect($request->participants)->pluck('id')->filter();
             $meeting->participants()->whereNotIn('id', $existingIds)->delete();
             foreach ($request->participants as $participantData) {
+                $participantData['bridge_url'] = route('site.join_meeting', ['meeting' => encrypt($meeting->id), 'user' => encrypt($participantData['name'])]);
+                $participantData['bridge_password'] = @$participantData['password'];
                 if (isset($participantData['id']) && $participantData['id']) {
                     $participant = $meeting->participants()->find($participantData['id']);
                     $participant->update($participantData);

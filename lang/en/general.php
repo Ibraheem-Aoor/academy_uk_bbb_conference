@@ -37,5 +37,7 @@ return [
     'add' => 'Add',
     'remove' => 'Remvoe',
     'meeting_id' => 'Meeting ID',
+    'password' => 'Password',
+    'join_bbb_meeting' => 'Join BigBlueButton Meeting: :meeting',
 
 ];

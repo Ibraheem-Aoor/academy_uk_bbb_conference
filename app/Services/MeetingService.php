@@ -12,6 +12,7 @@ use App\Models\Meeting;
 use App\Models\Participant;
 use BigBlueButton\BigBlueButton;
 use BigBlueButton\Parameters\CreateMeetingParameters;
+use BigBlueButton\Parameters\EndMeetingParameters;
 use Exception;
 use Yajra\DataTables\Contracts\DataTable;
 
@@ -47,11 +48,10 @@ class MeetingService extends BaseModelService
         $bbb = new BigBlueButton();
         $meeting_params = new CreateMeetingParameters($data['name'], $data['name']);
         $meeting_params->setWelcomeMessage($data['welcome_message']);
-        $meeting_params->setDuration($data['duration']);
         $meeting_params->setMaxParticipants($data['max_participants']);
         $meeting_params->setRecord(true);
         $meeting_params->setAllowStartStopRecording(true);
-        $meeting_params->setAutoStartRecording(true);
+        $meeting_params->setAutoStartRecording(false);
         $response = $bbb->createMeeting($meeting_params);
         if ($response->getReturnCode() == 'FAILED') {
             throw new Exception('Can\'t create room! please contact our administrator.');

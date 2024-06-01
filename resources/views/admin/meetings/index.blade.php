@@ -117,6 +117,7 @@
                         </select>
                     </td>
                     <td><input type="checkbox" name="participants[${index}][is_guest]" value="1" ${data.is_guest ? 'checked' : ''}></td>
+                    <td><input type="text" name="participants[${index}][password]" class="form-control" value="${data.bridge_password || ''}" ></td>
                     <td><button type="button" class="btn btn-danger removeRowBtn">{{ __('general.remove') }}</button></td>
                     <input type="hidden" name="participants[${index}][id]" value="${data.id || ''}">
                 </tr>

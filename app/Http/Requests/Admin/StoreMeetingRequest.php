@@ -18,7 +18,7 @@ class StoreMeetingRequest extends BaseAdminRequest
         return [
             'name' => 'required|string|unique:meetings,name',
             'welcome_message' => 'required|string',
-            'duration' => 'required|numeric',
+            'password' => 'nullable|min:8',
             'max_participants' => 'required|numeric',
         ];
     }

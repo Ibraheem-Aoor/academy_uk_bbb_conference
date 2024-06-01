@@ -120,7 +120,13 @@ class MeetingController extends AdminBaseController
 
     public function export(Meeting $meeting)
     {
-        $fileName = 'meeting-' . $meeting->name. '.xlsx';
-        return Excel::download(new MeetingExport($meeting), $fileName);
+        try{
+            $fileName = 'meeting-' . $meeting->name. '.xlsx';
+            return Excel::download(new MeetingExport($meeting), $fileName);
+        }catch(Throwable $e)
+        {
+            Log::error("Fail with export: " . $e->getMessage());
+            return back()->with('error' , 'No Participants To Export');
+        }
     }
 }

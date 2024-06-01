@@ -5,12 +5,9 @@
     <meta charset="utf-8" />
     <title>@yield('page-title')</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Premium Bootstrap 5 Landing Page Template" />
-    <meta name="keywords" content="Saas, Software, multi-uses, HTML, Clean, Modern" />
-    <meta name="author" content="Shreethemes" />
-    <meta name="email" content="support@shreethemes.in" />
-    <meta name="website" content="https://shreethemes.in" />
-    <meta name="Version" content="v4.7.0" />
+    <meta name="description" content="{{ config('app.name') }}" />
+    <meta name="keywords" content="{{ config('app.name') }}" />
+    <meta name="author" content="{{ config('app.name') }}" />
     <meta name="csrf" content="{{ csrf_token() }}">
 
     <!-- favicon -->
@@ -56,7 +53,9 @@
             </div><!--end container-->
 
             <!-- Footer Start -->
-            @include('layouts.footer')
+            @if (!isset($is_login_page))
+                @include('layouts.footer')
+            @endif
             <!--end footer-->
             <!-- End -->
         </main>
@@ -79,7 +78,13 @@
     {{-- Toaster Js --}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <script src="{{ asset('assets/user/js/user/master.js') }}?v=1.0"></script>
-
+    <script>
+        @if (Session::has('error'))
+            toastr.error('{{ Session::get('error') }}');
+        @elseif (Session::has('success'))
+            toastr.success('{{ Session::get('success') }}');
+        @endif
+    </script>
     @stack('js')
 
 </body>

@@ -28,7 +28,8 @@ class MeetingExport implements FromCollection, WithHeadings, WithTitle, WithProp
         return $this->meeting->participants->map(function ($participant) {
             return [
                 'participant_name' => $participant->name,
-                'join_url' => $participant->join_url,
+                'password' => $participant->bridge_password,
+                'join_url' => $participant->bridge_url,
             ];
         });
     }
@@ -37,6 +38,7 @@ class MeetingExport implements FromCollection, WithHeadings, WithTitle, WithProp
     {
         return [
             'Participant Name',
+            'Password',
             'Join URL',
         ];
     }

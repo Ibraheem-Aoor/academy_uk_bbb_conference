@@ -1,15 +1,18 @@
+@extends('layouts.admin.master')
+@section('page-title', $page_title)
+@section('content')
 <div class="modal fade" id="meeting-modal" tabindex="-1" aria-labelledby="LoginForm-title" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content rounded shadow border-0">
-            <form name="meeting-form" class="custom-form">
+            <form action="{{ $form_url }}" method="POST" class="custom-form">
                 <div class="modal-header border-bottom">
-                    <h5 class="modal-title" id="modal-title"></h5>
+                    <h5 class="modal-title" id="modal-title">{{ __('general.join_bbb_meeting' , ['meeting' => $meeting->name]) }}</h5>
                     <button type="button" class="btn btn-icon btn-close" data-bs-dismiss="modal" id="close-modal"><i
                             class="uil uil-times fs-4 text-dark"></i></button>
                 </div>
                 <div class="modal-body">
                     <div class="p-3 rounded box-shadow">
-                        <d class="row">
+                        <div class="row">
                             <div class="col-md-12">
                                 <div class="mb-3">
                                     <label class="form-label">{{ __('general.name') }}<span
@@ -21,32 +24,15 @@
                             </div><!--end col-->
                             <div class="col-md-12">
                                 <div class="mb-3">
-                                    <label class="form-label">{{ __('general.welcome_message') }}<span
-                                            class="text-danger">*</span></label>
-                                    <div class="form-icon position-relative">
-                                        <input type="text" name="welcome_message" class="form-control" required>
-                                    </div>
-                                </div>
-                            </div><!--end col-->
-                            <div class="col-md-12 d-none">
-                                <div class="mb-3">
                                     <label class="form-label">{{ __('general.password') }}<span
                                             class="text-danger"></span></label>
                                     <div class="form-icon position-relative">
-                                        <input type="text" name="password" class="form-control" >
+                                        <input type="text" name="password" class="form-control">
                                     </div>
                                 </div>
                             </div><!--end col-->
-                            <div class="col-md-12">
-                                <div class="mb-3">
-                                    <label class="form-label">{{ __('general.max_particpants') }}<span
-                                            class="text-danger">*</span></label>
-                                    <div class="form-icon position-relative">
-                                        <input type="number" name="max_participants" class="form-control" required>
-                                    </div>
-                                </div>
-                            </div><!--end col-->
-                        </d iv><!--end row-->
+
+                        </div><!--end row-->
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -58,3 +44,11 @@
         </div>
     </div>
 </div>
+@endsection
+@push('js')
+    <script>
+        $(document).ready(function(){
+            $('#meeting-modal').modal('show');
+        });
+    </script>
+@endpush

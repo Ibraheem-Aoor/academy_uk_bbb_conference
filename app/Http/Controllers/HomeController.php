@@ -2,11 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\RoleEnum;
+use App\Http\Requests\SiteJoinMeetingRequest;
 use App\Mail\TestMail;
+use App\Models\Meeting;
+use App\Models\Participant;
 use App\Models\Webshop;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
+use PhpParser\Node\Expr\Throw_;
+use Throwable;
 
 class HomeController extends Controller
 {
@@ -14,44 +20,46 @@ class HomeController extends Controller
 
     public function __construct()
     {
-        $this->page_title = "Home";
+        $this->page_title = "JOIN MEETING";
         $this->base_view_path = "site.";
     }
 
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Contracts\Support\Renderable
-     */
-    public function index(): View
+    public function joinMeetingShowForm($meeting, $user)
     {
-        $data['page_title'] = $this->page_title;
-        return view($this->base_view_path . 'home', $data);
+        $db_meeting = Meeting::query()->findOrFail(decrypt($meeting));
+        $data = [
+            'meeting' => $db_meeting,
+            'participant' => Participant::query()->where('meeting_id', $db_meeting->id)->where('name', decrypt($user))->first(),
+            'page_title' => $this->page_title,
+            'is_login_page' => true,
+            'form_url' => route('site.join_meeting.submit', ['meeting' => $meeting, 'user' => $user]),
+        ];
+        return view($this->base_view_path . 'join_meeting', $data);
     }
 
 
-
-    public function about(): View
+    public function joinMeeting($meeting, $user, SiteJoinMeetingRequest $request)
     {
-        $data['page_title'] = "About";
-        return view($this->base_view_path . 'about', $data);
-    }
-    public function partners(): View
-    {
-        $data['page_title'] = "Partners";
-        return view($this->base_view_path . 'partners', $data);
-    }
-
-    public function eTraining(): View
-    {
-        $data['page_title'] = "E-Training";
-        return view($this->base_view_path . 'e_training', $data);
-    }
-
-    public function contact() :View
-    {
-        $data['page_title'] = "Contact Us";
-        return view($this->base_view_path . 'contact', $data);
+        try {
+            $db_meeting = Meeting::query()->findOrFail(decrypt($meeting));
+            $participant = Participant::query()->where('meeting_id', $db_meeting->id)->where('name', decrypt($user))->firstOrFail();
+            if ($participant->name != $request->name) {
+                return generateResponse(status: false, message: "Unauthorized User");
+            }
+            if (isset($request->password) && $participant->bridge_password == $request->password) {
+                return generateResponse(status: true, redirect: $participant->join_url);
+            }
+            if (!isset($request->password) && $participant->role == RoleEnum::MODERATOR->value) {
+                return generateResponse(status: true, redirect: $participant->join_url);
+            }
+            if (!isset($request->password) && !isset($participant->bridge_password)) {
+                return generateResponse(status: true, redirect: $participant->join_url);
+            }
+            return generateResponse(status: false, message: "Unauthorized User");
+        } catch (Throwable $e) {
+            info('Error While Join Meeting In :' . __METHOD__ . ' :' . $e->getMessage());
+            return back()->with('error', 'Something Went Wrong');
+        }
     }
 
 }

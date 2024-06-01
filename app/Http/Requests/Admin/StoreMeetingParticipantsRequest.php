@@ -27,6 +27,7 @@ class StoreMeetingParticipantsRequest extends BaseAdminRequest
                 }),
             ],
             'participants.*.role' => ['required' , Rule::in([RoleEnum::MODERATOR->value , RoleEnum::VIEWER->value])],
+            'participants.*.password' => ['nullable' ,'min:8'],
         ];
     }
 }
