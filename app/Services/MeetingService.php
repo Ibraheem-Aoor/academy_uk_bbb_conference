@@ -16,6 +16,7 @@ use BigBlueButton\Parameters\CreateMeetingParameters;
 use BigBlueButton\Parameters\EndMeetingParameters;
 use BigBlueButton\Parameters\GetMeetingInfoParameters;
 use Exception;
+use Illuminate\Support\Facades\Cache;
 use SimpleXMLElement;
 use Yajra\DataTables\Contracts\DataTable;
 
@@ -68,19 +69,31 @@ class MeetingService extends BaseModelService
     public function activate($meeting)
     {
         $bbb = new BigBlueButton();
-        $get_meeting_info_params = new GetMeetingInfoParameters($meeting->name);
-        $response = $bbb->getMeetingInfo($get_meeting_info_params);
-        if ($response->getReturnCode() == 'FAILED' && !$this->isMeetingRunning($meeting, $bbb)) {
+
+        if (!$this->isMeetingExists($meeting, $bbb) && !$this->isMeetingRunning($meeting, $bbb)) {
             $this->createBigBlueButtonMeeting($meeting->toArray());
         }
         return true;
     }
 
-    protected function isMeetingRunning($meeting, BigBlueButton $bbb)
+    protected function isMeetingRunning($meeting, BigBlueButton $bbb): bool
     {
+        if (Cache::has('is_meeting_running_' . $meeting->name)) {
+            return Cache::get('is_meeting_running_' . $meeting->name);
+        }
         $params = new IsMeetingRunningParameters($meeting->name);
         $response = $bbb->isMeetingRunning($params);
-        return $response->getReturnCode() == 'SUCCESS' && $this->getAttributeFromXml('running') == 'true';
+        return Cache::remember('is_meeting_running_' . $meeting->name, now()->addMinutes(5), fn() => $response->getReturnCode() == 'SUCCESS' && $this->getAttributeFromXml('running') == 'true');
+    }
+
+    protected function isMeetingExists($meeting, BigBlueButton $bbb): bool
+    {
+        if (Cache::has('is_meeting_exists_' . $meeting->name)) {
+            return Cache::get('is_meeting_exists_' . $meeting->name);
+        }
+        $get_meeting_info_params = new GetMeetingInfoParameters($meeting->name);
+        $response = $bbb->getMeetingInfo($get_meeting_info_params);
+        return Cache::remember('is_meeting_exists_' . $meeting->name, now()->addMinutes(5), fn() => $response->getReturnCode() == 'SUCCESS');
     }
 
 
