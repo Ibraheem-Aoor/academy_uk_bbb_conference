@@ -99,7 +99,7 @@
 
                               <a href="#!" class="dropdown-item features feature-primary key-feature p-0 mt-3">
                                   <div class="d-flex align-items-center">
-                                      <img loading="lazy" src="{{ asset('assets/user/images/client/15.jpg') }}"
+                                      <img loading="lazy" src="{{ asset('assets/user/images/client/17.jpg') }}"
                                           class="avatar avatar-md-sm rounded-circle border shadow me-2" alt="">
                                       <div class="flex-1">
                                           <h6 class="mb-0 text-dark title"><span class="fw-bold">Cally</span> started
@@ -117,7 +117,7 @@
                   <div class="dropdown dropdown-primary">
                       <button type="button" class="btn btn-soft-light dropdown-toggle p-0" data-bs-toggle="dropdown"
                           aria-haspopup="true" aria-expanded="false"><img loading="lazy"
-                              src="{{ asset('assets/user/images/client/05.jpg') }}"
+                              src="{{ asset('assets/user/images/client/17.jpg') }}"
                               class="avatar avatar-ex-small rounded" alt=""></button>
                       <div class="dropdown-menu dd-menu dropdown-menu-end shadow border-0 mt-3 py-3"
                           style="min-width: 200px;">
