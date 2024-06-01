@@ -47,13 +47,13 @@ class HomeController extends Controller
                 return generateResponse(status: false, message: "Unauthorized User");
             }
             if (isset($request->password) && $participant->bridge_password == $request->password) {
-                return generateResponse(status: true, redirect: $participant->join_url);
+                return generateResponse(status: true, message: __('response.redirecting'), redirect: $participant->join_url);
             }
             if (!isset($request->password) && $participant->role == RoleEnum::MODERATOR->value) {
-                return generateResponse(status: true, redirect: $participant->join_url);
+                return generateResponse(status: true, message: __('response.redirecting'), redirect: $participant->join_url);
             }
             if (!isset($request->password) && !isset($participant->bridge_password)) {
-                return generateResponse(status: true, redirect: $participant->join_url);
+                return generateResponse(status: true, message: __('response.redirecting'), redirect: $participant->join_url);
             }
             return generateResponse(status: false, message: "Unauthorized User");
         } catch (Throwable $e) {

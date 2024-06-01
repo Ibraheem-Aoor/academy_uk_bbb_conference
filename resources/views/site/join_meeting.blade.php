@@ -36,9 +36,9 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary"
-                        data-bs-dismiss="modal">{{ __('general.close') }}</button>
-                    <button type="submit" class="btn btn-primary">{{ __('general.save') }}</button>
+                    {{-- <button type="button" class="btn btn-secondary"
+                        data-bs-dismiss="modal">{{ __('general.close') }}</button> --}}
+                    <button type="submit" class="btn btn-primary">{{ __('general.join') }}</button>
                 </div>
             </form>
         </div>

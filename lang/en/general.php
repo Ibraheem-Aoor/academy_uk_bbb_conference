@@ -38,6 +38,7 @@ return [
     'remove' => 'Remvoe',
     'meeting_id' => 'Meeting ID',
     'password' => 'Password',
-    'join_bbb_meeting' => 'Join BigBlueButton Meeting: :meeting',
+    'join_bbb_meeting' => 'JOIN ACADEMY-UK MEETING: :meeting',
+    'join' => 'JOIN',
 
 ];
