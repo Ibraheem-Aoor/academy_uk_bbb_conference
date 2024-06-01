@@ -73,43 +73,34 @@ class MeetingService extends BaseModelService
         $bbb = new BigBlueButton();
         $bbb->setTimeOut(180);
 
-        if (!$this->isMeetingExists($meeting, $bbb) && !$this->isMeetingRunning($meeting, $bbb)) {
+        if (!$this->isMeetingExistsAndRuninng($meeting, $bbb)) {
             $this->createBigBlueButtonMeeting($meeting->toArray());
         }
         return true;
     }
 
-    protected function isMeetingRunning($meeting, BigBlueButton $bbb): bool
-    {
-        if (Cache::has('is_meeting_running_' . $meeting->name)) {
-            return Cache::get('is_meeting_running_' . $meeting->name);
-        }
-        $params = new IsMeetingRunningParameters($meeting->name);
-        $response = $bbb->isMeetingRunning($params);
-        return Cache::remember('is_meeting_running_' . $meeting->name, now()->addMinutes(5), fn() => $response->getReturnCode() == 'SUCCESS' && $this->getAttributeFromXml('running') == 'true');
-    }
+    // protected function isMeetingRunning($meeting, BigBlueButton $bbb): bool
+    // {
+    //     if (Cache::has('is_meeting_running_' . $meeting->name)) {
+    //         return Cache::get('is_meeting_running_' . $meeting->name);
+    //     }
+    //     $params = new IsMeetingRunningParameters($meeting->name);
+    //     $response = $bbb->isMeetingRunning($params);
+    //     dd($this->getAttributeFromXml($response , 'running'));
+    //     return Cache::remember('is_meeting_running_' . $meeting->name, now()->addMinutes(5), fn() => $response->getReturnCode() == 'SUCCESS' && $this->getAttributeFromXml($response->getRawXml() , 'running') == 'true');
+    // }
 
-    protected function isMeetingExists($meeting, BigBlueButton $bbb): bool
+    protected function isMeetingExistsAndRuninng($meeting, BigBlueButton $bbb): bool
     {
         if (Cache::has('is_meeting_exists_' . $meeting->name)) {
             return Cache::get('is_meeting_exists_' . $meeting->name);
         }
         $get_meeting_info_params = new GetMeetingInfoParameters($meeting->name);
         $response = $bbb->getMeetingInfo($get_meeting_info_params);
-        return Cache::remember('is_meeting_exists_' . $meeting->name, now()->addMinutes(5), fn() => $response->getReturnCode() == 'SUCCESS');
+        return Cache::remember('is_meeting_exists_' . $meeting->name, now()->addMinutes(5), fn() => $response->getReturnCode() == 'SUCCESS' && !$response->getMeeting()->hasBeenForciblyEnded());
     }
 
 
-    protected function getAttributeFromXml($attribute)
-    {
-        // Assuming you have the SimpleXMLElement object
-        $xmlObject = new SimpleXMLElement('<response><returncode>SUCCESS</returncode><running>false</running></response>');
-
-        // Access the running attribute directly
-        $result = (string) $xmlObject->$attribute;
-
-        return $result;
-    }
 
 
     protected function getModelAttributes($request)
