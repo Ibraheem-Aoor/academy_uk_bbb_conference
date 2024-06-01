@@ -2,8 +2,8 @@
    <nav id="sidebar" class="sidebar-wrapper sidebar-colored">
        <div class="sidebar-content" data-simplebar style="height: calc(100% - 60px);">
            <div class="sidebar-brand">
-               <a href="index.html" class="d-none">
-                   <img loading="lazy" src="{{ asset('assets/user/images/logo-icon.png') }}" height="24">
+               <a href="routes('admin.dashboard')">
+                   <img loading="lazy" src="{{ asset('assets/common/logo.png') }}" height="24">
                    <span class="sidebar-colored d=none">
                        <img src="{{ getAppLogo('light') }}" height="24" alt="">
                    </span>
