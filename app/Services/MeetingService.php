@@ -34,8 +34,7 @@ class MeetingService extends BaseModelService
     public function create(Request $request)
     {
         try {
-            $data = $request->toArray();
-            $data['meeting_id'] = $data['name'];
+            $data = $this->getModelAttributes($request);
             $this->createBigBlueButtonMeeting($data);
             Meeting::create($data);
             return generateResponse(status: true, modal_to_hide: $this->model->modal, table_reload: true, table: '#myTable');
@@ -47,6 +46,9 @@ class MeetingService extends BaseModelService
     }
 
 
+    /**
+     * Create Meeting On BigBlueButton
+     */
     protected function createBigBlueButtonMeeting(array $data)
     {
         $bbb = new BigBlueButton();
@@ -66,7 +68,9 @@ class MeetingService extends BaseModelService
     }
 
 
-
+    /**
+     * Activate The meeting by recreating it if it's no longer exists and has been forcibly ended
+     */
     public function activate($meeting)
     {
         ini_set('max_execution_time', 500);
@@ -79,17 +83,9 @@ class MeetingService extends BaseModelService
         return true;
     }
 
-    // protected function isMeetingRunning($meeting, BigBlueButton $bbb): bool
-    // {
-    //     if (Cache::has('is_meeting_running_' . $meeting->name)) {
-    //         return Cache::get('is_meeting_running_' . $meeting->name);
-    //     }
-    //     $params = new IsMeetingRunningParameters($meeting->name);
-    //     $response = $bbb->isMeetingRunning($params);
-    //     dd($this->getAttributeFromXml($response , 'running'));
-    //     return Cache::remember('is_meeting_running_' . $meeting->name, now()->addMinutes(5), fn() => $response->getReturnCode() == 'SUCCESS' && $this->getAttributeFromXml($response->getRawXml() , 'running') == 'true');
-    // }
-
+    /**
+     * Check if the meeting exists and is has not been forcibly ended
+     */
     protected function isMeetingExistsAndRuninng($meeting, BigBlueButton $bbb): bool
     {
         if (Cache::has('is_meeting_exists_' . $meeting->name)) {
@@ -103,9 +99,11 @@ class MeetingService extends BaseModelService
 
 
 
-    protected function getModelAttributes($request)
+    protected function getModelAttributes($request): array
     {
-        //
+        $data = $request->toArray();
+        $data['meeting_id'] = $data['name'];
+        return $data;
     }
 
     /**

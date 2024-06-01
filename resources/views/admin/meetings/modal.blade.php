@@ -9,7 +9,7 @@
                 </div>
                 <div class="modal-body">
                     <div class="p-3 rounded box-shadow">
-                        <d class="row">
+                        <div class="row">
                             <div class="col-md-12">
                                 <div class="mb-3">
                                     <label class="form-label">{{ __('general.name') }}<span
@@ -33,7 +33,7 @@
                                     <label class="form-label">{{ __('general.password') }}<span
                                             class="text-danger"></span></label>
                                     <div class="form-icon position-relative">
-                                        <input type="text" name="password" class="form-control" >
+                                        <input type="text" name="password" class="form-control">
                                     </div>
                                 </div>
                             </div><!--end col-->
@@ -46,7 +46,25 @@
                                     </div>
                                 </div>
                             </div><!--end col-->
-                        </d iv><!--end row-->
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">{{ __('general.start_date') }}<span
+                                            class="text-danger">*</span></label>
+                                    <div class="form-icon position-relative">
+                                        <input type="date" name="start_date" class="form-control" value="{{ date('Y-m-d') }}" required>
+                                    </div>
+                                </div>
+                            </div><!--end col-->
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">{{ __('general.end_date') }}<span
+                                            class="text-danger">*</span></label>
+                                    <div class="form-icon position-relative">
+                                        <input type="date" name="end_date" class="form-control" value="{{ now()->tomorrow()->toDateString() }}" required>
+                                    </div>
+                                </div>
+                            </div><!--end col-->
+                        </div><!--end row-->
                     </div>
                 </div>
                 <div class="modal-footer">

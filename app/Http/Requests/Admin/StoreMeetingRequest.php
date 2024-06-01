@@ -20,6 +20,8 @@ class StoreMeetingRequest extends BaseAdminRequest
             'welcome_message' => 'required|string',
             'password' => 'nullable|min:8',
             'max_participants' => 'required|numeric',
+            'start_date' => 'date|after_or_equal:today',
+            'end_date' => 'date|after:start_date',
         ];
     }
 }

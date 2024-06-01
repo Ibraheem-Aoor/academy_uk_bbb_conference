@@ -5,13 +5,7 @@
 <head>
     <meta charset="utf-8" />
     <title>404 Not Found</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Premium Bootstrap 5 Landing Page Template" />
-    <meta name="keywords" content="Saas, Software, multi-uses, HTML, Clean, Modern" />
-    <meta name="author" content="Shreethemes" />
-    <meta name="email" content="support@shreethemes.in" />
-    <meta name="website" content="https://shreethemes.in" />
-    <meta name="Version" content="v4.7.0" />
+
 
     <!-- favicon -->
     <link rel="shortcut icon" href="{{asset('assets/user/images/favicon.ico')}}" />
@@ -46,10 +40,10 @@
             <div class="container">
                 <div class="row justify-content-center">
                     <div class="col-lg-8 col-md-12 text-center">
-                        <img src="{{asset('assets/user/images/404.svg')}}" style="max-width: 500px;" alt="">
+                        <img src="{{asset('assets/common/logo.png')}}" style="max-width: 500px;" alt="">
                         <div class="text-uppercase mt-4 display-5 fw-semibold">Page Not Found</div>
                         <div class="text-capitalize text-dark mb-4 error-page"></div>
-                        <p class="text-muted para-desc mx-auto">Our design projects are fresh and simple and will benefit your business greatly. Learn more about our work!</p>
+                        {{-- <p class="text-muted para-desc mx-auto">Our design projects are fresh and simple and will benefit your business greatly. Learn more about our work!</p> --}}
                     </div><!--end col-->
                 </div><!--end row-->
 
