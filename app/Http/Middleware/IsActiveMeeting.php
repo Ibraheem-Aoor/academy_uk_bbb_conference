@@ -18,9 +18,6 @@ class IsActiveMeeting
     public function handle(Request $request, Closure $next)
     {
         $meeting = Meeting::query()->findOrFail(decrypt($request->route('meeting')));
-        if ($meeting->start_date <= now()->toDateString() && $meeting->end_date != now()->toDateString()) {
-            return $next($request);
-        }
-        return abort(404);
+        return $meeting->status ? $next($request) : abort(404);
     }
 }

@@ -18,7 +18,7 @@ function renderDataTable() {
         ajax: table_data_url,
         columns: getTableColumns(),
         order: [[
-            2,
+            3,
             'desc'
         ]],
     });
@@ -35,6 +35,12 @@ function getTableColumns() {
         {
             data: 'meeting_id',
             name: 'meeting_id',
+            searchable: true,
+            orderable: true,
+        },
+        {
+            data: 'status',
+            name: 'status',
             searchable: true,
             orderable: true,
         },
@@ -101,6 +107,23 @@ $('#add-meeting-users-modal').on('show.bs.modal', function (e) {
     }
 });
 
+
+// Quick Toggle is Active status from the table row
+function toggleStatus(input) {
+    var id = input.data('id');
+    var route = input.data('route');
+    var status = input.prop('checked') == true ? 1 : 0;
+    $.get(route, {
+        id: id,
+        status: status,
+    }, function (reseponse) {
+        if (reseponse.status) {
+            toastr.success(reseponse.message);
+        } else {
+            toastr.error(reseponse.message);
+        }
+    });
+}
 
 
 

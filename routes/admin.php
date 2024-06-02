@@ -35,6 +35,7 @@ Route::middleware('auth:admin')
         Route::prefix('meetings')->as('meeting.')->group(function () {
             Route::get('', [MeetingController::class, 'index'])->name('index');
             Route::post('store', [MeetingController::class, 'store'])->name('store');
+            Route::get('/status-toggle', [MeetingController::class, 'toggleStatus'])->name('toggle_status');
             Route::get('table', [MeetingController::class, 'getTableData'])->name('table');
             Route::get('export/{meeting}', [MeetingController::class, 'export'])->name('export');
             Route::post('add-user/{meeting}', [ParticipantController::class, 'store'])->name('add_user');

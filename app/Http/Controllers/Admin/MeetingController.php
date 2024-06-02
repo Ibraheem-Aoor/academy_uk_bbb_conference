@@ -105,6 +105,14 @@ class MeetingController extends AdminBaseController
     }
 
 
+    public function toggleStatus(Request $request)
+    {
+        $response = $this->service->toggleStatus($request->id);
+        return response()->json($response);
+    }
+
+
+
 
 
 
@@ -120,13 +128,12 @@ class MeetingController extends AdminBaseController
 
     public function export(Meeting $meeting)
     {
-        try{
-            $fileName = 'meeting-' . $meeting->name. '.xlsx';
+        try {
+            $fileName = 'meeting-' . $meeting->name . '.xlsx';
             return Excel::download(new MeetingExport($meeting), $fileName);
-        }catch(Throwable $e)
-        {
+        } catch (Throwable $e) {
             Log::error("Fail with export: " . $e->getMessage());
-            return back()->with('error' , 'No Participants To Export');
+            return back()->with('error', 'No Participants To Export');
         }
     }
 }

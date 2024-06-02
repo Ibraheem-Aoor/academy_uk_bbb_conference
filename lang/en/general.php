@@ -40,5 +40,7 @@ return [
     'password' => 'Password',
     'join_bbb_meeting' => 'JOIN ACADEMY-UK MEETING: :meeting',
     'join' => 'JOIN',
+    'start_date' => 'Start Date',
+    'end_date' => 'End Date',
 
 ];

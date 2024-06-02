@@ -97,6 +97,21 @@ class MeetingService extends BaseModelService
     }
 
 
+    public function toggleStatus($id)
+    {
+        try {
+            $model = $this->find($id);
+            $model->update([
+                'status' => !$model->status,
+            ]);
+            $response = generateResponse(status: true, message: __('response.success_updated'));
+        } catch (Throwable $e) {
+            Log::error("Fail with " . __FUNCTION__ . " in Model : " . get_class($this) . " erorr:" . $e->getMessage());
+            $response = generateResponse(status: false, message: __('response.error'));
+        }
+        return $response;
+    }
+
 
 
     protected function getModelAttributes($request): array

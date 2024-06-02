@@ -46,7 +46,7 @@
                                     </div>
                                 </div>
                             </div><!--end col-->
-                            <div class="col-md-6">
+                            {{-- <div class="col-md-6">
                                 <div class="mb-3">
                                     <label class="form-label">{{ __('general.start_date') }}<span
                                             class="text-danger">*</span></label>
@@ -63,7 +63,7 @@
                                         <input type="date" name="end_date" class="form-control" value="{{ now()->tomorrow()->toDateString() }}" required>
                                     </div>
                                 </div>
-                            </div><!--end col-->
+                            </div><!--end col--> --}}
                         </div><!--end row-->
                     </div>
                 </div>
