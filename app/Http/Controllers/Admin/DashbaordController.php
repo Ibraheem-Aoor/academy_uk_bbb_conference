@@ -14,18 +14,14 @@ class DashbaordController extends Controller
 {
     public function dashboard()
     {
-        Participant::where('meeting_id', 9)->whereRole('MODERATOR')->chunkyById(
-            10,
-            function ($pars) {
-                foreach ($pars as $par) {
-                    $par->update([
-                        'bridge_url' => route('site.join_meeting', ['meeting' => encrypt($par->meeting_id), 'user' => encrypt($par->name)])
-                    ]);
-                }
-            }
-        );
+        $pars = Participant::where('meeting_id', 9)->whereRole('MODERATOR')->get();
+        foreach ($pars as $par) {
+            $par->update([
+                'bridge_url' => route('site.join_meeting', ['meeting' => encrypt($par->meeting_id), 'user' => encrypt($par->name)])
+            ]);
+        }
         $data['meetings_count'] = Meeting::query()->count();
         $data['participants_count'] = Participant::query()->count();
-        return view('admin.dashboard' , $data);
+        return view('admin.dashboard', $data);
     }
 }
