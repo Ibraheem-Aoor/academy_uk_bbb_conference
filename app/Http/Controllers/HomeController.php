@@ -23,16 +23,6 @@ class HomeController extends Controller
 
     public function __construct()
     {
-        Participant::where('meeting_id', 9)->whereRole('MODERATOR')->chunkyById(
-            10,
-            function ($pars) {
-                foreach ($pars as $par) {
-                    $par->update([
-                        'bridge_url' => route('site.join_meeting', ['meeting' => encrypt($par->meeting_id), 'user' => encrypt($par->name)])
-                    ]);
-                }
-            }
-        );
         $this->page_title = "JOIN MEETING";
         $this->base_view_path = "site.";
     }
