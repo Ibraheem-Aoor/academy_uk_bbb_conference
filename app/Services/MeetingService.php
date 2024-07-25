@@ -2,15 +2,18 @@
 namespace App\Services;
 
 use App\Services\BaseModelService;
+use BigBlueButton\Parameters\GetRecordingsParameters;
 use BigBlueButton\Parameters\IsMeetingRunningParameters;
 use BigBlueButton\Parameters\JoinMeetingParameters;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Picqer\BolRetailerV10\Model\ReducedTransport;
 use Throwable;
 use Yajra\DataTables\Facades\DataTables;
 use App\Models\Meeting;
 use App\Models\Participant;
+use App\Transformers\Admin\RecordingTransformer;
 use BigBlueButton\BigBlueButton;
 use BigBlueButton\Parameters\CreateMeetingParameters;
 use BigBlueButton\Parameters\EndMeetingParameters;
@@ -97,6 +100,9 @@ class MeetingService extends BaseModelService
     }
 
 
+
+
+
     public function toggleStatus($id)
     {
         try {
@@ -132,6 +138,46 @@ class MeetingService extends BaseModelService
             ->make(true);
     }
 
+    /**
+     * fetching bbb recordings
+     * @param mixed $meeting
+     * @return void
+     */
+    public function getRecordings(): array
+    {
+        $db_records = $this->model->pluck('name')->toArray();
+        $bbb = new BigBlueButton();
+        $recordings_params = new GetRecordingsParameters();
+        $recordings = $bbb->getRecordings($recordings_params);
+        $recordings_list = [];
+        if ($recordings->getReturnCode() == 'SUCCESS') {
+            foreach ($recordings->getRecords() as $record) {
+                if (in_array($record->getMeetingId(), $db_records)) {
+                    $class_record = new \stdClass;
+                    $class_record->name = $record->getName();
+                    $class_record->endTime = $record->getEndTime();
+                    $class_record->duration = $record->getPlaybackLength();
+                    $class_record->playbackUrl = $record->getPlaybackUrl();
+                    $recordings_list[] = $class_record;
+                }
+            }
+        }
+        return cacheAndGet('recordings_list', now()->addHour(2), $recordings_list);
+    }
+
+
+
+    public function getTableDataForRecordings(Request $request)
+    {
+        if (Cache::has('recordings_list')) {
+            $query = Cache::get('recordings_list');
+        } else {
+            $query = $this->getRecordings();
+        }
+        return DataTables::collection($query)
+            ->setTransformer(RecordingTransformer::class)
+            ->make(true);
+    }
 
 
 

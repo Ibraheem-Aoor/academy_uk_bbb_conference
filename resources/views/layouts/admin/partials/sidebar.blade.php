@@ -4,7 +4,7 @@
            <div class="sidebar-brand">
                <a href="routes('admin.dashboard')">
                    <img loading="lazy" src="{{ asset('assets/common/logo.png') }}" height="24">
-                   
+
                </a>
            </div>
 
@@ -15,7 +15,11 @@
                </li>
                <li class="">
                    <a href="{{ route('admin.meeting.index') }}"><i
-                           class="ti ti-home me-2"></i>{{ __('general.meetings') }}</a>
+                           class="ti ti-camera me-2"></i>{{ __('general.meetings') }}</a>
+               </li>
+               <li class="">
+                   <a href="{{ route('admin.recording.index') }}"><i
+                           class="ti ti-video me-2"></i>{{ __('general.recordings') }}</a>
                </li>
                <li class="sidebar-dropdown d-none">
                    <a href="javascript:void(0)"><i class="ti ti-license me-2"></i>Example</a>

@@ -42,5 +42,6 @@ return [
     'join' => 'JOIN',
     'start_date' => 'Start Date',
     'end_date' => 'End Date',
+    'recordings' => 'Saved Recordings',
 
 ];

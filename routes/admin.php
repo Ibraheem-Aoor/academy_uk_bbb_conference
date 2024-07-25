@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\AccountTreeController;
 use App\Http\Controllers\Admin\ContactController as UserContactController;
 use App\Http\Controllers\Admin\MeetingController;
 use App\Http\Controllers\Admin\ParticipantController;
+use App\Http\Controllers\Admin\RecordingController;
 use App\Http\Requests\Site\IntresetedStudentRegisterRequest;
 
 /*
@@ -43,4 +44,9 @@ Route::middleware('auth:admin')
             Route::post('/{id}/update-participants', [ParticipantController::class, 'updateParticipants'])->name('update_participants');
         });
 
+        Route::prefix('recording')->as('recording.')->group(function () {
+            Route::get('', [RecordingController::class, 'index'])->name('index');
+            Route::get('table', [RecordingController::class, 'getTableData'])->name('table');
+
+        });
     });
