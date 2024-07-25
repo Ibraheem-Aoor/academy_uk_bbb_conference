@@ -148,3 +148,22 @@ if (!function_exists('cacheAndGet')) {
         });
     }
 }
+
+if (!function_exists('formatDuration')) {
+
+    function formatDuration($minutes)
+    {
+        $hours = intdiv($minutes, 60);
+        $remainingMinutes = $minutes % 60;
+
+        $result = '';
+        if ($hours > 0) {
+            $result .= $hours . 'h ';
+        }
+        if ($remainingMinutes > 0 || $hours == 0) {
+            $result .= $remainingMinutes . 'min';
+        }
+
+        return trim($result);
+    }
+}
