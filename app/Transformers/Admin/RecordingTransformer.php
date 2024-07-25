@@ -17,7 +17,7 @@ class RecordingTransformer extends TransformerAbstract
     {
         return [
             'name' => $meeting->name,
-            'duration' => $meeting->duration,
+            'duration' => formatDuration($meeting->duration),
             'created_at' => Carbon::createFromTimestamp($meeting->endTime/1000)->toDateTimeString(),
             'actions' => $this->getActions($meeting),
         ];

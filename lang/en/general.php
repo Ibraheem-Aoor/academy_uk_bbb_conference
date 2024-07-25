@@ -43,5 +43,5 @@ return [
     'start_date' => 'Start Date',
     'end_date' => 'End Date',
     'recordings' => 'Saved Recordings',
-    'duration' => 'Duration In Minutes',
+    'duration' => 'Duration',
 ];
