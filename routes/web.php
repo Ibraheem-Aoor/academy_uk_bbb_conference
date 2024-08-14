@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\HomeController;
+use App\Models\Participant;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -27,4 +28,16 @@ Route::group([
         Route::post('join/{meeting}/{user}', [HomeController::class, 'joinMeeting'])->name('join_meeting.submit');
         Route::post('join-public/{meeting}/', [HomeController::class, 'joinPublicMeeting'])->name('join_public_meeting.submit');
     });
+
+});
+
+Route::get('fix' , function(){
+    Participant::query()->chunk(100 , function($participants){
+        foreach($participants as $participant){
+            $participant->bridge_url = str_replace('bbb-conference.hyper-stage.com', 'meet.academy-uk.net', $participant->join_url);
+            $participant->save();
+        }
+    });
+    $participants = Participant::get();
+    dd($participants);
 });
