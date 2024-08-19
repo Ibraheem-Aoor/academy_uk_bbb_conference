@@ -26,20 +26,20 @@ class DownloadPresentations extends Command
     {
         info('START');
         // Retrieve all meetings
-        $meetings = AllRecording::query()->inRandomOrder()->where('is_backed_up' , 0)->get();
+        $meetings = AllRecording::query()->inRandomOrder()->where('is_backed_up', 0)->get();
 
         foreach ($meetings as $meeting) {
             $meeting_id = $meeting->record_id;
 
-            // Prepare the Python script command
-            $command = [
-                'source /home/academyu/virtualenv/player.academy-uk.net/3.8/bin/activate && cd /home/academyu/player.academy-uk.net && python',
+            // Prepare the command as a string
+            $command = sprintf(
+                'source /home/academyu/virtualenv/player.academy-uk.net/3.8/bin/activate && cd /home/academyu/player.academy-uk.net && python download_script.py %s %s',
                 'https://bbb.academy-uk.net',
                 $meeting_id
-            ];
+            );
 
-            // Run the command
-            $process = new Process($command);
+            // Run the command using shell
+            $process = new Process(['bash', '-c', $command]);
             $process->setTimeout(1000000000);
             $process->run();
 
