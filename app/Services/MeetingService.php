@@ -1,6 +1,7 @@
 <?php
 namespace App\Services;
 
+use App\Models\AllRecording;
 use App\Services\BaseModelService;
 use BigBlueButton\Parameters\GetRecordingsParameters;
 use BigBlueButton\Parameters\IsMeetingRunningParameters;
@@ -19,6 +20,7 @@ use BigBlueButton\Parameters\CreateMeetingParameters;
 use BigBlueButton\Parameters\EndMeetingParameters;
 use BigBlueButton\Parameters\GetMeetingInfoParameters;
 use Exception;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Cache;
 use SimpleXMLElement;
 use Yajra\DataTables\Contracts\DataTable;
@@ -163,6 +165,33 @@ class MeetingService extends BaseModelService
             }
         }
         return cacheAndGet('recordings_list', now()->addHour(2), $recordings_list);
+    }
+    public function getAllRecordings(): Collection
+    {
+        $recordings_list = AllRecording::query()->get();
+        if (!Cache::has('all_recordings_list')) {
+
+            $bbb = new BigBlueButton();
+            $recordings_params = new GetRecordingsParameters();
+            $recordings = $bbb->getRecordings($recordings_params);
+            if ($recordings->getReturnCode() == 'SUCCESS') {
+                foreach ($recordings->getRecords() as $record) {
+                    AllRecording::query()->updateOrCreate([
+                        'record_id' => $record->getRecordId(),
+                    ], [
+                        'record_id' => $record->getRecordId(),
+                        'name' => $record->getName(),
+                        'meeting_id' => $record->getMeetingId(),
+                        'playback_url' => $record->getPlaybackUrl(),
+                        'end_time' => $record->getEndTime(),
+                        'duration' => $record->getPlaybackLength(),
+                        'meta_data' => json_encode($record->getMetas()),
+                    ]);
+                }
+                $recordings_list = AllRecording::query()->get();
+            }
+        }
+        return cacheAndGet('all_recordings_list', now()->addDay(), $recordings_list);
     }
 
 

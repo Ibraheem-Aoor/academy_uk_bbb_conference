@@ -45,6 +45,12 @@ class RecordingController extends AdminBaseController
         return view('admin.recordings.index', $data);
     }
 
+    public function allRecordings(Request $request)
+    {
+        $data['page_title'] = 'All Recordings';
+        $data['recordings'] = $this->service->getAllRecordings();
+        return view('admin.recordings.all' , $data);
+    }
 
 
     public function getTableData(Request $request)

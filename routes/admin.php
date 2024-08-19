@@ -46,6 +46,7 @@ Route::middleware('auth:admin')
 
         Route::prefix('recording')->as('recording.')->group(function () {
             Route::get('', [RecordingController::class, 'index'])->name('index');
+            Route::get('all', [RecordingController::class, 'allRecordings'])->name('all');
             Route::get('table', [RecordingController::class, 'getTableData'])->name('table');
 
         });

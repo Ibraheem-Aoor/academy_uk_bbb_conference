@@ -21,6 +21,10 @@
                    <a href="{{ route('admin.recording.index') }}"><i
                            class="ti ti-video me-2"></i>{{ __('general.recordings') }}</a>
                </li>
+               <li class="">
+                   <a href="{{ route('admin.recording.all') }}"><i
+                           class="ti ti-video me-2"></i>{{ __('general.all_recordings') }}</a>
+               </li>
                <li class="sidebar-dropdown d-none">
                    <a href="javascript:void(0)"><i class="ti ti-license me-2"></i>Example</a>
                    <div class="sidebar-submenu">
