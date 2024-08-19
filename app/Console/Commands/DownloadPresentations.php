@@ -27,12 +27,13 @@ class DownloadPresentations extends Command
         info('START');
         // Retrieve all meetings
         $meetings = AllRecording::query()->inRandomOrder()->where('is_backed_up' , 0)->get();
+
         foreach ($meetings as $meeting) {
             $meeting_id = $meeting->record_id;
 
             // Prepare the Python script command
             $command = [
-                'python',
+                'source /home/academyu/virtualenv/player.academy-uk.net/3.8/bin/activate && cd /home/academyu/player.academy-uk.net && python',
                 base_path('../player.academy-uk.net/scripts/download_presentation.py'),
                 'https://bbb.academy-uk.net',
                 $meeting_id
