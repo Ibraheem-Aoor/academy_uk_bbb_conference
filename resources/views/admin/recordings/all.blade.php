@@ -69,7 +69,7 @@
                                         <td>{{ \Carbon\Carbon::createFromTimestamp($recording->end_time / 1000)->toDateTimeString() }}
                                         </td>
                                         <td>
-                                            <a href="http://127.0.0.1:8081/playback.html?meetingId={{ $recording->record_id }}" target="__blank"><i class="fa fa-eye"></i>view</a>
+                                            <a href="https://player.academy-uk.net/playback.html?meetingId={{ $recording->record_id }}" target="__blank"><i class="fa fa-eye"></i>view</a>
                                         </td>
                                     </tr>
                                 @endforeach
