@@ -33,7 +33,7 @@ class DownloadPresentations extends Command
 
             // Prepare the command as a string
             $command = sprintf(
-                'source /home/academyu/virtualenv/player.academy-uk.net/3.8/bin/activate && cd /home/academyu/player.academy-uk.net && python download_script.py %s %s',
+                'source /home/academyu/virtualenv/player.academy-uk.net/3.8/bin/activate && cd /home/academyu/player.academy-uk.net && python download_presentation.py %s %s',
                 'https://bbb.academy-uk.net',
                 $meeting_id
             );
