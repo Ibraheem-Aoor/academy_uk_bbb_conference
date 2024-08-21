@@ -20,7 +20,6 @@ class DashbaordController extends Controller
     {
         $data['meetings_count'] = Meeting::query()->count();
         $data['participants_count'] = Participant::query()->count();
-        Mail::to('ibraheem.alaoor@hotmail.com')->send(new TestMail);
         return view('admin.dashboard', $data);
     }
 }

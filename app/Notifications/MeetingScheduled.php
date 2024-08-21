@@ -3,6 +3,7 @@
 namespace App\Notifications;
 
 use App\Models\Meeting;
+use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
@@ -41,11 +42,24 @@ class MeetingScheduled extends Notification
      */
     public function toMail($notifiable)
     {
+        $startTime = $this->meeting->start_date . ' ' . $this->meeting->start_time;
+        $endTime = $this->meeting->end_date . ' ' . $this->meeting->end_time;
+
         return (new MailMessage)
-                    ->line('Incoming Meeting')
-                    ->action('Use The  FollowingLink To Join', route('site.join_public_meeting', encrypt($this->meeting->id)) )
-                    ->line('Have a nice day!');
+            ->subject('Meeting Scheduled: ' . $this->meeting->name)
+            ->greeting('Hello ' . $notifiable->name . ',')
+            ->line('You are invited to the following meeting:')
+            ->line('**Meeting Name:** ' . $this->meeting->name)
+            ->line('**Description:** ' . $this->meeting->welcome_message)
+            ->line('**Start Time:** ' . Carbon::parse($startTime)->format('l, F j, Y g:i A') . ' (' . config('app.timezone') . ')')
+            ->line('**End Time:** ' . Carbon::parse($endTime)->format('l, F j, Y g:i A') . ' (' . config('app.timezone') . ')')
+            ->action('Join Meeting', route('site.join_public_meeting', encrypt($this->meeting->id)))
+            ->line('We look forward to your participation.')
+            ->line('Thank you!')
+            ->salutation('Best regards,')
+            ->salutation(config('app.name') . ' Team');
     }
+
 
     /**
      * Get the array representation of the notification.
