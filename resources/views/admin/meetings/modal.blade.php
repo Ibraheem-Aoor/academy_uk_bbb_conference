@@ -46,24 +46,58 @@
                                     </div>
                                 </div>
                             </div><!--end col-->
-                            {{-- <div class="col-md-6">
+                            <div class="col-md-12">
+                                <div class="mb-3">
+                                    <label class="form-label">{{ __('general.is_scheduled') }}<span
+                                            class="text-danger">*</span></label>
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault"
+                                            name="is_scheduled"
+                                            onchange="toggleHidableElement($(this));"
+                                         >
+                                    </div>
+                                </div>
+                            </div><!--end col-->
+                            <div class="col-md-6 hidable d-none">
                                 <div class="mb-3">
                                     <label class="form-label">{{ __('general.start_date') }}<span
                                             class="text-danger">*</span></label>
                                     <div class="form-icon position-relative">
-                                        <input type="date" name="start_date" class="form-control" value="{{ date('Y-m-d') }}" required>
+                                        <input type="date" name="start_date" class="form-control"
+                                            value="{{ date('Y-m-d') }}" required>
                                     </div>
                                 </div>
                             </div><!--end col-->
-                            <div class="col-md-6">
+                            <div class="col-md-6 hidable d-none">
+                                <div class="mb-3">
+                                    <label class="form-label">{{ __('general.start_time') }}<span
+                                            class="text-danger">*</span></label>
+                                    <div class="form-icon position-relative">
+                                        <input type="time" name="start_time" class="form-control"
+                                            value="{{ date('Y-m-d') }}" required>
+                                    </div>
+                                </div>
+                            </div><!--end col-->
+                            <div class="col-md-6 hidable d-none">
                                 <div class="mb-3">
                                     <label class="form-label">{{ __('general.end_date') }}<span
                                             class="text-danger">*</span></label>
                                     <div class="form-icon position-relative">
-                                        <input type="date" name="end_date" class="form-control" value="{{ now()->tomorrow()->toDateString() }}" required>
+                                        <input type="date" name="end_date" class="form-control"
+                                            value="{{ now()->tomorrow()->toDateString() }}" required>
                                     </div>
                                 </div>
-                            </div><!--end col--> --}}
+                            </div><!--end col-->
+                            <div class="col-md-6 hidable d-none">
+                                <div class="mb-3">
+                                    <label class="form-label">{{ __('general.end_time') }}<span
+                                            class="text-danger">*</span></label>
+                                    <div class="form-icon position-relative">
+                                        <input type="time" name="end_time" class="form-control"
+                                            value="{{ now()->tomorrow()->toDateString() }}" required>
+                                    </div>
+                                </div>
+                            </div><!--end col-->
                         </div><!--end row-->
                     </div>
                 </div>

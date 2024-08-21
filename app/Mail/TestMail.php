@@ -43,7 +43,7 @@ class TestMail extends Mailable
     public function content()
     {
         return new Content(
-            view: 'user.emails.test',
+            view: 'emails.test',
         );
     }
 

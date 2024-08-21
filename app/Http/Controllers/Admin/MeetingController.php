@@ -60,7 +60,6 @@ class MeetingController extends AdminBaseController
 
     public function addUsers(StoreMeetingParticipantsRequest $request, $id)
     {
-        dd($request->toArray(), $id);
         $meeting = Meeting::findOrFail(decrypt($id));
 
         try {

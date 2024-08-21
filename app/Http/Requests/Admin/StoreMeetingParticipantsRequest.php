@@ -22,12 +22,17 @@ class StoreMeetingParticipantsRequest extends BaseAdminRequest
             'participants.*.name' => [
                 'required',
                 'string',
-                Rule::unique('participants')->where(function ($query){
+                Rule::unique('participants')->where(function ($query) {
                     return $query->where('meeting_id', ($this->meeting));
                 }),
             ],
-            'participants.*.role' => ['required' , Rule::in([RoleEnum::MODERATOR->value , RoleEnum::VIEWER->value])],
-            'participants.*.password' => ['nullable' ,'min:8'],
+            'participants.*.email' => [
+                'required',
+                'string',
+                'email',
+            ],
+            'participants.*.role' => ['required', Rule::in([RoleEnum::MODERATOR->value, RoleEnum::VIEWER->value])],
+            'participants.*.password' => ['nullable', 'min:8'],
         ];
     }
 }

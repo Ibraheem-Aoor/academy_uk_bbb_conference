@@ -149,3 +149,13 @@ $(document).on('click', '.link-to-copy', function (e) {
     // Optionally, you can show a message to the user indicating the link was copied
     alert('Link copied to clipboard!');
 });
+
+
+function toggleHidableElement(input) {
+    if (input.prop('checked')) {
+        $('.hidable').removeClass('d-none');
+    } else {
+        $('.hidable').addClass('d-none');
+    }
+
+}

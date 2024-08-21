@@ -44,4 +44,7 @@ return [
     'end_date' => 'End Date',
     'recordings' => 'Saved Recordings',
     'duration' => 'Duration',
+    'start_time' => 'Start Time',
+    'end_time' => 'End Time',
+    'is_scheduled' => 'Scheduled',
 ];

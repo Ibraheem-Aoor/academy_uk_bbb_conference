@@ -24,6 +24,8 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Cache;
 use SimpleXMLElement;
 use Yajra\DataTables\Contracts\DataTable;
+use Spatie\GoogleCalendar\Event;
+
 
 class MeetingService extends BaseModelService
 {
@@ -52,7 +54,7 @@ class MeetingService extends BaseModelService
 
 
     /**
-     * Create Meeting On BigBlueButton
+     * Create Meeting On BigBlBueutton
      */
     protected function createBigBlueButtonMeeting(array $data)
     {
@@ -67,9 +69,8 @@ class MeetingService extends BaseModelService
         $response = $bbb->createMeeting($meeting_params);
         if ($response->getReturnCode() == 'FAILED') {
             throw new Exception('Can\'t create room! please contact our administrator.');
-        } else {
-            return $response;
         }
+        return $response;
     }
 
 
@@ -126,6 +127,7 @@ class MeetingService extends BaseModelService
     {
         $data = $request->toArray();
         $data['meeting_id'] = $data['name'];
+        $data['is_scheduled'] = @$data['is_scheduled'] == 'on';
         return $data;
     }
 
@@ -166,6 +168,11 @@ class MeetingService extends BaseModelService
         }
         return cacheAndGet('recordings_list', now()->addHour(2), $recordings_list);
     }
+
+    /**
+     * Get All Recordings Form BBB server Directrly regradless the Meetings in this system.
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
     public function getAllRecordings(): Collection
     {
         $recordings_list = AllRecording::query()->get();

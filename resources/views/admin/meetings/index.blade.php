@@ -111,6 +111,7 @@
             newRow.innerHTML = `
                 <tr>
                     <td><input type="text" name="participants[${index}][name]" class="form-control" value="${data.name || ''}" required></td>
+                    <td><input type="text" name="participants[${index}][email]" class="form-control" value="${data.email || ''}" required></td>
                     <td>
                         <select name="participants[${index}][role]" class="form-control" required>
                             <option value="MODERATOR" ${data.role === 'MODERATOR' ? 'selected' : ''}>Moderator</option>

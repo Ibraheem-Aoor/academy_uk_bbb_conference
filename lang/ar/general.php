@@ -29,5 +29,7 @@ return [
     'welcome_message' => 'Welcome Message',
     'duration_in_minutes' => 'Duration In Minutes',
     'max_particpants' => 'Max Number Of Participants',
+    'start_time' => 'Start Time',
+    'end_time' => 'End Time',
 
 ];

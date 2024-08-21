@@ -1,6 +1,7 @@
 <?php
 namespace App\Services;
 
+use App\Jobs\ScheduleMeetingJob;
 use App\Services\BaseModelService;
 use BigBlueButton\Parameters\JoinMeetingParameters;
 use Illuminate\Database\Eloquent\Model;
@@ -13,7 +14,10 @@ use App\Models\Participant;
 use BigBlueButton\BigBlueButton;
 use BigBlueButton\Parameters\CreateMeetingParameters;
 use BigBlueButton\Parameters\GetMeetingInfoParameters;
+use Carbon\Carbon;
 use Exception;
+use Spatie\GoogleCalendar\Event;
+
 
 class ParticipantService extends BaseModelService
 {
@@ -97,6 +101,9 @@ class ParticipantService extends BaseModelService
                     $meeting->participants()->create($participantData);
                 }
             }
+            if ($meeting->is_scheduled) {
+                ScheduleMeetingJob::dispatch($meeting);
+            }
             return generateResponse(status: true, modal_to_hide: '#add-meeting-users-modal', table_reload: true, table: '#myTable');
 
         } catch (Throwable $e) {
@@ -105,6 +112,10 @@ class ParticipantService extends BaseModelService
 
         }
     }
+
+
+
+
 
 
     protected function getModelAttributes($request)

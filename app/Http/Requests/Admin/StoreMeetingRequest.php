@@ -15,13 +15,17 @@ class StoreMeetingRequest extends BaseAdminRequest
      */
     public function rules()
     {
+
         return [
             'name' => 'required|string|unique:meetings,name',
             'welcome_message' => 'required|string',
             'password' => 'nullable|min:8',
             'max_participants' => 'required|numeric',
-            // 'start_date' => 'date|after_or_equal:today',
-            // 'end_date' => 'date|after:start_date',
+            'is_scheduled' => 'nullable|in:on,off',
+            'start_date' => 'required_if:is_scheduled,on|date|after_or_equal:today',
+            'end_date' => 'required_if:is_scheduled,on|date|after_or_equal:start_date',
+            'start_time' => 'required_if:is_scheduled,on',
+            'end_time' => 'required_if:is_scheduled,on',
         ];
     }
 }
