@@ -6,14 +6,16 @@ use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Auth\MustVerifyEmail;
 use Illuminate\Notifications\Notifiable;
 use App\Jobs\SendEmailVerficationNotificationJob;
+use App\Transformers\Admin\UserTransformer;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use \Illuminate\Contracts\Auth\MustVerifyEmail as MustVerifyEmailContract;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class User extends Authenticatable implements MustVerifyEmailContract
+class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable, MustVerifyEmail;
 
@@ -26,6 +28,7 @@ class User extends Authenticatable implements MustVerifyEmailContract
         'name',
         'email',
         'password',
+        'plan_id',
     ];
 
     /**
@@ -47,39 +50,11 @@ class User extends Authenticatable implements MustVerifyEmailContract
         'email_verified_at' => 'datetime',
     ];
 
-    /**
-     * Send the email verification notification.
-     *
-     * @return void
-     */
-    public function sendEmailVerificationNotification()
-    {
-        SendEmailVerficationNotificationJob::dispatch($this);
-    }
+    public $modal =  '#user-modal';
+    public $transformer = UserTransformer::class;
 
-    public function warehouses(): HasMany
+    public function plan():BelongsTo
     {
-        return $this->hasMany(Warehouse::class, 'user_id', 'id');
-    }
-
-    public function webshopAccounts(): HasMany
-    {
-        return $this->hasMany(UserWebShopAccount::class, 'user_id', 'id');
-    }
-
-
-    public function orders(): HasManyThrough
-    {
-        return $this->hasManyThrough(Order::class, UserWebShopAccount::class, 'user_id', 'user_web_shop_account_id', 'id', 'id');
-    }
-
-    public function shippingContract(): HasMany
-    {
-        return $this->hasMany(UserShippingContract::class, 'user_id', 'id');
-    }
-
-    public function products(): HasManyThrough
-    {
-        return $this->hasManyThrough(Product::class, UserWebShopAccount::class, 'user_id', 'user_web_shop_account_id', 'id', 'id');
+        return $this->belongsTo(Plan::class , 'plan_id');
     }
 }

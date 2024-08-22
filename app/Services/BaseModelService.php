@@ -124,4 +124,14 @@ abstract class BaseModelService
     {
         return $this->allow_all_records;
     }
+
+
+    /**
+     * get the modal binded with the current model
+     * @reutrn string
+     */
+    public function getModal()
+    {
+        return str_replace('#' , '' ,$this->model->modal);
+    }
 }

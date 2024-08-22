@@ -14,6 +14,10 @@
                            class="ti ti-home me-2"></i>{{ __('general.dashboard') }}</a>
                </li>
                <li class="">
+                   <a href="{{ route('admin.user.index') }}"><i
+                           class="ti ti-camera me-2"></i>{{ __('general.users') }}</a>
+               </li>
+               <li class="">
                    <a href="{{ route('admin.meeting.index') }}"><i
                            class="ti ti-camera me-2"></i>{{ __('general.meetings') }}</a>
                </li>

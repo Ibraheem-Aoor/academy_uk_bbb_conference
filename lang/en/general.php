@@ -47,4 +47,15 @@ return [
     'start_time' => 'Start Time',
     'end_time' => 'End Time',
     'is_scheduled' => 'Scheduled',
+    'generate' => 'Generate',
+    'plan_settings' => 'Plan Settings',
+    'plan' => [
+        'type' => 'Plan Type',
+        'max_meetings' => 'Max Meetings',
+        'max_participants' => 'Max Participants',
+        'max_storage_allowed' => 'Max Storage Allowed (in GB)',
+        'is_backup_enabled' => 'Is Backup Enabled?',
+        'submit' => 'Create Plan',
+    ],
+    'users' => 'Users',
 ];

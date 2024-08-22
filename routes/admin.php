@@ -13,6 +13,7 @@ use App\Http\Controllers\Admin\ContactController as UserContactController;
 use App\Http\Controllers\Admin\MeetingController;
 use App\Http\Controllers\Admin\ParticipantController;
 use App\Http\Controllers\Admin\RecordingController;
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Requests\Site\IntresetedStudentRegisterRequest;
 
 /*
@@ -33,6 +34,20 @@ Route::middleware('auth:admin')
     ->name('admin.')->group(function () {
         Route::redirect('/', '/admin/dashboard', 301);
         Route::get('/dashboard', [DashbaordController::class, 'dashboard'])->name('dashboard');
+
+        // Users
+        Route::prefix('user')->as('user.')->group(function () {
+            Route::get('', [UserController::class, 'index'])->name('index');
+            Route::post('store', [UserController::class, 'store'])->name('store');
+            Route::post('update/{id}', [UserController::class, 'update'])->name('update');
+            Route::delete('destroy/{id}', [UserController::class, 'destroy'])->name('destroy');
+            Route::get('/status-toggle', [UserController::class, 'toggleStatus'])->name('toggle_status');
+            Route::get('table', [UserController::class, 'getTableData'])->name('table');
+            Route::get('export/{meeting}', [UserController::class, 'export'])->name('export');
+            Route::post('add-user/{meeting}', [ParticipantController::class, 'store'])->name('add_user');
+            Route::get('/{meeting}/participants', [ParticipantController::class, 'getParticipants'])->name('get_participants');
+            Route::post('/{id}/update-participants', [ParticipantController::class, 'updateParticipants'])->name('update_participants');
+        });
         Route::prefix('meetings')->as('meeting.')->group(function () {
             Route::get('', [MeetingController::class, 'index'])->name('index');
             Route::post('store', [MeetingController::class, 'store'])->name('store');
