@@ -22,11 +22,10 @@ return new class extends Migration
             $table->string('join_url');
             $table->unsignedBigInteger('meeting_id');
             $table->foreign('meeting_id')->references('id')->on('user_meetings')->cascadeOnDelete();
-            $table->text('bridge_url');
+            $table->text('bridge_url')->nullable();
             $table->text('bridge_password')->nullable();
             $table->unsignedBigInteger('created_by')->nullable();
             $table->foreign('created_by')->references('id')->on('users')->cascadeOnDelete();
-            $table->unique(['name' , 'meeting_id']);
             $table->timestamps();
         });
     }

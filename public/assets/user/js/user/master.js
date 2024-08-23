@@ -112,6 +112,9 @@ $(document).on('submit', '.custom-form', function (e) {
                     $(element).html(html);
                 });
             }
+            if (response.function_to_call) {
+                openMeetingModal(response.function_params);
+            }
             // Hide the preloader
             $('#preloader').css({
                 'visibility': 'hidden',
@@ -212,3 +215,31 @@ $(document).on('change', '#master-checkbox', function () {
         checkbox.checked = isChecked;
     });
 });
+
+
+function openMeetingModal(meetingUrl) {
+    const modal = document.getElementById('meetingUrlModal');
+    const meetingLink = document.getElementById('meetingUrl');
+    const meetingUrlText = document.getElementById('meetingUrlText');
+    const copyButton = document.getElementById('copyButton');
+
+    // Set the href for the "Join Meeting" button
+    meetingLink.href = meetingUrl;
+
+    // Display the meeting URL in the text input field
+    meetingUrlText.value = meetingUrl;
+
+    // Show the modal
+    new bootstrap.Modal(modal).show();
+
+    // Copy URL to clipboard when the "Copy" button is clicked
+    copyButton.onclick = function () {
+        meetingUrlText.select();
+        meetingUrlText.setSelectionRange(0, 99999); // For mobile devices
+        document.execCommand("copy");
+
+        // Optionally, provide user feedback after copying
+        copyButton.innerText = "Copied!";
+        setTimeout(() => copyButton.innerText = "Copy", 2000);
+    };
+}

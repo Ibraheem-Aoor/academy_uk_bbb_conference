@@ -41,9 +41,8 @@ class UserParticipantService extends BaseModelService
             }
             foreach ($request->participants as $participant) {
                 $join_url = $this->createJoinUrl($participant, $meeting);
-                $bridge_url = route('site.join_meeting', ['meeting' => encrypt($meeting->id), 'user' => encrypt($participant['name'])]);
                 $participant['bridge_password'] = @$participant['password'];
-                UserMeetingParticipant::query()->updateOrCreate(
+                $participant_created =  UserMeetingParticipant::query()->updateOrCreate(
                     [
                         'name' => $participant['name'],
                         'meeting_id' => $meeting->id,
@@ -53,12 +52,14 @@ class UserParticipantService extends BaseModelService
                         'role' => $participant['role'],
                         'is_guest' => isset($participant['is_guest']) ? true : false,
                         'join_url' => $join_url,
-                        'bridge_url' => $bridge_url,
                         'meeting_id' => $meeting->id,
                         'created_by' => getAuthUser('web')->id,
                         'email' => @$participant['email'],
-                    ]
-                );
+                        ]
+                    );
+                    $participant_created->bridge_url = route('site.user.join_meeting', ['meeting' => ($meeting->meeting_id), 'user' => encrypt($participant_created->id)]);
+                    $participant_created->save();
+                    dd($participant_created);
             }
             return generateResponse(status: true, modal_to_hide: '#add-meeting-users-modal', table_reload: true, table: '#myTable');
         } catch (Throwable $e) {
@@ -87,14 +88,15 @@ class UserParticipantService extends BaseModelService
         $meeting = UserMeeting::findOrFail($id);
 
         try {
-            if (count($request->participants) > $meeting->max_participants) {
+            if (isset($meeting->max_participants) &&  count($request->participants) > $meeting->max_participants) {
                 throw new Exception('Max participants count is: ' . $meeting->max_participants);
             }
             $existingIds = collect($request->participants)->pluck('id')->filter();
             $meeting->participants()->whereNotIn('id', $existingIds)->delete();
             foreach ($request->participants as $participantData) {
-                $participantData['bridge_url'] = route('site.join_meeting', ['meeting' => encrypt($meeting->id), 'user' => encrypt($participantData['name'])]);
+                $participantData['bridge_url'] = route('site.user.join_meeting', ['meeting' => ($meeting->meeting_id), 'user' => encrypt($participantData['id'])]);
                 $participantData['bridge_password'] = @$participantData['password'];
+                $participantData['created_by'] = getAuthUser('web')->id;
                 if (isset($participantData['id']) && $participantData['id']) {
                     $participant = $meeting->participants()->find($participantData['id']);
                     $participant->update($participantData);
@@ -102,6 +104,13 @@ class UserParticipantService extends BaseModelService
                     $join_url = $this->createJoinUrl($participantData, $meeting);
                     $participantData['join_url'] = $join_url;
                     $meeting->participants()->create($participantData);
+                    $meeting->participants()->chunkById(10,function($participants)use($meeting){
+                        foreach($participants as $participant){
+                            $participant->update([
+                                'bridge_url' => route('site.user.join_meeting', ['meeting' => ($meeting->meeting_id), 'user' => encrypt($participant->id)]),
+                            ]);
+                        }
+                    });
                 }
             }
             if ($meeting->is_scheduled) {

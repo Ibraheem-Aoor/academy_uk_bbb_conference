@@ -62,7 +62,7 @@
         <!--End page-content" -->
     </div>
     <!-- page-wrapper -->
-
+    @include('layouts.user.partials.offcanvas')
 
 
     <!-- JAVASCRIPT -->

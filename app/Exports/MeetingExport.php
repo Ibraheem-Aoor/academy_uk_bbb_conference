@@ -2,6 +2,7 @@
 namespace App\Exports;
 
 use App\Models\Meeting;
+use App\Models\User\UserMeeting;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\WithHeadings;
@@ -18,14 +19,19 @@ class MeetingExport implements FromCollection, WithHeadings, WithTitle, WithProp
 {
     protected $meeting;
 
-    public function __construct(Meeting $meeting)
+    public function __construct($meeting)
     {
         $this->meeting = $meeting;
     }
 
     public function collection()
     {
-        return $this->meeting->participants->map(function ($participant) {
+        $participants = $this->meeting->participants;
+        if($this->meeting instanceof UserMeeting)
+        {
+            $participants = $this->meeting->createdParticipants;
+        }
+        return $participants->map(function ($participant) {
             return [
                 'participant_name' => $participant->name,
                 'password' => $participant->bridge_password,

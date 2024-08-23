@@ -28,7 +28,7 @@ class ParticipantController extends UserBaseController
     public function getParticipants($id)
     {
         $meeting = UserMeeting::with('createdParticipants')->findOrFail($id);
-        return response()->json(['participants' => $meeting->participants]);
+        return response()->json(['participants' => $meeting->createdParticipants]);
     }
 
     public function updateParticipants(StoreMeetingParticipantsRequest $request, $id)

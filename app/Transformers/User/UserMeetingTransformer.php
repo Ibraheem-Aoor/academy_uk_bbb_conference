@@ -35,7 +35,7 @@ class UserMeetingTransformer extends TransformerAbstract
         <img loading="lazy" width="10" height="10" src="' . asset('assets/user/libs/feather-icons/icons/users.svg') . '"><i class="fa fa-eye"></i></a> &nbsp;
         <a title="Excel" class="btn btn-sm btn-info" href="' . route('user.meeting.export', $meeting->id) . '">
         <img loading="lazy" width="10" height="10" src="' . asset('assets/user/libs/feather-icons/icons/file.svg') . '"><i class="fa fa-eye"></i></a>
-        <a  title="Public Link" class="btn btn-sm btn-success link-to-copy" href="#"  data-url="' . route('site.join_public_meeting', encrypt($meeting->id)) . '">
+        <a  title="Public Link" class="btn btn-sm btn-success link-to-copy" href="#"  data-url="' . route('site.user.join_public_meeting', ($meeting->meeting_id)) . '">
         <img loading="lazy" width="10" height="10" src="' . asset('assets/user/libs/feather-icons/icons/copy.svg') . '"></a>
         </div>';
     }

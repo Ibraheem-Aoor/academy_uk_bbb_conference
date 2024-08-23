@@ -58,4 +58,5 @@ return [
         'submit' => 'Create Plan',
     ],
     'users' => 'Users',
+    'create_quick_meeting' => 'Create Quick Meeting',
 ];

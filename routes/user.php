@@ -27,6 +27,7 @@ Route::middleware('auth:web')->group(function () {
     Route::prefix('meetings')->as('meeting.')->group(function () {
         Route::get('', [UserMeetingController::class, 'index'])->name('index');
         Route::post('store', [UserMeetingController::class, 'store'])->name('store');
+        Route::post('store/quick', [UserMeetingController::class, 'quickStore'])->name('create_quick');
         Route::get('/status-toggle', [UserMeetingController::class, 'toggleStatus'])->name('toggle_status');
         Route::get('table', [UserMeetingController::class, 'getTableData'])->name('table');
         Route::get('export/{meeting}', [UserMeetingController::class, 'export'])->name('export');

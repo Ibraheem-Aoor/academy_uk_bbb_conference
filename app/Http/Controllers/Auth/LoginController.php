@@ -69,9 +69,9 @@ class LoginController extends Controller
         if ($response = $this->authenticated($request, $this->guard()->user())) {
             return $response;
         }
-
+        $guard = $request->input('guard') == 'web' ? 'user' : 'admin';
         return $request->wantsJson()
-            ? response()->json(generateResponse(status: true, redirect: route('admin.dashboard'), message: __('response.redirecting')) ,200)
+            ? response()->json(generateResponse(status: true, redirect: route($guard.'.dashboard'), message: __('response.redirecting')) ,200)
             : redirect()->intended($this->redirectPath());
     }
 

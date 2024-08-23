@@ -58,6 +58,30 @@ class UserMeetingService extends BaseModelService
     }
 
 
+
+    public function createQuickMeeting(Request $request)
+    {
+        try{
+            $data = [
+                'name' => $request->name,
+                'meeting_id' => generateMeetingId(10),
+                'welcome_message' => 'Welcome To '.$request->name,
+                'user_id' => getAuthUser('web')->id,
+            ];
+            DB::beginTransaction();
+            $meeting = $this->model->create($data);
+            $this->createBigBlueButtonMeeting($data , $meeting);
+            DB::commit();
+            return generateResponse(status:true , extra_data:['function_to_call'=>'openMeetingModal' , 'function_params' => route('site.user.join_public_meeting' , $meeting->meeting_id)]);
+        }catch(Throwable $e)
+        {
+            DB::rollBack();
+            Log::error("Fail with create quick meeting participants: " . $e->getMessage());
+            return generateResponse(status:false,message:__('response.faild_created'));
+        }
+    }
+
+
     /**
      * Create Meeting On BigBlBueutton
      */
@@ -65,8 +89,9 @@ class UserMeetingService extends BaseModelService
     {
         $bbb = new BigBlueButton();
         $bbb->setTimeOut(180);
-        $meeting_params = new CreateMeetingParameters($data['name'], $meeting->meeting_id);
+        $meeting_params = new CreateMeetingParameters($meeting->meeting_id , $data['name']);
         $meeting_params->setWelcomeMessage($data['welcome_message']);
+        $meeting_params->setFreeJoin(true);
         if(isset($data['max_participants']))
         {
             $meeting_params->setMaxParticipants($data['max_participants']);
@@ -95,7 +120,7 @@ class UserMeetingService extends BaseModelService
         $bbb->setTimeOut(180);
 
         if (!$this->isMeetingExistsAndRuninng($meeting, $bbb)) {
-            $this->createBigBlueButtonMeeting($meeting->toArray());
+            $this->createBigBlueButtonMeeting($meeting->toArray() , $meeting);
         }
         return true;
     }
@@ -105,12 +130,12 @@ class UserMeetingService extends BaseModelService
      */
     protected function isMeetingExistsAndRuninng($meeting, BigBlueButton $bbb): bool
     {
-        if (Cache::has('is_meeting_exists_' . $meeting->name)) {
-            return Cache::get('is_meeting_exists_' . $meeting->name);
+        if (Cache::has('is_meeting_exists_' . $meeting->id)) {
+            return Cache::get('is_meeting_exists_' . $meeting->id);
         }
-        $get_meeting_info_params = new GetMeetingInfoParameters($meeting->name);
+        $get_meeting_info_params = new GetMeetingInfoParameters($meeting->meeting_id);
         $response = $bbb->getMeetingInfo($get_meeting_info_params);
-        return Cache::remember('is_meeting_exists_' . $meeting->name, now()->addMinutes(5), fn() => $response->getReturnCode() == 'SUCCESS' && !$response->getMeeting()->hasBeenForciblyEnded());
+        return Cache::remember('is_meeting_exists_' . $meeting->id, now()->addMinutes(5), fn() => $response->getReturnCode() == 'SUCCESS' && !$response->getMeeting()->hasBeenForciblyEnded());
     }
 
 

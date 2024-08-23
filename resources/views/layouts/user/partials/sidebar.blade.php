@@ -1,5 +1,5 @@
    <!-- sidebar-wrapper -->
-   <nav id="sidebar" class="sidebar-wrapper sidebar-colored">
+   <nav id="sidebar" class="sidebar-wrapper sidebar-dark">
        <div class="sidebar-content" data-simplebar style="height: calc(100% - 60px);">
            <div class="sidebar-brand">
                <a href="routes('admin.dashboard')">
