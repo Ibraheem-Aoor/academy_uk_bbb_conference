@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->nullable();
             $table->boolean('is_guest')->default(false);
-            $table->string('join_url');
+            $table->text('join_url');
             $table->unsignedBigInteger('meeting_id');
             $table->foreign('meeting_id')->references('id')->on('user_meetings')->cascadeOnDelete();
             $table->text('bridge_url')->nullable();
