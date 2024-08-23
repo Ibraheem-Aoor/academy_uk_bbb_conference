@@ -42,7 +42,7 @@
                                     <label class="form-label">{{ __('general.max_particpants') }}<span
                                             class="text-danger">*</span></label>
                                     <div class="form-icon position-relative">
-                                        <input type="number" name="max_participants" class="form-control" required>
+                                        <input type="number" name="max_participants" class="form-control" >
                                     </div>
                                 </div>
                             </div><!--end col-->

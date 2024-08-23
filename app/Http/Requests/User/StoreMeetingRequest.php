@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Admin;
+namespace App\Http\Requests\User;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreMeetingRequest extends BaseAdminRequest
+class StoreMeetingRequest extends BaseUserRequest
 {
 
 

@@ -1,4 +1,4 @@
-<div class="modal fade" id="meeting-modal" tabindex="-1" aria-labelledby="LoginForm-title" aria-hidden="true">
+<div class="modal fade" id="{{ $modal }}" tabindex="-1" aria-labelledby="LoginForm-title" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content rounded shadow border-0">
             <form name="meeting-form" class="custom-form">
@@ -15,86 +15,106 @@
                                     <label class="form-label">{{ __('general.name') }}<span
                                             class="text-danger">*</span></label>
                                     <div class="form-icon position-relative">
-                                        <input type="text" name="name" class="form-control" required>
+                                        <input type="text" name="name" id="name" class="form-control"
+                                            required>
                                     </div>
                                 </div>
                             </div><!--end col-->
                             <div class="col-md-12">
                                 <div class="mb-3">
-                                    <label class="form-label">{{ __('general.welcome_message') }}<span
+                                    <label class="form-label">{{ __('general.email') }}<span
                                             class="text-danger">*</span></label>
                                     <div class="form-icon position-relative">
-                                        <input type="text" name="welcome_message" class="form-control" required>
+                                        <input type="text" name="email" id="email" class="form-control"
+                                            required>
                                     </div>
                                 </div>
                             </div><!--end col-->
-                            <div class="col-md-12 d-none">
+                            <div class="col-8">
                                 <div class="mb-3">
                                     <label class="form-label">{{ __('general.password') }}<span
                                             class="text-danger"></span></label>
                                     <div class="form-icon position-relative">
-                                        <input type="text" name="password" class="form-control">
+                                        <input type="text" name="password" id="password" class="form-control">
                                     </div>
                                 </div>
                             </div><!--end col-->
+                            <div class="col-4">
+                                <div class="mb-3">
+                                    <label class="form-label">{{ __('general.generate') }}<span
+                                            class="text-danger"></span></label>
+                                    <div class="form-icon position-relative">
+                                        <button type="button" class="btn btn-primary"
+                                            id="generate-password">GENERATE</button>
+                                    </div>
+                                </div>
+                            </div><!--end col-->
+
                             <div class="col-md-12">
                                 <div class="mb-3">
-                                    <label class="form-label">{{ __('general.max_particpants') }}<span
+                                    <h4>{{ __('general.plan_settings') }}</h4>
+                                </div>
+                            </div><!--end col-->
+
+                            <!-- Plan Type -->
+                            <div class="col-6">
+                                <div class="mb-3">
+                                    <label class="form-label">{{ __('general.plan.type') }}<span
                                             class="text-danger">*</span></label>
                                     <div class="form-icon position-relative">
-                                        <input type="number" name="max_participants" class="form-control" required>
+                                        <select name="type" id="type" class="form-control">
+                                            @foreach ($plan_types as $planType)
+                                                <option value="{{ $planType->value }}">{{ $planType->value }}</option>
+                                            @endforeach
+                                        </select>
                                     </div>
                                 </div>
                             </div><!--end col-->
-                            <div class="col-md-12">
+
+                            <!-- Max Meetings -->
+                            <div class="col-6">
                                 <div class="mb-3">
-                                    <label class="form-label">{{ __('general.is_scheduled') }}<span
+                                    <label class="form-label">{{ __('general.plan.max_meetings') }}<span
                                             class="text-danger">*</span></label>
+                                    <div class="form-icon position-relative">
+                                        <input type="number" name="max_meetings" id="max_meetings" class="form-control"
+                                            required>
+                                    </div>
+                                </div>
+                            </div><!--end col-->
+
+                            <!-- Max Participants -->
+                            <div class="col-6">
+                                <div class="mb-3">
+                                    <label class="form-label">{{ __('general.plan.max_participants') }}<span
+                                            class="text-danger">*</span></label>
+                                    <div class="form-icon position-relative">
+                                        <input type="number" name="max_participants" id="max_participants"
+                                            class="form-control" required>
+                                    </div>
+                                </div>
+                            </div><!--end col-->
+
+                            <!-- Max Storage Allowed -->
+                            <div class="col-6">
+                                <div class="mb-3">
+                                    <label class="form-label">{{ __('general.plan.max_storage_allowed') }}<span
+                                            class="text-danger">*</span></label>
+                                    <div class="form-icon position-relative">
+                                        <input type="number" name="max_storage_allowed" id="max_storage_allowed"
+                                            class="form-control" required>
+                                    </div>
+                                </div>
+                            </div><!--end col-->
+
+                            <!-- Backup Enabled -->
+                            <div class="col-6">
+                                <div class="mb-3">
+                                    <label class="form-label">{{ __('general.plan.is_backup_enabled') }}</label>
                                     <div class="form-check form-switch">
-                                        <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault"
-                                            name="is_scheduled"
-                                            onchange="toggleHidableElement($(this));"
-                                         >
-                                    </div>
-                                </div>
-                            </div><!--end col-->
-                            <div class="col-md-6 hidable d-none">
-                                <div class="mb-3">
-                                    <label class="form-label">{{ __('general.start_date') }}<span
-                                            class="text-danger">*</span></label>
-                                    <div class="form-icon position-relative">
-                                        <input type="date" name="start_date" class="form-control"
-                                            value="{{ date('Y-m-d') }}" >
-                                    </div>
-                                </div>
-                            </div><!--end col-->
-                            <div class="col-md-6 hidable d-none">
-                                <div class="mb-3">
-                                    <label class="form-label">{{ __('general.start_time') }}<span
-                                            class="text-danger">*</span></label>
-                                    <div class="form-icon position-relative">
-                                        <input type="time" name="start_time" class="form-control"
-                                            value="{{ date('Y-m-d') }}" >
-                                    </div>
-                                </div>
-                            </div><!--end col-->
-                            <div class="col-md-6 hidable d-none">
-                                <div class="mb-3">
-                                    <label class="form-label">{{ __('general.end_date') }}<span
-                                            class="text-danger">*</span></label>
-                                    <div class="form-icon position-relative">
-                                        <input type="date" name="end_date" class="form-control"
-                                            value="{{ now()->tomorrow()->toDateString() }}" >
-                                    </div>
-                                </div>
-                            </div><!--end col-->
-                            <div class="col-md-6 hidable d-none">
-                                <div class="mb-3">
-                                    <label class="form-label">{{ __('general.end_time') }}<span
-                                            class="text-danger">*</span></label>
-                                    <div class="form-icon position-relative">
-                                        <input type="time" name="end_time" class="form-control"
-                                            value="{{ now()->tomorrow()->toDateString() }}" >
+                                        <input class="form-check-input" type="checkbox" id="is_backup_enabled"
+                                            name="is_backup_enabled"
+                                            >
                                     </div>
                                 </div>
                             </div><!--end col-->

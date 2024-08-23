@@ -6,6 +6,7 @@
  * @return string
  */
 
+use App\Models\User\UserMeeting;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
@@ -165,5 +166,17 @@ if (!function_exists('formatDuration')) {
         }
 
         return trim($result);
+    }
+}
+
+if (!function_exists('generateMeetingId')) {
+
+    function generateMeetingId($len = null)
+    {
+        $meeting_id = \Str::random($len ?? 10) . rand(1, 5000);
+        if (!UserMeeting::query()->where('meeting_id', $meeting_id)->exists()) {
+            return $meeting_id;
+        }
+        return generateMeetingId();
     }
 }

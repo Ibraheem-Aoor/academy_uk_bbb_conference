@@ -38,7 +38,7 @@ class ScheduleMeetingJob implements ShouldQueue
      *
      * @return void
      */
-    public function __construct(protected Meeting $meeting)
+    public function __construct(protected $meeting)
     {
 
     }
@@ -64,15 +64,16 @@ class ScheduleMeetingJob implements ShouldQueue
      */
     private function scheduleMeetingForParticipants()
     {
-
-        $event = new Event;
-        $event->name  = $this->meeting->welcome_message;
-        $event->description   = $this->meeting->welcome_message;
-        $event->startDateTime = Carbon::createFromFormat('Y-m-d H:i:s', $this->meeting->start_date . ' ' . $this->meeting->start_time);
-        $event->endDateTime = Carbon::createFromFormat('Y-m-d H:i:s', $this->meeting->end_date . ' ' . $this->meeting->end_time);
-        $event->startDateTime->setTimezone(config('app.timezone'));
-        $event->endDateTime->setTimezone(config('app.timezone'));
-        $event->save();
+        // if (getAuthUser('admin')) {
+        //     $event = new Event;
+        //     $event->name = $this->meeting->welcome_message;
+        //     $event->description = $this->meeting->welcome_message;
+        //     $event->startDateTime = Carbon::createFromFormat('Y-m-d H:i:s', $this->meeting->start_date . ' ' . $this->meeting->start_time);
+        //     $event->endDateTime = Carbon::createFromFormat('Y-m-d H:i:s', $this->meeting->end_date . ' ' . $this->meeting->end_time);
+        //     $event->startDateTime->setTimezone(config('app.timezone'));
+        //     $event->endDateTime->setTimezone(config('app.timezone'));
+        //     $event->save();
+        // }
         $participants = $this->meeting->participants()->whereNotNull('email')->get();
         Notification::send($participants, new MeetingScheduled($this->meeting));
     }

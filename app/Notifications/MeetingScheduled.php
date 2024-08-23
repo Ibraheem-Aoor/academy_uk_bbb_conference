@@ -18,7 +18,7 @@ class MeetingScheduled extends Notification
      *
      * @return void
      */
-    public function __construct(protected Meeting $meeting)
+    public function __construct(protected  $meeting)
     {
         //
     }
