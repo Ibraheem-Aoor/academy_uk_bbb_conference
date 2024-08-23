@@ -1,4 +1,4 @@
-@extends('layouts.admin.master')
+@extends('layouts.user.master')
 @section('page-title', $page_title)
 @push('css')
     <link rel="stylesheet" href="https://cdn.datatables.net/2.0.0/css/dataTables.dataTables.css">

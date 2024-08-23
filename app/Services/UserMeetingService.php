@@ -173,7 +173,7 @@ class UserMeetingService extends BaseModelService
      */
     public function getTableData(Request $request)
     {
-        $query = $this->model::query();
+        $query = $this->model::query()->whereBelongsTo(getAuthUser('web'));
         return DataTables::of($query)
             ->setTransformer($this->model->transformer)
             ->make(true);
@@ -186,11 +186,12 @@ class UserMeetingService extends BaseModelService
      */
     public function getRecordings(): array
     {
-        $db_records = $this->model->pluck('name')->toArray();
+        $db_records = $this->model->pluck('meeting_id')->toArray();
         $bbb = new BigBlueButton();
         $recordings_params = new GetRecordingsParameters();
         $recordings = $bbb->getRecordings($recordings_params);
         $recordings_list = [];
+        // dd($recordings);
         if ($recordings->getReturnCode() == 'SUCCESS') {
             foreach ($recordings->getRecords() as $record) {
                 if (in_array($record->getMeetingId(), $db_records)) {
@@ -203,7 +204,7 @@ class UserMeetingService extends BaseModelService
                 }
             }
         }
-        return cacheAndGet('recordings_list', now()->addHour(2), $recordings_list);
+        return cacheAndGet('user_recordings_list', now()->addHour(2), $recordings_list);
     }
 
     /**
@@ -242,8 +243,8 @@ class UserMeetingService extends BaseModelService
 
     public function getTableDataForRecordings(Request $request)
     {
-        if (Cache::has('recordings_list')) {
-            $query = Cache::get('recordings_list');
+        if (Cache::has('user_recordings_list')) {
+            $query = Cache::get('user_recordings_list');
         } else {
             $query = $this->getRecordings();
         }

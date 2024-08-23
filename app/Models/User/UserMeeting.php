@@ -2,10 +2,12 @@
 
 namespace App\Models\User;
 
+use App\Models\User;
 use App\Transformers\Admin\MeetingTransformer;
 use App\Transformers\User\UserMeetingTransformer;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class UserMeeting extends Model
@@ -26,5 +28,11 @@ class UserMeeting extends Model
     public function createdParticipants() : HasMany
     {
         return $this->hasMany(UserMeetingParticipant::class , 'meeting_id')->whereNotNull('created_by');
+    }
+
+
+    public function user() : BelongsTo
+    {
+        return $this->belongsTo(User::class , 'user_id');
     }
 }

@@ -58,33 +58,40 @@ class UserWebController extends Controller
 
     public function joinMeeting($meeting, $user, SiteJoinMeetingRequest $request)
     {
+        $db_meeting = UserMeeting::query()->where('meeting_id'  , $meeting)->firstOrFail();
         try {
-            $db_meeting = UserMeeting::query()->where('meeting_id'  , $meeting)->firstOrFail();
-
             $participant = UserMeetingParticipant::query()->findOrFail(decrypt($user));
             $this->activateMeeting($db_meeting);
             if ($participant->name != $request->name) {
                 return generateResponse(status: false, message: "Unauthorized User");
             }
             if (isset($request->password) && $participant->bridge_password == $request->password) {
+                $db_meeting->successfull_joins += 1;
+                $db_meeting->save();
                 return generateResponse(status: true, message: __('response.redirecting'), redirect: $participant->join_url);
             }
             if (!isset($request->password) && $participant->role == RoleEnum::MODERATOR->value) {
+                $db_meeting->successfull_joins += 1;
+                $db_meeting->save();
                 return generateResponse(status: true, message: __('response.redirecting'), redirect: $participant->join_url);
             }
             if (!isset($request->password) && !isset($participant->bridge_password)) {
+                $db_meeting->successfull_joins += 1;
+                $db_meeting->save();
                 return generateResponse(status: true, message: __('response.redirecting'), redirect: $participant->join_url);
             }
             return generateResponse(status: false, message: "Unauthorized User");
         } catch (Throwable $e) {
+            $db_meeting->failed_joins += 1;
+            $db_meeting->save();
             info('Error While Join Meeting In :' . __METHOD__ . ' :' . $e->getMessage());
             return generateResponse(status: false, message: "Something Went Wrong");
         }
     }
     public function joinPublicMeeting($meeting, SiteJoinMeetingRequest $request)
     {
+        $db_meeting = UserMeeting::query()->where('meeting_id' , ($meeting))->firstOrFail();
         try {
-            $db_meeting = UserMeeting::query()->where('meeting_id' , ($meeting))->firstOrFail();
             $this->activateMeeting($db_meeting);
             if (Participant::query()->where('name', $request->name)->where('meeting_id', $db_meeting->id)->exists()) {
                 return generateResponse(status: false, message: "Participant Already Exists.Enter Your Full Name");
@@ -99,10 +106,13 @@ class UserWebController extends Controller
                 ]
             );
             DB::commit();
+            $db_meeting->successfull_joins += 1;
+            $db_meeting->save();
             return generateResponse(status: true, message: __('response.redirecting'), redirect: $participant->join_url);
         } catch (Throwable $e) {
+            $db_meeting->failed_joins += 1;
+            $db_meeting->save();
             DB::rollBack();
-            dd($e);
             info('Error While Join Meeting In :' . __METHOD__ . ' :' . $e->getMessage());
             return generateResponse(status: false, message: "Something Went Wrong");
 

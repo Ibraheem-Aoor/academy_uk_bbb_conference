@@ -78,6 +78,7 @@
     {{-- Toaster Js --}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <script src="{{ asset('assets/user/js/user/master.js') }}?v=1.0"></script>
+
     <script>
         @if (Session::has('error'))
             toastr.error('{{ Session::get('error') }}');

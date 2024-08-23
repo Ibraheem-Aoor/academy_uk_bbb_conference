@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\MeetingController;
 use App\Http\Controllers\User\ParticipantController;
 use App\Http\Controllers\User\UserMeetingController;
+use App\Http\Controllers\User\UserRecordingController;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,5 +35,11 @@ Route::middleware('auth:web')->group(function () {
         Route::post('add-user/{meeting}', [ParticipantController::class, 'store'])->name('add_user');
         Route::get('/{meeting}/participants', [ParticipantController::class, 'getParticipants'])->name('get_participants');
         Route::post('/{id}/update-participants', [ParticipantController::class, 'updateParticipants'])->name('update_participants');
+    });
+    Route::prefix('recording')->as('recording.')->group(function () {
+        Route::get('', [UserRecordingController::class, 'index'])->name('index');
+        Route::get('all', [UserRecordingController::class, 'allRecordings'])->name('all');
+        Route::get('table', [UserRecordingController::class, 'getTableData'])->name('table');
+
     });
 });
