@@ -44,7 +44,7 @@ class MeetingScheduled extends Notification
     {
         $startTime = $this->meeting->start_date . ' ' . $this->meeting->start_time;
         $endTime = $this->meeting->end_date . ' ' . $this->meeting->end_time;
-
+        $link = !is_null(getAuthUser('web')) ? route('site.user.join_public_meeting', ($this->meeting->meeting_id)) : route('site.join_public_meeting', encrypt($this->meeting->id));
         return (new MailMessage)
             ->subject('Meeting Scheduled: ' . $this->meeting->name)
             ->greeting('Hello ' . $notifiable->name . ',')
@@ -53,7 +53,7 @@ class MeetingScheduled extends Notification
             ->line('**Description:** ' . $this->meeting->welcome_message)
             ->line('**Start Time:** ' . Carbon::parse($startTime)->format('l, F j, Y g:i A') . ' (' . config('app.timezone') . ')')
             ->line('**End Time:** ' . Carbon::parse($endTime)->format('l, F j, Y g:i A') . ' (' . config('app.timezone') . ')')
-            ->action('Join Meeting', route('site.join_public_meeting', encrypt($this->meeting->id)))
+            ->action('Join Meeting', $link)
             ->line('We look forward to your participation.')
             ->line('Thank you!')
             ->salutation('Best regards,')
