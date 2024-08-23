@@ -34,6 +34,7 @@ Route::middleware('auth:admin')
     ->name('admin.')->group(function () {
         Route::redirect('/', '/admin/dashboard', 301);
         Route::get('/dashboard', [DashbaordController::class, 'dashboard'])->name('dashboard');
+        Route::get('/mail-test', [DashbaordController::class, 'testMail'])->name('testmail');
 
         // Users
         Route::prefix('user')->as('user.')->group(function () {

@@ -13,6 +13,7 @@ use App\Services\Api\BolService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Notification;
+use Throwable;
 
 class DashbaordController extends Controller
 {
@@ -20,7 +21,16 @@ class DashbaordController extends Controller
     {
         $data['meetings_count'] = Meeting::query()->count();
         $data['participants_count'] = Participant::query()->count();
-        // Mail::to('ibraheem.alaoor@hotmail.com')->send(new TestMail);
         return view('admin.dashboard', $data);
+    }
+
+    public function testMail(){
+        try{
+
+            Mail::to('ibraheem.alaoor@hotmail.com')->send(new TestMail);
+            dd('DONE');
+        }catch(Throwable $e){
+            dd($e);
+        }
     }
 }
