@@ -30,7 +30,7 @@ class UserTransformer extends TransformerAbstract
         return '<div class="text-end p-3">
             <a title="Edit" class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="' . $user->modal . '"
                 data-action="' . route('admin.user.update', $user->id) . '"
-                data-method="POST" data-header-title="' . __('general.edit_team_member', ['user' => $user->name]) . '"
+                data-method="POST" data-header-title="' . __('general.edit_user', ['user' => $user->name]) . '"
                 data-name="' . $user->name . '" data-email="' . $user->email . '" data-plan-max-meetings="' . $user->plan?->max_meetings . '"
                  data-plan-max-participants="' . $user->plan?->max_participants . '" data-plan-max-storage="' . $user->plan?->max_storage_allowed . '"
                  data-plan-is-backup-enabled="' . $user->plan?->is_backup_enabled . '" data-plan-type="' . $user->plan?->type . '"

@@ -59,4 +59,6 @@ return [
     ],
     'users' => 'Users',
     'create_quick_meeting' => 'Create Quick Meeting',
+    'create_new_user' => 'Create New User',
+    'edit_user' => 'Edit User :user'
 ];

@@ -8,7 +8,7 @@
         </div>
     </div>
 
-    <div class="row row-cols-xl-5 row-cols-md-2 row-cols-1">
+    <div class="row ">
         <div class="col mt-4">
             <a href="#!"
                 class="features feature-primary d-flex justify-content-between align-items-center rounded shadow p-3">
@@ -46,22 +46,7 @@
                 class="features feature-primary d-flex justify-content-between align-items-center rounded shadow p-3">
                 <div class="d-flex align-items-center">
                     <div class="icon text-center rounded-pill">
-                        <i class="uil uil-user-circle fs-4 mb-0"></i>
-                    </div>
-                    <div class="flex-1 ms-3" onclick='window.location.href="{{ route('user.meeting.index') }}"'>
-                        <h6 class="mb-0 text-muted">Participants</h6>
-                        <p class="fs-5 text-dark fw-bold mb-0"><span class="counter-value"
-                                data-target="{{ $participants_count }}">{{ $participants_count }}</span></p>
-                    </div>
-                </div>
-            </a>
-        </div><!--end col-->
-        <div class="col mt-4">
-            <a href="#!"
-                class="features feature-primary d-flex justify-content-between align-items-center rounded shadow p-3">
-                <div class="d-flex align-items-center">
-                    <div class="icon text-center rounded-pill">
-                        <i class="uil uil-user-circle fs-4 mb-0"></i>
+                        <i class="uil uil-arrow-right fs-4 mb-0 text-success"></i>
                     </div>
                     <div class="flex-1 ms-3">
                         <h6 class="mb-0 text-muted">Successfull Joins</h6>
@@ -77,7 +62,7 @@
                 class="features feature-primary d-flex justify-content-between align-items-center rounded shadow p-3">
                 <div class="d-flex align-items-center">
                     <div class="icon text-center rounded-pill">
-                        <i class="uil uil-user-circle fs-4 mb-0"></i>
+                        <i class="uil uil-lock fs-4 mb-0 text-danger"></i>
                     </div>
                     <div class="flex-1 ms-3">
                         <h6 class="mb-0 text-muted">Failed Joins</h6>
@@ -153,7 +138,7 @@
     <div class="col-xl-12    mt-4">
         <div class="card border-0">
             <div class="d-flex justify-content-between p-4 shadow rounded-top">
-                <h6 class="fw-bold mb-0">Inivitations List</h6>
+                <h6 class="fw-bold mb-0">Invitations List</h6>
 
                 <ul class="list-unstyled mb-0 d-none">
                     <li class="dropdown dropdown-primary list-inline-item">

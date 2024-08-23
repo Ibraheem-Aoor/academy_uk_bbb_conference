@@ -1,4 +1,4 @@
-<div class="modal show  " id="{{ $modal }}" tabindex="-1" aria-labelledby="LoginForm-title" aria-hidden="true">
+<div class="modal fade " id="{{ $modal }}" tabindex="-1" aria-labelledby="LoginForm-title" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content rounded shadow border-0">
             <form name="meeting-form" class="custom-form">
