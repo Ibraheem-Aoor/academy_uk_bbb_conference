@@ -32,7 +32,7 @@ Route::group([
             Route::post('join-public/{meeting}/', [HomeController::class, 'joinPublicMeeting'])->name('join_public_meeting.submit');
         });
         // user
-        Route::prefix('user')->as('user.')->middleware('is_active_meeting')->group(function () {
+        Route::prefix('user')->as('user.')->middleware(['is_active_meeting'])->group(function () {
             Route::get('join/{meeting}/{user}', [UserWebController::class, 'joinMeetingShowForm'])->name('join_meeting');
             Route::get('join-public/{meeting}/', [UserWebController::class, 'joinPublicMeetingShowForm'])->name('join_public_meeting');
             Route::post('join/{meeting}/{user}', [UserWebController::class, 'joinMeeting'])->name('join_meeting.submit');

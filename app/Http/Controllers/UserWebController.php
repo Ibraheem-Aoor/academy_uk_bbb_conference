@@ -33,7 +33,7 @@ class UserWebController extends Controller
 
     public function joinMeetingShowForm($meeting, $user)
     {
-        $db_meeting = UserMeeting::query()->where('meeting_id'  , $meeting)->firstOrFail();
+        $db_meeting = UserMeeting::query()->where('meeting_id', $meeting)->firstOrFail();
         $data = [
             'meeting' => $db_meeting,
             'participant' => UserMeetingParticipant::query()->findOrFail(decrypt($user)),
@@ -45,7 +45,7 @@ class UserWebController extends Controller
     }
     public function joinPublicMeetingShowForm($meeting)
     {
-        $db_meeting = UserMeeting::query()->where('meeting_id' , ($meeting))->firstOrFail();
+        $db_meeting = UserMeeting::query()->where('meeting_id', ($meeting))->firstOrFail();
         $data = [
             'meeting' => $db_meeting,
             'page_title' => $this->page_title,
@@ -58,7 +58,7 @@ class UserWebController extends Controller
 
     public function joinMeeting($meeting, $user, SiteJoinMeetingRequest $request)
     {
-        $db_meeting = UserMeeting::query()->where('meeting_id'  , $meeting)->firstOrFail();
+        $db_meeting = UserMeeting::query()->where('meeting_id', $meeting)->firstOrFail();
         try {
             $participant = UserMeetingParticipant::query()->findOrFail(decrypt($user));
             $this->activateMeeting($db_meeting);
@@ -83,6 +83,9 @@ class UserWebController extends Controller
             return generateResponse(status: false, message: "Unauthorized User");
         } catch (Throwable $e) {
             $db_meeting->failed_joins += 1;
+            if (($db_meeting->successfull_joins - 1) < 0) {
+                $db_meeting->successfull_joins = 0;
+            }
             $db_meeting->save();
             info('Error While Join Meeting In :' . __METHOD__ . ' :' . $e->getMessage());
             return generateResponse(status: false, message: "Something Went Wrong");
@@ -90,7 +93,7 @@ class UserWebController extends Controller
     }
     public function joinPublicMeeting($meeting, SiteJoinMeetingRequest $request)
     {
-        $db_meeting = UserMeeting::query()->where('meeting_id' , ($meeting))->firstOrFail();
+        $db_meeting = UserMeeting::query()->where('meeting_id', ($meeting))->firstOrFail();
         try {
             $this->activateMeeting($db_meeting);
             if (Participant::query()->where('name', $request->name)->where('meeting_id', $db_meeting->id)->exists()) {
@@ -111,6 +114,9 @@ class UserWebController extends Controller
             return generateResponse(status: true, message: __('response.redirecting'), redirect: $participant->join_url);
         } catch (Throwable $e) {
             $db_meeting->failed_joins += 1;
+            if (($db_meeting->successfull_joins - 1) < 0) {
+                $db_meeting->successfull_joins = 0;
+            }
             $db_meeting->save();
             DB::rollBack();
             info('Error While Join Meeting In :' . __METHOD__ . ' :' . $e->getMessage());

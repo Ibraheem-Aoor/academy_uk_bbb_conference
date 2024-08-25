@@ -33,8 +33,14 @@ function getTableColumns() {
             orderable: true,
         },
         {
-            data: 'email',
-            name: 'email',
+            data: 'room',
+            name: 'room',
+            searchable: true,
+            orderable: true,
+        },
+        {
+            data: 'meeting_id',
+            name: 'meeting_id',
             searchable: true,
             orderable: true,
         },
@@ -65,7 +71,7 @@ function getTableColumns() {
  * Meeting Modal
  */
 
-$(modal).on('show.bs.modal', function (e) {
+$('#meeting-modal').on('show.bs.modal', function (e) {
     var btn = e.relatedTarget;
     var action = btn.getAttribute('data-action');
     var method = btn.getAttribute('data-method');
@@ -77,17 +83,33 @@ $(modal).on('show.bs.modal', function (e) {
         $("#modal-title").text(btn.getAttribute('data-header-title'));
         $('form[name="meeting-form"]')[0].reset();
     } else {
-        $("#modal-title").text(btn.getAttribute('data-header-title'));
+        // $("#modal-title").text(btn.getAttribute('data-header-title'));
         // $('.image-input-wrapper').css('background-image', 'url("' + btn.getAttribute('data-image') + '")');
+        // $(this).find('#name').val(btn.getAttribute('data-name'));
+        // var status = btn.getAttribute('data-status') == 1 ? 'checked' : null;
+        // $(this).find('#status').prop('checked', status);
+    }
+});
+/**
+ * Project Info modal
+ */
+
+$('#add-meeting-users-modal').on('show.bs.modal', function (e) {
+    var btn = e.relatedTarget;
+    var action = btn.getAttribute('data-action');
+    var method = btn.getAttribute('data-method');
+    var isCreate = btn.getAttribute('data-is-create');
+    $(this).find('form').attr('action', action);
+    $(this).find('form').attr('method', method);
+    $(this).find("#modal-title").text(btn.getAttribute('data-header-title'));
+    // create or update
+    if (isCreate == 1) {
+        $('form[name="meeting-users-form"]')[0].reset();
+    } else {
+        $('.image-input-wrapper').css('background-image', 'url("' + btn.getAttribute('data-image') + '")');
         $(this).find('#name').val(btn.getAttribute('data-name'));
-        $(this).find('#email').val(btn.getAttribute('data-email'));
-        $(this).find('#password').val(null);
-        $(this).find('#type').val(btn.getAttribute('data-plan-type'));
-        $(this).find('#max_meetings').val(btn.getAttribute('data-plan-max-meetings'));
-        $(this).find('#parallel_rooms').val(btn.getAttribute('data-plan-paralell-rooms'));
-        $(this).find('#max_storage_allowed').val(btn.getAttribute('data-plan-max-storage'));
-        var status = btn.getAttribute('data-plan-is-backup-enabled') == 1 ? 'checked' : null;
-        $(this).find('#is_backup_enabled').prop('checked', status);
+        var status = btn.getAttribute('data-status') == 1 ? 'checked' : null;
+        $(this).find('#status').prop('checked', status);
     }
 });
 
@@ -135,25 +157,17 @@ $(document).on('click', '.link-to-copy', function (e) {
 });
 
 
-
-
-document.getElementById('generate-password').addEventListener('click', function () {
-    // Characters and numbers for the password
-    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    let password = '';
-
-    // Generate an 8-character long password
-    for (let i = 0; i < 8; i++) {
-        const randomIndex = Math.floor(Math.random() * characters.length);
-        password += characters[randomIndex];
+function toggleHidableElement(input) {
+    if (input.prop('checked')) {
+        $('.hidable').removeClass('d-none');
+    } else {
+        $('.hidable').addClass('d-none');
     }
 
-    // Place the generated password in the input field
-    document.getElementById('password').value = password;
-});
+}
 
 
-let userTable = document.getElementById('roomTable').getElementsByTagName('tbody')[0];
+let userTable = document.getElementById('userTable').getElementsByTagName('tbody')[0];
 let addRowBtn = document.getElementById('addRowBtn');
 
 addRowBtn.addEventListener('click', function () {
@@ -165,11 +179,18 @@ function addRow(data = {}) {
     let newRow = userTable.insertRow();
     newRow.innerHTML = `
         <tr>
-            <td><input type="text" name="rooms[${index}][name]" class="form-control" value="${data.name || ''}" required></td>
-            <td><input type="text" name="rooms[${index}][max_meetings]" class="form-control" value="${data.max_meetings || ''}" required></td>
-            <td><input type="text" name="rooms[${index}][max_participants]" class="form-control" value="${data.max_participants || ''}" ></td>
+            <td><input type="text" name="participants[${index}][name]" class="form-control" value="${data.name || ''}" required></td>
+            <td><input type="text" name="participants[${index}][email]" class="form-control" value="${data.email || ''}" ></td>
+            <td>
+                <select name="participants[${index}][role]" class="form-control" required>
+                    <option value="MODERATOR" ${data.role === 'MODERATOR' ? 'selected' : ''}>Moderator</option>
+                    <option value="VIEWER" ${data.role === 'VIEWER' ? 'selected' : ''}>Viewer</option>
+                </select>
+            </td>
+            <td><input type="checkbox" name="participants[${index}][is_guest]" value="1" ${data.is_guest ? 'checked' : ''}></td>
+            <td><input type="text" name="participants[${index}][password]" class="form-control" value="${data.bridge_password || ''}" ></td>
             <td><button type="button" class="btn btn-danger removeRowBtn">Remove</button></td>
-            <input type="hidden" name="rooms[${index}][id]" value="${data.id || ''}">
+            <input type="hidden" name="participants[${index}][id]" value="${data.id || ''}">
         </tr>
     `;
     newRow.querySelector('.removeRowBtn').addEventListener('click', function () {
@@ -177,28 +198,23 @@ function addRow(data = {}) {
     });
 }
 
-// Function to populate the modal with existing rooms
-function populateModal(rooms) {
+// Function to populate the modal with existing participants
+function populateModal(participants) {
     userTable.innerHTML = '';
-    rooms.forEach(room => addRow(room));
+    participants.forEach(participant => addRow(participant));
 }
 
 // Event listener for the edit button
-function fetchRooms(src) {
-    const action_url = src.getAttribute('data-action');
-    const fetch_url = src.getAttribute('data-fetch');
+function fetchParticipants(src) {
+    const fetchUrl = src.getAttribute('data-fetchUrl');
+    const actionUrl = src.getAttribute('data-actionUrl');
 
-    fetch(fetch_url)
+    fetch(fetchUrl)
         .then(response => response.json())
         .then(data => {
-            populateModal(data.rooms);
-            const form = document.getElementById('user-rooms-form');
-            form.setAttribute('action', action_url);
+            populateModal(data.participants);
+            const form = document.getElementById('meeting-users-form');
+            form.setAttribute('action', actionUrl);
         })
         .catch(error => console.error('Error:', error));
 }
-
-$(room_modal).on('show.bs.modal', function (e) {
-    var btn = e.relatedTarget;
-    $(this).find("#modal-title").text(btn.getAttribute('data-header-title'));
-});

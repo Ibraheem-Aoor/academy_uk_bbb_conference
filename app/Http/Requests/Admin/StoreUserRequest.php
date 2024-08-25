@@ -26,6 +26,7 @@ class StoreUserRequest extends BaseAdminRequest
             // 'max_meetings' => 'required|numeric|integer',
             // 'max_participants' => 'required|numeric|integer',
             'max_storage_allowed' => 'required|numeric|integer',
+            'parallel_rooms' => 'required|numeric|integer',
         ];
     }
 }

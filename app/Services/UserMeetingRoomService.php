@@ -21,6 +21,20 @@ class UserMeetingRoomService extends BaseModelService
     }
 
 
+    public function updateName($id, Request $request)
+    {
+        try {
+            $model = $this->find($id);
+            $model->update([
+                'name' => $request->input('name'),
+            ]);
+            return generateResponse(status: true, modal_to_hide: $this->model->modal , reload:true);
+        } catch (Throwable $e) {
+            Log::error("Fail with adding rooms: " . $e->getMessage());
+            return generateResponse(status: false, message: __('response.faild_created'));
+        }
+    }
+
     public function updateOrCreate($user_id, Request $request)
     {
         try {
@@ -108,6 +122,8 @@ class UserMeetingRoomService extends BaseModelService
             ->setTransformer($this->model->transformer)
             ->make(true);
     }
+
+
 
 
 

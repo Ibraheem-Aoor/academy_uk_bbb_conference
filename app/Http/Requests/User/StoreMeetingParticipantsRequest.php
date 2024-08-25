@@ -3,6 +3,7 @@
 namespace App\Http\Requests\User;
 
 use App\Enums\RoleEnum;
+use App\Rules\User\MaxParticipantCountRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -18,13 +19,10 @@ class StoreMeetingParticipantsRequest extends BaseUserRequest
     public function rules()
     {
         return [
-            'participants' => ['required', 'array'],
+            'participants' => ['required', 'array', new MaxParticipantCountRule($this->route('id'))],
             'participants.*.name' => [
                 'required',
                 'string',
-                Rule::unique('participants')->where(function ($query) {
-                    return $query->where('meeting_id', ($this->meeting));
-                }),
             ],
             'participants.*.email' => [
                 'nullable',

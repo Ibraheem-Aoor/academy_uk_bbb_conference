@@ -13,7 +13,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
-class PlanService extends BaseModelService
+class UserPlanService extends BaseModelService
 {
 
     public function __construct()
@@ -125,6 +125,10 @@ class PlanService extends BaseModelService
     }
 
 
+    public function getAuthUserCurrentPlan()
+    {
+        return getAuthUser('web')->plan;
+    }
 
 
 

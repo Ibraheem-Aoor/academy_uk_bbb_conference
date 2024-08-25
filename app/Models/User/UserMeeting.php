@@ -3,6 +3,7 @@
 namespace App\Models\User;
 
 use App\Models\User;
+use App\Observers\UserMeetingObserver;
 use App\Transformers\Admin\MeetingTransformer;
 use App\Transformers\User\UserMeetingTransformer;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -20,19 +21,31 @@ class UserMeeting extends Model
 
     protected $guarded = ['id', '_token'];
 
+    protected static function booted()
+    {
+        static::observe(UserMeetingObserver::class);
+    }
+
+
+
     public function participants(): HasMany
     {
-        return $this->hasMany(UserMeetingParticipant::class , 'meeting_id');
+        return $this->hasMany(UserMeetingParticipant::class, 'meeting_id');
     }
 
-    public function createdParticipants() : HasMany
+    public function createdParticipants(): HasMany
     {
-        return $this->hasMany(UserMeetingParticipant::class , 'meeting_id')->whereNotNull('created_by');
+        return $this->hasMany(UserMeetingParticipant::class, 'meeting_id')->whereNotNull('created_by');
     }
 
 
-    public function user() : BelongsTo
+    public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class , 'user_id');
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function room(): BelongsTo
+    {
+        return $this->belongsTo(UserMeetingRoom::class, 'room_id');
     }
 }

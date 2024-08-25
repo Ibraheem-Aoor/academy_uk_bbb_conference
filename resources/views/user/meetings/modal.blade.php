@@ -21,6 +21,20 @@
                             </div><!--end col-->
                             <div class="col-md-12">
                                 <div class="mb-3">
+                                    <label class="form-label">{{ __('general.room') }}<span
+                                            class="text-danger">*</span></label>
+                                    <div class="form-icon position-relative">
+                                        <select name="room_id" id="room_id" class="form-control">
+                                            <option value="">{{ __('general.select') }}</option>
+                                            @foreach ($rooms as $room)
+                                                <option value="{{ $room->id }}">{{ $room->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                            </div><!--end col-->
+                            <div class="col-md-12">
+                                <div class="mb-3">
                                     <label class="form-label">{{ __('general.welcome_message') }}<span
                                             class="text-danger">*</span></label>
                                     <div class="form-icon position-relative">
@@ -42,7 +56,7 @@
                                     <label class="form-label">{{ __('general.max_particpants') }}<span
                                             class="text-danger">*</span></label>
                                     <div class="form-icon position-relative">
-                                        <input type="number" name="max_participants" class="form-control" >
+                                        <input type="number" name="max_participants" class="form-control">
                                     </div>
                                 </div>
                             </div><!--end col-->
@@ -52,9 +66,7 @@
                                             class="text-danger">*</span></label>
                                     <div class="form-check form-switch">
                                         <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault"
-                                            name="is_scheduled"
-                                            onchange="toggleHidableElement($(this));"
-                                         >
+                                            name="is_scheduled" onchange="toggleHidableElement($(this));">
                                     </div>
                                 </div>
                             </div><!--end col-->
@@ -64,7 +76,7 @@
                                             class="text-danger">*</span></label>
                                     <div class="form-icon position-relative">
                                         <input type="date" name="start_date" class="form-control"
-                                            value="{{ date('Y-m-d') }}" >
+                                            value="{{ date('Y-m-d') }}">
                                     </div>
                                 </div>
                             </div><!--end col-->
@@ -74,7 +86,7 @@
                                             class="text-danger">*</span></label>
                                     <div class="form-icon position-relative">
                                         <input type="time" name="start_time" class="form-control"
-                                            value="{{ date('Y-m-d') }}" >
+                                            value="{{ date('Y-m-d') }}">
                                     </div>
                                 </div>
                             </div><!--end col-->
@@ -84,7 +96,7 @@
                                             class="text-danger">*</span></label>
                                     <div class="form-icon position-relative">
                                         <input type="date" name="end_date" class="form-control"
-                                            value="{{ now()->tomorrow()->toDateString() }}" >
+                                            value="{{ now()->tomorrow()->toDateString() }}">
                                     </div>
                                 </div>
                             </div><!--end col-->
@@ -94,7 +106,7 @@
                                             class="text-danger">*</span></label>
                                     <div class="form-icon position-relative">
                                         <input type="time" name="end_time" class="form-control"
-                                            value="{{ now()->tomorrow()->toDateString() }}" >
+                                            value="{{ now()->tomorrow()->toDateString() }}">
                                     </div>
                                 </div>
                             </div><!--end col-->

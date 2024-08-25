@@ -59,6 +59,9 @@
                                         {{ __('general.number') }}</th> --}}
                                     <th class="border-bottom p-3">{{ __('general.name') }}</th>
                                     <th class="text-center border-bottom p-3" style="min-width: 200px;">
+                                        {{ __('general.room') }}
+                                    </th>
+                                    <th class="text-center border-bottom p-3" style="min-width: 200px;">
                                         {{ __('general.meeting_id') }}
                                     </th>
                                     </th>
@@ -95,59 +98,6 @@
         <script src="{{ asset('assets/user/js/datatable-en.js') }}"></script>
     @endif
     <script src="https://cdn.datatables.net/2.0.0/js/dataTables.min.js"></script>
-    <script src="{{ asset('assets/user/js/admin/meeting.js') }}?v=0.02"></script>
+    <script src="{{ asset('assets/user/js/user/meeting.js') }}?v=0.03"></script>
 
-    <script>
-        let userTable = document.getElementById('userTable').getElementsByTagName('tbody')[0];
-        let addRowBtn = document.getElementById('addRowBtn');
-
-        addRowBtn.addEventListener('click', function() {
-            addRow();
-        });
-
-        function addRow(data = {}) {
-            let index = userTable.rows.length;
-            let newRow = userTable.insertRow();
-            newRow.innerHTML = `
-                <tr>
-                    <td><input type="text" name="participants[${index}][name]" class="form-control" value="${data.name || ''}" required></td>
-                    <td><input type="text" name="participants[${index}][email]" class="form-control" value="${data.email || ''}" ></td>
-                    <td>
-                        <select name="participants[${index}][role]" class="form-control" required>
-                            <option value="MODERATOR" ${data.role === 'MODERATOR' ? 'selected' : ''}>Moderator</option>
-                            <option value="VIEWER" ${data.role === 'VIEWER' ? 'selected' : ''}>Viewer</option>
-                        </select>
-                    </td>
-                    <td><input type="checkbox" name="participants[${index}][is_guest]" value="1" ${data.is_guest ? 'checked' : ''}></td>
-                    <td><input type="text" name="participants[${index}][password]" class="form-control" value="${data.bridge_password || ''}" ></td>
-                    <td><button type="button" class="btn btn-danger removeRowBtn">{{ __('general.remove') }}</button></td>
-                    <input type="hidden" name="participants[${index}][id]" value="${data.id || ''}">
-                </tr>
-            `;
-            newRow.querySelector('.removeRowBtn').addEventListener('click', function() {
-                newRow.remove();
-            });
-        }
-
-        // Function to populate the modal with existing participants
-        function populateModal(participants) {
-            userTable.innerHTML = '';
-            participants.forEach(participant => addRow(participant));
-        }
-
-        // Event listener for the edit button
-        function fetchParticipants(src) {
-            const meetingId = src.getAttribute('data-meetingId');
-            const url = `/user/meetings/${meetingId}/participants`;
-
-            fetch(url)
-                .then(response => response.json())
-                .then(data => {
-                    populateModal(data.participants);
-                    const form = document.getElementById('meeting-users-form');
-                    form.setAttribute('action', `/user/meetings/${meetingId}/update-participants`);
-                })
-                .catch(error => console.error('Error:', error));
-        }
-    </script>
 @endpush

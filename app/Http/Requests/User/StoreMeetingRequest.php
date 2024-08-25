@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests\User;
 
+use App\Rules\User\MaxParticiapantCountPerRoom;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreMeetingRequest extends BaseUserRequest
 {
@@ -15,12 +17,13 @@ class StoreMeetingRequest extends BaseUserRequest
      */
     public function rules()
     {
-
+        $user = getAuthUser('web');
         return [
-            'name' => 'required|string|unique:meetings,name',
+            'name' => 'required|string|min:2|max:256',
             'welcome_message' => 'required|string',
             'password' => 'nullable|min:8',
-            'max_participants' => 'nullable|numeric',
+            'room_id' => ['required' , Rule::in($user->rooms->pluck('id'))],
+            'max_participants' => ['required'  , 'numeric' ,'gt:0', new MaxParticiapantCountPerRoom($this->room_id)],
             'is_scheduled' => 'nullable|in:on,off',
             'start_date' => 'required_if:is_scheduled,on|date|after_or_equal:today',
             'end_date' => 'required_if:is_scheduled,on|date|after_or_equal:start_date',

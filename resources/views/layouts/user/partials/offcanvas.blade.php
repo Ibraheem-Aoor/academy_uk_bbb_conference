@@ -19,6 +19,17 @@
                          <input type="text" name="name" class="form-control">
                      </div>
                  </div>
+                 <div class="col-12 mt-4">
+                     <div class="text-center">
+                         <h6 class="fw-bold">Room</h6>
+                         <select name="room" id="room" class="form-control text-center" required>
+                             <option value="">{{ __('general.select') }}</option>
+                             @foreach (getAuthUser('web')->rooms as $room)
+                                 <option value="{{ $room->id }}">{{ $room->name }}</option>
+                             @endforeach
+                         </select>
+                     </div>
+                 </div>
                  <div class="col-12 mt-3">
                      <div class="text-center">
                          <button class="btn btn-soft-primary btn-lg">{{ __('general.create_quick_meeting') }}</button>
@@ -64,7 +75,8 @@
              <div class="modal-body">
                  <div class="p-3 rounded box-shadow text-center">
                      <p>Your meeting is ready. Click the button below to join:</p>
-                     <a id="meetingUrl" href="#" target="_blank" class="btn btn-primary mb-3 text-center">Join Meeting</a>
+                     <a id="meetingUrl" href="#" target="_blank" class="btn btn-primary mb-3 text-center">Join
+                         Meeting</a>
                      <div class="input-group">
                          <input id="meetingUrlText" type="text" class="form-control" readonly>
                          <div class="input-group-append">

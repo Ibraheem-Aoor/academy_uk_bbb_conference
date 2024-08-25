@@ -243,3 +243,5 @@ function openMeetingModal(meetingUrl) {
         setTimeout(() => copyButton.innerText = "Copy", 2000);
     };
 }
+
+

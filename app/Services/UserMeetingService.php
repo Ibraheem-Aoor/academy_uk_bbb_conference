@@ -45,7 +45,7 @@ class UserMeetingService extends BaseModelService
         try {
             $data = $this->getModelAttributes($request);
             DB::beginTransaction();
-            $meeting  = UserMeeting::create($data);
+            $meeting  = $this->model::create($data);
             $this->createBigBlueButtonMeeting($data , $meeting);
             DB::commit();
             return generateResponse(status: true, modal_to_hide: $this->model->modal, table_reload: true, table: '#myTable');
@@ -67,6 +67,7 @@ class UserMeetingService extends BaseModelService
                 'meeting_id' => generateMeetingId(10),
                 'welcome_message' => 'Welcome To '.$request->name,
                 'user_id' => getAuthUser('web')->id,
+                'room_id' => $request->room,
             ];
             DB::beginTransaction();
             $meeting = $this->model->create($data);
@@ -103,6 +104,7 @@ class UserMeetingService extends BaseModelService
         if ($response->getReturnCode() == 'FAILED') {
             throw new Exception('Can\'t create room! please contact our administrator.');
         }
+
         $meeting_meta_data = get_object_vars($response->getRawXml());
         $meeting->meta_data = json_encode($meeting_meta_data);
         $meeting->recored_id = $meeting_meta_data['internalMeetingID'];

@@ -18,22 +18,15 @@ class ParticipantController extends UserBaseController
     }
 
 
-
-    public function store(StoreMeetingParticipantsRequest $request, $id)
-    {
-        return $this->service->create($request);
-    }
-
-
     public function getParticipants($id)
     {
-        $meeting = UserMeeting::with('createdParticipants')->findOrFail($id);
+        $meeting = UserMeeting::with('createdParticipants')->findOrFail(decrypt($id));
         return response()->json(['participants' => $meeting->createdParticipants]);
     }
 
     public function updateParticipants(StoreMeetingParticipantsRequest $request, $id)
     {
-        return $this->service->update($id , $request);
+        return $this->service->update(decrypt($id) , $request);
     }
 
 }

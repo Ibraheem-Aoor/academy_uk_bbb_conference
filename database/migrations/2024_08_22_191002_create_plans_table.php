@@ -16,6 +16,7 @@ return new class extends Migration {
             $table->id();
             $table->string('type')->comment('monthly, yearly');
             $table->integer('max_storage_allowed')->comment('per plan');
+            $table->integer('parallel_rooms')->default(1)->comment('per plan');
             $table->boolean('is_backup_enabled')->default(false)->comment('per plan');
             $table->timestamps();
         });

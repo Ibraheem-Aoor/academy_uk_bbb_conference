@@ -109,6 +109,7 @@ class UserService extends BaseModelService
             'type' => $data['type'],
             'max_storage_allowed' => $data['max_storage_allowed'],
             'is_backup_enabled' => @$data['is_backup_enabled'] == 'on',
+            'parallel_rooms' => $data['parallel_rooms'],
         ];
         return $data;
     }

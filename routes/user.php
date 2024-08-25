@@ -8,7 +8,9 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\MeetingController;
 use App\Http\Controllers\User\ParticipantController;
 use App\Http\Controllers\User\UserMeetingController;
+use App\Http\Controllers\User\UserPlanController;
 use App\Http\Controllers\User\UserRecordingController;
+use App\Services\UserPlanService;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,8 +25,10 @@ use App\Http\Controllers\User\UserRecordingController;
 Auth::routes(['register' => false]);
 
 Route::middleware('auth:web')->group(function () {
-    Route::redirect('/', '/user/dashboard', 301);
-    Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+    Route::redirect('/', '/user/home', 301);
+    Route::get('/home', [DashboardController::class, 'index'])->name('home');
+    Route::post('/home/update-room/{room}', [DashboardController::class, 'updateRoom'])->name('update_room');
+    Route::get('/', [DashboardController::class, 'dashboard'])->name('dashboard');
     Route::prefix('meetings')->as('meeting.')->group(function () {
         Route::get('', [UserMeetingController::class, 'index'])->name('index');
         Route::post('store', [UserMeetingController::class, 'store'])->name('store');
@@ -34,7 +38,11 @@ Route::middleware('auth:web')->group(function () {
         Route::get('export/{meeting}', [UserMeetingController::class, 'export'])->name('export');
         Route::post('add-user/{meeting}', [ParticipantController::class, 'store'])->name('add_user');
         Route::get('/{meeting}/participants', [ParticipantController::class, 'getParticipants'])->name('get_participants');
-        Route::post('/{id}/update-participants', [ParticipantController::class, 'updateParticipants'])->name('update_participants');
+        Route::post('/{id}/update-participants/', [ParticipantController::class, 'updateParticipants'])->name('update_participants');
+    });
+    // User Subscription
+    Route::prefix('subscription')->as('plan.')->group(function () {
+        Route::get('', [UserPlanController::class, 'index'])->name('index');
     });
     Route::prefix('recording')->as('recording.')->group(function () {
         Route::get('', [UserRecordingController::class, 'index'])->name('index');

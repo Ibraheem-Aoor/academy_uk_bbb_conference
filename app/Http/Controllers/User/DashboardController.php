@@ -3,15 +3,23 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\User\UpdateUserMeetingRoomRequest;
 use App\Models\Meeting;
 use App\Models\Participant;
 use App\Models\User\UserMeeting;
 use App\Models\User\UserMeetingParticipant;
+use App\Services\UserMeetingRoomService;
 use Illuminate\View\View;
 
-class DashboardController extends Controller
+class DashboardController extends UserBaseController
 {
-    public function index(): View
+
+    public function index():View
+    {
+        $data['rooms'] = $this->user->rooms;
+        return view('user.home' , $data);
+    }
+    public function dashboard(): View
     {
         $data['meetings_count'] = UserMeeting::query()->whereBelongsTo(getAuthUser('web'))->count();
         $data['participants_count'] = UserMeetingParticipant::query()->whereHas('meeting' , function($meeting){
@@ -43,6 +51,11 @@ class DashboardController extends Controller
         $data['monthly_participants'] = $months->pluck('participants');
 
         return view('user.dashboard', $data);
+    }
+
+    public function updateRoom($room , UpdateUserMeetingRoomRequest $request , UserMeetingRoomService $user_meeting_room_service)
+    {
+        return $user_meeting_room_service->updateName(decrypt($room) , $request);
     }
 
 }

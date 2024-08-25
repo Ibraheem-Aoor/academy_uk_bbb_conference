@@ -31,5 +31,6 @@ return [
     'max_particpants' => 'Max Number Of Participants',
     'start_time' => 'Start Time',
     'end_time' => 'End Time',
+    'room' => 'Room',
 
 ];

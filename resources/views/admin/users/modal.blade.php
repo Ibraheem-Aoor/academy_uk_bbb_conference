@@ -83,6 +83,17 @@
                                     </div>
                                 </div>
                             </div><!--end col-->
+                            <!-- Max Parallel Rooms -->
+                            <div class="col-6">
+                                <div class="mb-3">
+                                    <label class="form-label">{{ __('general.plan.parallel_rooms') }}<span
+                                            class="text-danger">*</span></label>
+                                    <div class="form-icon position-relative">
+                                        <input type="number" name="parallel_rooms" id="parallel_rooms"
+                                            class="form-control" required>
+                                    </div>
+                                </div>
+                            </div><!--end col-->
 
                             <!-- Backup Enabled -->
                             <div class="col-6">
@@ -90,8 +101,7 @@
                                     <label class="form-label">{{ __('general.plan.is_backup_enabled') }}</label>
                                     <div class="form-check form-switch">
                                         <input class="form-check-input" type="checkbox" id="is_backup_enabled"
-                                            name="is_backup_enabled"
-                                            >
+                                            name="is_backup_enabled">
                                     </div>
                                 </div>
                             </div><!--end col-->

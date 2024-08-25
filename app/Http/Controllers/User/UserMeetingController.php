@@ -5,6 +5,7 @@ namespace App\Http\Controllers\User;
 use App\Enums\RoleEnum;
 use App\Exports\MeetingExport;
 use App\Http\Controllers\Controller;
+use App\Services\UserMeetingRoomService;
 use App\Services\UserMeetingService;
 use Illuminate\Http\Request;
 use App\Http\Requests\User\StoreMeetingRequest;
@@ -18,8 +19,9 @@ use Maatwebsite\Excel\Facades\Excel;
 class UserMeetingController extends UserBaseController
 {
 
-    public function __construct(protected UserMeetingService $service)
-    {
+    public function __construct(
+        protected UserMeetingService $service,
+    ) {
         $this->base_route_path = 'user.meeting';
         $this->base_view_path = 'user.meetings';
     }
@@ -37,7 +39,8 @@ class UserMeetingController extends UserBaseController
         $data['roles'] = RoleEnum::cases();
         $data['table_data_url'] = route($this->base_route_path . '.table');
         $data['route'] = $this->base_route_path;
-        return view($this->base_view_path.'.index', $data);
+        $data['rooms'] = getAuthUser('web')->rooms;
+        return view($this->base_view_path . '.index', $data);
     }
 
     /**
@@ -52,9 +55,9 @@ class UserMeetingController extends UserBaseController
         return response()->json($response);
     }
 
-    public function  quickStore(StoreQuickMeetingRequest $request)
+    public function quickStore(StoreQuickMeetingRequest $request)
     {
-       return $this->service->createQuickMeeting($request);
+        return $this->service->createQuickMeeting($request);
     }
 
     public function toggleStatus(Request $request)
