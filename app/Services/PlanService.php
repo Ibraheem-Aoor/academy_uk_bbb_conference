@@ -13,13 +13,12 @@ use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
-class UserService extends BaseModelService
+class PlanService extends BaseModelService
 {
 
-    public function __construct(
-        protected UserMeetingRoomService $user_meeting_room_service
-    ) {
-        parent::__construct(new User());
+    public function __construct()
+    {
+        parent::__construct(new Plan());
         $this->allow_all_records = true;
     }
 
@@ -37,7 +36,6 @@ class UserService extends BaseModelService
             return generateResponse(status: true, modal_to_hide: $this->model->modal, table_reload: true, table: '#myTable');
         } catch (Throwable $e) {
             DB::rollBack();
-            dd($e);
             Log::error("Fail with adding participants: " . $e->getMessage());
             return generateResponse(status: false, message: __('response.faild_created'));
         }
@@ -107,6 +105,8 @@ class UserService extends BaseModelService
         $data['password'] = Hash::make($data['password']);
         $data['plan'] = [
             'type' => $data['type'],
+            'max_meetings' => $data['max_meetings'],
+            'max_participants' => $data['max_participants'],
             'max_storage_allowed' => $data['max_storage_allowed'],
             'is_backup_enabled' => @$data['is_backup_enabled'] == 'on',
         ];
@@ -124,18 +124,6 @@ class UserService extends BaseModelService
             ->make(true);
     }
 
-
-
-    /**
-     * Retrieves a service instance based on the provided service name.
-     *
-     * @param string $service The name of the service to retrieve.
-     * @return BaseModelService The instance of the requested service.
-     */
-    public function getService(string $service) : BaseModelService
-    {
-        return $this->$service;
-    }
 
 
 

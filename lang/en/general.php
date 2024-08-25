@@ -60,5 +60,6 @@ return [
     'users' => 'Users',
     'create_quick_meeting' => 'Create Quick Meeting',
     'create_new_user' => 'Create New User',
-    'edit_user' => 'Edit User :user'
+    'edit_user' => 'Edit User :user',
+    'update_rooms_for_user' => 'Update Rooms For User :user',
 ];

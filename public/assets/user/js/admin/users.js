@@ -150,3 +150,54 @@ document.getElementById('generate-password').addEventListener('click', function 
     // Place the generated password in the input field
     document.getElementById('password').value = password;
 });
+
+
+let userTable = document.getElementById('roomTable').getElementsByTagName('tbody')[0];
+let addRowBtn = document.getElementById('addRowBtn');
+
+addRowBtn.addEventListener('click', function () {
+    addRow();
+});
+
+function addRow(data = {}) {
+    let index = userTable.rows.length;
+    let newRow = userTable.insertRow();
+    newRow.innerHTML = `
+        <tr>
+            <td><input type="text" name="rooms[${index}][name]" class="form-control" value="${data.name || ''}" required></td>
+            <td><input type="text" name="rooms[${index}][max_meetings]" class="form-control" value="${data.max_meetings || ''}" required></td>
+            <td><input type="text" name="rooms[${index}][max_participants]" class="form-control" value="${data.max_participants || ''}" ></td>
+            <td><button type="button" class="btn btn-danger removeRowBtn">Remove</button></td>
+            <input type="hidden" name="rooms[${index}][id]" value="${data.id || ''}">
+        </tr>
+    `;
+    newRow.querySelector('.removeRowBtn').addEventListener('click', function () {
+        newRow.remove();
+    });
+}
+
+// Function to populate the modal with existing rooms
+function populateModal(rooms) {
+    userTable.innerHTML = '';
+    rooms.forEach(room => addRow(room));
+}
+
+// Event listener for the edit button
+function fetchRooms(src) {
+    const action_url = src.getAttribute('data-action');
+    const fetch_url = src.getAttribute('data-fetch');
+
+    fetch(fetch_url)
+        .then(response => response.json())
+        .then(data => {
+            populateModal(data.rooms);
+            const form = document.getElementById('user-rooms-form');
+            form.setAttribute('action', action_url);
+        })
+        .catch(error => console.error('Error:', error));
+}
+
+$(room_modal).on('show.bs.modal', function (e) {
+    var btn = e.relatedTarget;
+    $(this).find("#modal-title").text(btn.getAttribute('data-header-title'));
+});

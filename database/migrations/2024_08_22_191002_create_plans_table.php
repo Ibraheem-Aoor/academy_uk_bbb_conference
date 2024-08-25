@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      *
@@ -16,8 +15,6 @@ return new class extends Migration
         Schema::create('plans', function (Blueprint $table) {
             $table->id();
             $table->string('type')->comment('monthly, yearly');
-            $table->integer('max_meetings')->comment('per plan');
-            $table->integer('max_participants')->comment('per plan');
             $table->integer('max_storage_allowed')->comment('per plan');
             $table->boolean('is_backup_enabled')->default(false)->comment('per plan');
             $table->timestamps();

@@ -23,8 +23,8 @@ class StoreUserRequest extends BaseAdminRequest
             'name' => 'required|string|unique:meetings,name',
             'email' => ['required' , 'string' , $email_unique_rule],
             'password' => 'required|min:8',
-            'max_meetings' => 'required|numeric|integer',
-            'max_participants' => 'required|numeric|integer',
+            // 'max_meetings' => 'required|numeric|integer',
+            // 'max_participants' => 'required|numeric|integer',
             'max_storage_allowed' => 'required|numeric|integer',
         ];
     }

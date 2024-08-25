@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\AdminBaseController;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreMeetingParticipantsRequest;
 use App\Http\Requests\Admin\StoreMeetingRequest;
+use App\Http\Requests\Admin\StoreUserMeetingRoomRequest;
 use App\Http\Requests\Admin\StoreUserRequest;
 use App\Models\Meeting;
 use App\Services\AccountTreeService;
@@ -47,6 +48,7 @@ class UserController extends AdminBaseController
         $data['route'] = $this->base_route_path;
         $data['modal'] = $this->service->getModal();
         $data['plan_types'] = PlanTypeEnum::cases();
+        $data['room_modal'] = $this->service->getService('user_meeting_room_service')->getModal();
         return view($this->base_view_path . '.index', $data);
     }
 
@@ -83,10 +85,6 @@ class UserController extends AdminBaseController
 
 
 
-
-
-
-
     public function getTableData(Request $request)
     {
         if ($request->ajax()) {
@@ -105,5 +103,16 @@ class UserController extends AdminBaseController
             Log::error("Fail with export: " . $e->getMessage());
             return back()->with('error', 'No Participants To Export');
         }
+    }
+
+    public function updateRooms($user,StoreUserMeetingRoomRequest $request)
+    {
+        return $this->service->getService('user_meeting_room_service')->updateOrCreate(decrypt($user),$request);
+    }
+
+    public function getRooms($user , Request $request)
+    {
+        $user = $this->service->find(decrypt($user));
+        return response()->json(['rooms' => $user->rooms]);
     }
 }

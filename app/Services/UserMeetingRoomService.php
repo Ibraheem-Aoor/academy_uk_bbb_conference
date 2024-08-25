@@ -1,64 +1,55 @@
 <?php
 namespace App\Services;
 
-use App\Models\AllRecording;
 use App\Services\BaseModelService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Throwable;
 use Yajra\DataTables\Facades\DataTables;
-use App\Models\Meeting;
 use App\Models\Plan;
-use App\Models\User;
+use App\Models\User\UserMeetingRoom;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
-class UserService extends BaseModelService
+class UserMeetingRoomService extends BaseModelService
 {
 
-    public function __construct(
-        protected UserMeetingRoomService $user_meeting_room_service
-    ) {
-        parent::__construct(new User());
+    public function __construct()
+    {
+        parent::__construct(new UserMeetingRoom());
         $this->allow_all_records = true;
     }
 
 
-    // create model
-    public function create(Request $request)
+    public function updateOrCreate($user_id, Request $request)
     {
         try {
             DB::beginTransaction();
-            $data = $this->getModelAttributes($request);
-            $plan = Plan::query()->create($data['plan']);
-            $data['plan_id'] = $plan->id;
-            $this->model::query()->create($data);
+            $rooms = $this->getModelAttributes($request)['rooms'];
+            $existing_rooms = $this->model::where('user_id', $user_id)->pluck('id')->toArray();
+            $rooms_ids = array_column($rooms, 'id');
+            $rooms_ids_to_delete = array_diff($existing_rooms, $rooms_ids);
+            $this->model::whereIn('id', $rooms_ids_to_delete)->delete();
+            foreach ($rooms as $room) {
+                $this->findOrCreate($room, $user_id)->fill($room)->save();
+            }
             DB::commit();
             return generateResponse(status: true, modal_to_hide: $this->model->modal, table_reload: true, table: '#myTable');
         } catch (Throwable $e) {
             DB::rollBack();
-            dd($e);
-            Log::error("Fail with adding participants: " . $e->getMessage());
+            Log::error("Fail with adding rooms: " . $e->getMessage());
             return generateResponse(status: false, message: __('response.faild_created'));
         }
     }
-    // create model
-    public function update($id, $request)
+
+    private function findOrCreate($room, $user_id)
     {
-        try {
-            DB::beginTransaction();
-            $data = $this->getModelAttributes($request);
-            $user = $this->find(($id));
-            $user->update($data);
-            $user->plan()->update($data['plan']);
-            DB::commit();
-            return generateResponse(status: true, modal_to_hide: $this->model->modal, table_reload: true, table: '#myTable');
-        } catch (Throwable $e) {
-            dd($e);
-            DB::rollBack();
-            Log::error("Fail with adding participants: " . $e->getMessage());
-            return generateResponse(status: false, message: __('response.faild_created'));
-        }
+        return $this->model::query()->firstOrCreate(['id' => @$room['id'] ?? null], [
+            'user_id' => $user_id,
+            'name' => $room['name'],
+            'max_meetings' => $room['max_meetings'],
+            'max_participants' => $room['max_participants'],
+        ]);
     }
 
 
@@ -104,12 +95,6 @@ class UserService extends BaseModelService
     protected function getModelAttributes($request): array
     {
         $data = $request->toArray();
-        $data['password'] = Hash::make($data['password']);
-        $data['plan'] = [
-            'type' => $data['type'],
-            'max_storage_allowed' => $data['max_storage_allowed'],
-            'is_backup_enabled' => @$data['is_backup_enabled'] == 'on',
-        ];
         return $data;
     }
 
@@ -124,18 +109,6 @@ class UserService extends BaseModelService
             ->make(true);
     }
 
-
-
-    /**
-     * Retrieves a service instance based on the provided service name.
-     *
-     * @param string $service The name of the service to retrieve.
-     * @return BaseModelService The instance of the requested service.
-     */
-    public function getService(string $service) : BaseModelService
-    {
-        return $this->$service;
-    }
 
 
 

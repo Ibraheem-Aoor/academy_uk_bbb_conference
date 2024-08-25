@@ -71,29 +71,6 @@
                                 </div>
                             </div><!--end col-->
 
-                            <!-- Max Meetings -->
-                            <div class="col-6">
-                                <div class="mb-3">
-                                    <label class="form-label">{{ __('general.plan.max_meetings') }}<span
-                                            class="text-danger">*</span></label>
-                                    <div class="form-icon position-relative">
-                                        <input type="number" name="max_meetings" id="max_meetings" class="form-control"
-                                            required>
-                                    </div>
-                                </div>
-                            </div><!--end col-->
-
-                            <!-- Max Participants -->
-                            <div class="col-6">
-                                <div class="mb-3">
-                                    <label class="form-label">{{ __('general.plan.max_participants') }}<span
-                                            class="text-danger">*</span></label>
-                                    <div class="form-icon position-relative">
-                                        <input type="number" name="max_participants" id="max_participants"
-                                            class="form-control" required>
-                                    </div>
-                                </div>
-                            </div><!--end col-->
 
                             <!-- Max Storage Allowed -->
                             <div class="col-6">

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\User\UserMeetingRoom;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Auth\MustVerifyEmail;
 use Illuminate\Notifications\Notifiable;
@@ -56,5 +57,10 @@ class User extends Authenticatable
     public function plan():BelongsTo
     {
         return $this->belongsTo(Plan::class , 'plan_id');
+    }
+
+    public function rooms():HasMany
+    {
+        return $this->hasMany(UserMeetingRoom::class , 'user_id');
     }
 }
