@@ -18,7 +18,7 @@ return new class extends Migration
             $table->enum('role', ['MODERATOR', 'VIEWER']);
             $table->string('name');
             $table->boolean('is_guest')->default(false);
-            $table->string('join_url');
+            $table->text('join_url');
             $table->unsignedBigInteger('meeting_id');
             $table->foreign('meeting_id')->references('id')->on('meetings')->cascadeOnDelete();
             $table->unique(['name' , 'meeting_id']);
