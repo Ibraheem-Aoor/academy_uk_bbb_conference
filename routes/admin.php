@@ -66,6 +66,7 @@ Route::middleware('auth:admin')
             Route::get('', [RecordingController::class, 'index'])->name('index');
             Route::get('all', [RecordingController::class, 'allRecordings'])->name('all');
             Route::get('table', [RecordingController::class, 'getTableData'])->name('table');
+            Route::get('all-recordings-table', [RecordingController::class, 'getAllRecordingsTable'])->name('all.table');
 
         });
     });

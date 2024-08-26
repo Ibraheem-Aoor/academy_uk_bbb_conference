@@ -210,9 +210,27 @@ class MeetingService extends BaseModelService
         } else {
             $query = $this->getRecordings();
         }
+        return $this->getDataTable($query , RecordingTransformer::class);
+    }
+
+
+    public function getAllRecordingsTable(Request $request)
+    {
+        if (Cache::has('all_recordings_list')) {
+            $query = Cache::get('all_recordings_list');
+        } else {
+            $query = $this->getAllRecordings();
+        }
+        return $this->getDataTable($query , RecordingTransformer::class);
+    }
+
+
+
+    protected function getDataTable($query , $transformer = null)
+    {
         return DataTables::collection($query)
-            ->setTransformer(RecordingTransformer::class)
-            ->make(true);
+        ->setTransformer($transformer)
+        ->make(true);
     }
 
 

@@ -70,4 +70,5 @@ return [
     'edit_room' => 'Edit Room',
     'subscriptions' => 'Subscription',
     'overview' => 'Overview',
+    'all_recordings' => 'All Recordings',
 ];

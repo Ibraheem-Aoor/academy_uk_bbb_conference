@@ -48,7 +48,7 @@ class RecordingController extends AdminBaseController
     public function allRecordings(Request $request)
     {
         $data['page_title'] = 'All Recordings';
-        $data['recordings'] = $this->service->getAllRecordings();
+        $data['table_data_url'] = route($this->base_route_path . '.all.table');
         return view('admin.recordings.all' , $data);
     }
 
@@ -57,6 +57,16 @@ class RecordingController extends AdminBaseController
     {
         if ($request->ajax()) {
             return $this->service->getTableDataForRecordings($request);
+        }
+        return response()->json(['error' => 'Not a valid request'], 400);
+    }
+
+
+
+    public function getAllRecordingsTable(Request $request)
+    {
+        if ($request->ajax()) {
+            return $this->service->getAllRecordingsTable($request);
         }
         return response()->json(['error' => 'Not a valid request'], 400);
     }

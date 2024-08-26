@@ -61,20 +61,6 @@
                                         {{ __('general.actions') }}</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                @foreach ($recordings as $recording)
-                                    <tr>
-                                        <td>{{ $recording->name }}</td>
-                                        <td>{{ formatDuration($recording->duration) }}</td>
-                                        <td>{{ \Carbon\Carbon::createFromTimestamp($recording->end_time / 1000)->toDateTimeString() }}
-                                        </td>
-                                        <td>
-                                            <a href="https://player.academy-uk.net/playback.html?meetingId={{ $recording->record_id }}" target="__blank"><i class="fa fa-eye"></i>view</a>
-                                        </td>
-                                    </tr>
-                                @endforeach
-                                <tr></tr>
-                            </tbody>
                         </table>
                     </div>
                 </div>
@@ -89,19 +75,16 @@
 @push('js')
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"
         integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-    <script>
-    </script>
+    <script></script>
     @if (getCurrentLocale() == 'ar')
         <script src="{{ asset('assets/user/js/datatable-ar.js') }}"></script>
     @else
         <script src="{{ asset('assets/user/js/datatable-en.js') }}"></script>
     @endif
     <script src="https://cdn.datatables.net/2.0.0/js/dataTables.min.js"></script>
-    {{-- <script src="{{ asset('assets/user/js/admin/recordings.js') }}?v=0.02"></script> --}}
     <script>
-        $(document).ready(function(){
-            $('#myTable').DataTable();
-        });
+        const table_data_url = "{{ $table_data_url }}";
     </script>
+    <script src="{{ asset('assets/user/js/admin/recordings.js') }}?v=0.02"></script>
 
 @endpush

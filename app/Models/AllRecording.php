@@ -8,5 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class AllRecording extends Model
 {
     use HasFactory;
-    protected $guarded = ['id'  , '__token'];
+    protected $guarded = ['id', '__token'];
+
+    public function getBackuuPlayUrl()
+    {
+        return 'https://player.academy-uk.net/playback.html?meetingId=' . $this->record_id;
+    }
 }
