@@ -15,6 +15,7 @@ use Yajra\DataTables\Facades\DataTables;
 use App\Models\Meeting;
 use App\Models\Participant;
 use App\Models\User\UserMeeting;
+use App\Models\User\UserMeetingRoom;
 use App\Transformers\Admin\RecordingTransformer;
 use BigBlueButton\BigBlueButton;
 use BigBlueButton\Parameters\CreateMeetingParameters;
@@ -62,12 +63,14 @@ class UserMeetingService extends BaseModelService
     public function createQuickMeeting(Request $request)
     {
         try{
+            $room = UserMeetingRoom::query()->find($request->room);
             $data = [
                 'name' => $request->name,
                 'meeting_id' => generateMeetingId(10),
                 'welcome_message' => 'Welcome To '.$request->name,
                 'user_id' => getAuthUser('web')->id,
-                'room_id' => $request->room,
+                'room_id' => $room->id,
+                'max_participants' => $room->max_participants,
             ];
             DB::beginTransaction();
             $meeting = $this->model->create($data);
