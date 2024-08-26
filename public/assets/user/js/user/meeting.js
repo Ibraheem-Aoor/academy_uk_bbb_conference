@@ -18,7 +18,7 @@ function renderDataTable() {
         ajax: table_data_url,
         columns: getTableColumns(),
         order: [[
-            3,
+            4,
             'desc'
         ]],
     });

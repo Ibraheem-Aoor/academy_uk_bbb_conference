@@ -49,8 +49,8 @@ class LoginController extends Controller
     public function showLoginForm(Request $request)
     {
         $layer = $request->is('admin*') ? 'admin' : 'user';
-        $data['is_login_page']  =   true;
-        return view($layer.'.auth.login' , $data);
+        $data['is_login_page'] = true;
+        return view($layer . '.auth.login', $data);
     }
 
     /**
@@ -69,12 +69,37 @@ class LoginController extends Controller
         if ($response = $this->authenticated($request, $this->guard()->user())) {
             return $response;
         }
-        $guard = $request->input('guard') == 'web' ? 'user' : 'admin';
+        $redirect = $request->input('guard') == 'web' ? route('user.home') : route('admin.dashboard');
         return $request->wantsJson()
-            ? response()->json(generateResponse(status: true, redirect: route($guard.'.dashboard'), message: __('response.redirecting')) ,200)
+            ? response()->json(generateResponse(status: true, redirect: $redirect, message: __('response.redirecting')), 200)
             : redirect()->intended($this->redirectPath());
     }
 
+
+
+    /**
+     * Log the user out of the application.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\JsonResponse
+     */
+    public function logout(Request $request)
+    {
+        $redirect = !is_null(getAuthUser('web')) ? route('user.login') : route('admin.login');
+        $this->guard()->logout();
+
+        $request->session()->invalidate();
+
+        $request->session()->regenerateToken();
+
+        if ($response = $this->loggedOut($request)) {
+            return $response;
+        }
+
+        return $request->wantsJson()
+            ? new JsonResponse([], 204)
+            : redirect($redirect);
+    }
 
     /**
      * Get the guard to be used during authentication.

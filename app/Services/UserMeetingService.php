@@ -95,7 +95,12 @@ class UserMeetingService extends BaseModelService
         $bbb->setTimeOut(180);
         $meeting_params = new CreateMeetingParameters($meeting->meeting_id , $data['name']);
         $meeting_params->setWelcomeMessage($data['welcome_message']);
+        $meeting_params->setBannerText($data['welcome_message']);
+        $meeting_params->setBannerColor('#000000');
+        $meeting_params->setLogoutUrl(route('site.user.join_public_meeting' , $meeting->meeting_id));
         $meeting_params->setFreeJoin(true);
+        $meeting_params->setLogo(asset('assets/common/logo.png'));
+        $meeting_params->setCopyright(config('app.name'));
         if(isset($data['max_participants']))
         {
             $meeting_params->setMaxParticipants($data['max_participants']);
