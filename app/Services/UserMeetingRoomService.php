@@ -8,6 +8,7 @@ use Throwable;
 use Yajra\DataTables\Facades\DataTables;
 use App\Models\Plan;
 use App\Models\User\UserMeetingRoom;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
@@ -35,6 +36,13 @@ class UserMeetingRoomService extends BaseModelService
         }
     }
 
+
+    /**
+     * Update Or Create The User Meeting Rooms.
+     * @param mixed $user_id
+     * @param \Illuminate\Http\Request $request
+     * @return JsonResponse
+     */
     public function updateOrCreate($user_id, Request $request)
     {
         try {
@@ -63,6 +71,7 @@ class UserMeetingRoomService extends BaseModelService
             'name' => $room['name'],
             'max_meetings' => $room['max_meetings'],
             'max_participants' => $room['max_participants'],
+            'max_storage_allowed' => $room['max_storage_allowed'],
         ]);
     }
 

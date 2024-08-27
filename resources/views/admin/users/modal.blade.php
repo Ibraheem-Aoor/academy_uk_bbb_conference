@@ -71,19 +71,6 @@
                                 </div>
                             </div><!--end col-->
 
-
-                            <!-- Max Storage Allowed -->
-                            <div class="col-6">
-                                <div class="mb-3">
-                                    <label class="form-label">{{ __('general.plan.max_storage_allowed') }}<span
-                                            class="text-danger">*</span></label>
-                                    <div class="form-icon position-relative">
-                                        <input type="number" name="max_storage_allowed" id="max_storage_allowed"
-                                            class="form-control" required>
-                                    </div>
-                                </div>
-                            </div><!--end col-->
-                            <!-- Max Parallel Rooms -->
                             <div class="col-6">
                                 <div class="mb-3">
                                     <label class="form-label">{{ __('general.plan.parallel_rooms') }}<span

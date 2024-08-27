@@ -15,6 +15,7 @@
                                     <th>{{ __('general.name') }}</th>
                                     <th>{{ __('general.plan.max_meetings') }}</th>
                                     <th>{{ __('general.plan.max_participants') }}</th>
+                                    <th>{{ __('general.plan.max_storage_allowed') }}</th>
                                     <th>{{ __('general.actions') }}</th>
                                 </tr>
                             </thead>

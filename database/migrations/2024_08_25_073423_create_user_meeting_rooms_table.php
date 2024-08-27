@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('name')->nullable();
             $table->integer('max_meetings')->comment('per room');
             $table->integer('max_participants')->comment('per room');
+            $table->integer('max_storage_allowed')->comment('per room');
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->cascadeOnDelete();
             $table->timestamps();
@@ -28,7 +29,7 @@ return new class extends Migration
      * Reverse the migrations.
      *
      * @return void
-     */     
+     */
     public function down()
     {
         Schema::dropIfExists('user_meeting_rooms');

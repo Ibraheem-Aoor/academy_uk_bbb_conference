@@ -168,6 +168,7 @@ function addRow(data = {}) {
             <td><input type="text" name="rooms[${index}][name]" class="form-control" value="${data.name || ''}" required></td>
             <td><input type="text" name="rooms[${index}][max_meetings]" class="form-control" value="${data.max_meetings || ''}" required></td>
             <td><input type="text" name="rooms[${index}][max_participants]" class="form-control" value="${data.max_participants || ''}" ></td>
+            <td><input type="text" name="rooms[${index}][max_storage_allowed]" class="form-control" value="${data.max_storage_allowed || ''}" ></td>
             <td><button type="button" class="btn btn-danger removeRowBtn">Remove</button></td>
             <input type="hidden" name="rooms[${index}][id]" value="${data.id || ''}">
         </tr>

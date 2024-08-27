@@ -21,6 +21,8 @@ class StoreUserMeetingRoomRequest extends BaseAdminRequest
             'rooms.*.name' => 'nullable|string',
             'rooms.*.max_meetings' => 'required|numeric|integer',
             'rooms.*.max_participants' => 'required|numeric|integer',
+            'rooms.*.max_storage_allowed' => 'required|numeric|integer',
+
         ];
     }
 

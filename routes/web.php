@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 
+Route::redirect('/' , 'user/login' , 301);
 // Site Routes
 Route::group([
     'as' => 'site.'
@@ -42,13 +43,3 @@ Route::group([
 
 });
 
-Route::get('fix', function () {
-    Participant::query()->chunk(100, function ($participants) {
-        foreach ($participants as $participant) {
-            $participant->bridge_url = str_replace('bbb-conference.hyper-stage.com', 'meet.academy-uk.net', $participant->join_url);
-            $participant->save();
-        }
-    });
-    $participants = Participant::get();
-    dd($participants);
-});

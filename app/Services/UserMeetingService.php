@@ -190,7 +190,7 @@ class UserMeetingService extends BaseModelService
     }
 
     /**
-     * fetching bbb recordings
+     * fetching bbb recordings for the current auth user.
      * @param mixed $meeting
      * @return void
      */
@@ -201,7 +201,6 @@ class UserMeetingService extends BaseModelService
         $recordings_params = new GetRecordingsParameters();
         $recordings = $bbb->getRecordings($recordings_params);
         $recordings_list = [];
-        // dd($recordings);
         if ($recordings->getReturnCode() == 'SUCCESS') {
             foreach ($recordings->getRecords() as $record) {
                 if (in_array($record->getMeetingId(), $db_records)) {

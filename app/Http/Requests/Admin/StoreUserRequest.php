@@ -25,7 +25,6 @@ class StoreUserRequest extends BaseAdminRequest
             'password' => 'required|min:8',
             // 'max_meetings' => 'required|numeric|integer',
             // 'max_participants' => 'required|numeric|integer',
-            'max_storage_allowed' => 'required|numeric|integer',
             'parallel_rooms' => 'required|numeric|integer',
         ];
     }

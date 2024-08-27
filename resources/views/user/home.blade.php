@@ -10,7 +10,7 @@
 
     <div class="row ">
         @foreach ($rooms as $room)
-            <div class="col-lg-6 mt-4 order-md-1 order-lg-2 order-1">
+            <div class="col-lg-3 mt-4 order-md-1 order-lg-2 order-1">
                 <div class="card border-0 shadow rounded p-4">
                     <div class="d-flex justify-content-between align-items-center">
                         <div class="d-flex align-items-center">
@@ -61,7 +61,7 @@
                                         title="Max No of Meetings"><i
                                             class="ti ti-video me-1"></i>{{ $room->max_meetings }}</a></li>
                             </ul>
-                            <a href="javascript:void(0)" class="text-muted d-none"><i class="ti ti-share"></i></a>
+                            <a href="javascript:void(0)" class="text-muted "><i class="ti ti-database"></i>{{ $room->max_storage_allowed }} GB</a>
                         </div>
 
                     </div>
