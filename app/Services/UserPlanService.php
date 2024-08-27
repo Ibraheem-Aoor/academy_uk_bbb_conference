@@ -125,11 +125,6 @@ class UserPlanService extends BaseModelService
     }
 
 
-    public function getAuthUserCurrentPlan()
-    {
-        return getAuthUser('web')->plan;
-    }
-
 
 
 }

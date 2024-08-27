@@ -25,10 +25,12 @@ class UserPlanController extends UserBaseController
      */
     public function index()
     {
+        $user = getAuthUser('web')->load(['plan' , 'rooms']);
         $data['page_title'] = 'Current Subscription';
         $data['route'] = $this->base_route_path;
-        $data['plan'] = $this->service->getAuthUserCurrentPlan();
-        $data['user'] = getAuthUser('web');
+        $data['plan'] = $user->plan;
+        $data['rooms'] = $user->rooms;
+        $data['user'] = $user;
         return view($this->base_view_path . '.index', $data);
     }
 }

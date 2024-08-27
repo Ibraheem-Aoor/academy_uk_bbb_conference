@@ -4,7 +4,7 @@ $(document).ready(function () {
         renderDataTable();
         setTimeout(function() {
             $('.dt-empty').html("No data available in table");
-        }, 500);
+        }, 300);
     }
 
 

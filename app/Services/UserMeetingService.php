@@ -32,12 +32,13 @@ use Spatie\GoogleCalendar\Event;
 
 class UserMeetingService extends BaseModelService
 {
-
+    protected $user_recordings_key;
     public function __construct()
     {
         parent::__construct(new UserMeeting());
         $this->allow_all_records = true;
     }
+
 
 
     // create model
@@ -213,47 +214,18 @@ class UserMeetingService extends BaseModelService
                 }
             }
         }
-        return cacheAndGet('user_recordings_list', now()->addHour(2), $recordings_list);
+        return cacheAndGet($this->user_recordings_key, now()->addHour(2), $recordings_list);
     }
 
-    /**
-     * Get All Recordings Form BBB server Directrly regradless the Meetings in this system.
-     * @return \Illuminate\Database\Eloquent\Collection
-     */
-    public function getAllRecordings(): Collection
-    {
-        $recordings_list = AllRecording::query()->get();
-        if (!Cache::has('all_recordings_list')) {
 
-            $bbb = new BigBlueButton();
-            $recordings_params = new GetRecordingsParameters();
-            $recordings = $bbb->getRecordings($recordings_params);
-            if ($recordings->getReturnCode() == 'SUCCESS') {
-                foreach ($recordings->getRecords() as $record) {
-                    AllRecording::query()->updateOrCreate([
-                        'record_id' => $record->getRecordId(),
-                    ], [
-                        'record_id' => $record->getRecordId(),
-                        'name' => $record->getName(),
-                        'meeting_id' => $record->getMeetingId(),
-                        'playback_url' => $record->getPlaybackUrl(),
-                        'end_time' => $record->getEndTime(),
-                        'duration' => $record->getPlaybackLength(),
-                        'meta_data' => json_encode($record->getMetas()),
-                    ]);
-                }
-                $recordings_list = AllRecording::query()->get();
-            }
-        }
-        return cacheAndGet('all_recordings_list', now()->addDay(), $recordings_list);
-    }
 
 
 
     public function getTableDataForRecordings(Request $request)
     {
-        if (Cache::has('user_recordings_list')) {
-            $query = Cache::get('user_recordings_list');
+        $this->user_recordings_key = 'user_recordings_' . getAuthUser('web')->id;
+        if (Cache::has($this->user_recordings_key)) {
+            $query = Cache::get($this->user_recordings_key);
         } else {
             $query = $this->getRecordings();
         }

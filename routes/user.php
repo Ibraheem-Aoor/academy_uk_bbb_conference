@@ -46,8 +46,6 @@ Route::middleware('auth:web')->group(function () {
     });
     Route::prefix('recording')->as('recording.')->group(function () {
         Route::get('', [UserRecordingController::class, 'index'])->name('index');
-        Route::get('all', [UserRecordingController::class, 'allRecordings'])->name('all');
         Route::get('table', [UserRecordingController::class, 'getTableData'])->name('table');
-
     });
 });

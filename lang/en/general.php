@@ -71,4 +71,6 @@ return [
     'subscriptions' => 'Subscription',
     'overview' => 'Overview',
     'all_recordings' => 'All Recordings',
+    'active'  => 'Active',
+    'inactive' => 'Inactive',
 ];

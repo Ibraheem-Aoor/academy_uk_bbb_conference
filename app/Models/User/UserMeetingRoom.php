@@ -30,4 +30,9 @@ class UserMeetingRoom extends Model
         return $lastMeeting ? $lastMeeting->created_at->format('M d, Y h:i A') : '';
     }
 
+    public function getAtiveToString()
+    {
+        return $this->status ?  __('general.active') : __('general.inactive');
+    }
+
 }
