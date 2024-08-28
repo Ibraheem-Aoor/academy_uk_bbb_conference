@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('user_meetings', function (Blueprint $table) {
-            $table->unsignedBigInteger('room_id');
+            $table->unsignedBigInteger('room_id')->after('user_id');
             $table->foreign('room_id')->references('id')->on('user_meeting_rooms')->cascadeOnDelete();
         });
     }

@@ -14,8 +14,8 @@ return new class extends Migration
     public function up()
     {
         Schema::table('user_meetings', function (Blueprint $table) {
-            $table->integer('successfull_joins')->default(0);
-            $table->integer('failed_joins')->default(0);
+            $table->integer('successfull_joins')->after('deleted_at')->default(0);
+            $table->integer('failed_joins')->after('deleted_at')->default(0);
         });
     }
 
