@@ -42,6 +42,7 @@ Route::middleware('auth:admin')
             Route::post('store', [UserController::class, 'store'])->name('store');
             Route::post('update/{id}', [UserController::class, 'update'])->name('update');
             Route::post('update/rooms/{user}', [UserController::class, 'updateRooms'])->name('update_rooms');
+            Route::post('renew-plan/{user}' ,[UserController::class , 'renewPlan'])->name('renew_plan');
             Route::get('get/rooms/{user}', [UserController::class, 'getRooms'])->name('get_rooms');
             Route::delete('destroy/{id}', [UserController::class, 'destroy'])->name('destroy');
             Route::get('/status-toggle', [UserController::class, 'toggleStatus'])->name('toggle_status');

@@ -80,6 +80,7 @@
 
     {{-- UpdateOrCreate Modal --}}
     @include('admin.users.modal')
+    @include('admin.users.rewnew_plan')
     @include('admin.users.room_modal')
     @include('partials.confirm-delete-modal')
 @endsection
@@ -91,6 +92,7 @@
         const table_data_url = "{{ $table_data_url }}";
         const modal = "#{{ $modal }}";
         const room_modal = "#{{ $room_modal }}";
+        const renew_plan_modal = "#{{ $renew_plan_modal }}";
     </script>
     @if (getCurrentLocale() == 'ar')
         <script src="{{ asset('assets/user/js/datatable-ar.js') }}"></script>
@@ -98,6 +100,6 @@
         <script src="{{ asset('assets/user/js/datatable-en.js') }}"></script>
     @endif
     <script src="https://cdn.datatables.net/2.0.0/js/dataTables.min.js"></script>
-    <script src="{{ asset('assets/user/js/admin/users.js') }}?v=0.04"></script>
+    <script src="{{ asset('assets/user/js/admin/users.js') }}?v=0.05"></script>
 
 @endpush

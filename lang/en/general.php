@@ -76,5 +76,7 @@ return [
     'managers' => 'Managers',
     'rooms' => 'Rooms',
     'created_by' => 'Created By',
+    'renew_plan_confirmation' => 'Are you sure you want to renew subscription?',
+    'renew_plan_for_user' => 'Renew Subscription For User :user',
 
 ];

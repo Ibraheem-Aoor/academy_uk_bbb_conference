@@ -211,5 +211,13 @@ $(room_modal).on('show.bs.modal', function (e) {
     var btn = e.relatedTarget;
     $(this).find("#modal-title").text(btn.getAttribute('data-header-title'));
 });
+$(renew_plan_modal).on('show.bs.modal', function (e) {
+    var btn = e.relatedTarget;
+    $(this).find("#modal-title").text(btn.getAttribute('data-header-title'));
+    var action = btn.getAttribute('data-action');
+    var method = btn.getAttribute('data-method');
+    $(this).find('form').attr('action', action);
+    $(this).find('form').attr('method', method);
+});
 
 

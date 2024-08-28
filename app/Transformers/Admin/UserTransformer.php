@@ -46,6 +46,14 @@ class UserTransformer extends TransformerAbstract
                 href="#">
                 <img loading="lazy" width="10" height="10" src="' . asset('assets/user/libs/feather-icons/icons/home.svg') . '">
             </a>&nbsp;
+            </a> &nbsp;  <a title="Renew Subscription" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#renew-plan-modal"
+                data-action="' . route('admin.user.renew_plan', encrypt($user->id)) . '"
+                data-method="POST"
+                data-header-title="' . __('general.renew_plan_for_user', ['user' => $user->name]) . '"
+                onclick="fetchRooms(this);"
+                href="#">
+                <img loading="lazy" width="10" height="10" src="' . asset('assets/user/libs/@iconscout/unicons/svg/line/bill.svg') . '">
+            </a>&nbsp;
             <a data-bs-toggle="modal" data-bs-target="#delete-modal" data-delete-url="' . route('admin.user.destroy', encrypt($user->id)) . '"
         data-message="' . __('general.confirm_delete') . '" data-name="' . $user->name . '" id="row-' . $user->id . '"
         class="btn btn-sm btn-danger ms-2"><img loading="lazy" width="10" height="10" src="' . asset('assets/user/libs/feather-icons/icons/trash.svg') . '"><i class="fa fa-trash"></i></a>

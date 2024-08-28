@@ -33,6 +33,7 @@ class UserService extends BaseModelService
             DB::beginTransaction();
             $data = $this->getModelAttributes($request);
             $plan = Plan::query()->create($data['plan']);
+            $plan->history()->create(['renewed_at' => null]);
             $data['plan_id'] = $plan->id;
             $this->model::query()->create($data);
             DB::commit();
@@ -59,6 +60,31 @@ class UserService extends BaseModelService
             DB::rollBack();
             Log::error("Fail with adding participants: " . $e->getMessage());
             return generateResponse(status: false, message: __('response.faild_created'));
+        }
+    }
+
+
+    /**
+     * Renew the plan for a user.
+     *
+     * @param int $id The ID of the user.
+     * @throws Throwable If an error occurs during the renewal process.
+     * @return JsonResponse The response indicating the success of the renewal.
+     */
+    public function renewPlan($id)
+    {
+        try {
+
+            $user = $this->model::query()->findOrFail(decrypt($id));
+            $user->plan->history()->latest()->first()->renew();
+            $user->status = 1;
+            $user->save();
+            return generateResponse(status: true, modal_to_hide: $this->model->renew_plan_modal, table_reload: true, table: '#myTable');
+        } catch (Throwable $e) {
+            dd($e);
+            DB::rollBack();
+            Log::error("Fail with Renew Plan Proccess: " . $e->getMessage());
+            return generateResponse(status: false, message: __('response.faild_updated'));
         }
     }
 
@@ -120,17 +146,17 @@ class UserService extends BaseModelService
     public function getTableData(Request $request)
     {
         $query = $this->model::query();
-        return $this->getDataTableObject($query , $this->model->transformer);
+        return $this->getDataTableObject($query, $this->model->transformer);
     }
 
 
     public function getRoomMangersTable(Request $request)
     {
         $query = $this->model::query()->isRoomManager();
-        return $this->getDataTableObject($query , $this->model->room_manager_transformer);
+        return $this->getDataTableObject($query, $this->model->room_manager_transformer);
     }
 
-    private function getDataTableObject($query , $transformer)
+    private function getDataTableObject($query, $transformer)
     {
         return DataTables::of($query)
             ->setTransformer($transformer)
@@ -167,7 +193,7 @@ class UserService extends BaseModelService
                 'name' => $request->input('name'), // Name of the user.
                 // 'password_text' => Crypt::encryptString($request->input('password')), // Encrypted password of the user.
                 'is_room_manager' => true,
-                'plan_id' => getAuthUser('web')->plan_id,   
+                'plan_id' => getAuthUser('web')->plan_id,
                 'created_by' => getAuthUser('web')->id,
             ]);
 
@@ -188,7 +214,7 @@ class UserService extends BaseModelService
      * @param Request $request The request object containing the user data.
      * @return JsonResponse The JSON response indicating the success of the operation.
      */
-    public function updateManager($id , $request)
+    public function updateManager($id, $request)
     {
         try {
             DB::beginTransaction();

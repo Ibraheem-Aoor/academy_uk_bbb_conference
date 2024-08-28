@@ -49,6 +49,7 @@ class UserController extends AdminBaseController
         $data['modal'] = $this->service->getModal();
         $data['plan_types'] = PlanTypeEnum::cases();
         $data['room_modal'] = $this->service->getService('user_meeting_room_service')->getModal();
+        $data['renew_plan_modal'] = $this->service->getModal('renew_plan_modal');
         return view($this->base_view_path . '.index', $data);
     }
 
@@ -67,6 +68,11 @@ class UserController extends AdminBaseController
     public function update($id , StoreUserRequest $request)
     {
         return $this->service->update(($id) , $request);
+    }
+
+    public function renewPlan($user)
+    {
+        return $this->service->renewPlan($user);
     }
 
 
