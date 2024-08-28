@@ -14,6 +14,7 @@ use Illuminate\View\View;
 class DashboardController extends UserBaseController
 {
 
+
     public function index():View
     {
         $data['rooms'] = $this->user->rooms;
@@ -56,6 +57,22 @@ class DashboardController extends UserBaseController
     public function updateRoom($room , UpdateUserMeetingRoomRequest $request , UserMeetingRoomService $user_meeting_room_service)
     {
         return $user_meeting_room_service->updateName(decrypt($room) , $request);
+    }
+
+
+    /**
+     * Show the lock account page.
+     *
+     * Returns a view with a message indicating whether the account is suspended or inactive.
+     *
+     * @return \Illuminate\View\View
+     */
+
+    public function lockAccount()
+    {
+        $user = getAuthUser('web');
+        $data['message'] = isset($user->created_by) ? __('user.account_suspended') : __('user.account_inactive');
+        return view('user.lock' , $data);
     }
 
 }

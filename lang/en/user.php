@@ -25,4 +25,7 @@ return [
         'update_account'    =>  'Update Account: :account',
 
     ],
+
+    'account_suspended' => 'Account Suspended , Please Contact Your Manager',
+    'account_inactive' => 'Account Suspended Due To Subscription Expiration , Please Contact Support',
 ];

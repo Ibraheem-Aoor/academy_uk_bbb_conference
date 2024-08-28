@@ -14,9 +14,9 @@ return new class extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->boolean('is_room_manager')->default(0)->comment('To determine if the user is a room manager or not');
-            $table->text('password_text')->nullable();
-            $table->unsignedBigInteger('created_by')->nullable();
+            $table->boolean('is_room_manager')->after('plan_id')->default(0)->comment('To determine if the user is a room manager or not');
+            $table->text('password_text')->after('password')->nullable();
+            $table->unsignedBigInteger('created_by')->after('password_text')->nullable();
             $table->foreign('created_by')->references('id')->on('users')->cascadeOnDelete();
         });
     }

@@ -25,7 +25,7 @@ use App\Services\UserPlanService;
 */
 Auth::routes(['register' => false]);
 
-Route::middleware('auth:web')->group(function () {
+Route::middleware(['auth:web' , 'active_account'])->group(function () {
     Route::redirect('/', '/user/home', 301);
     Route::get('/home', [DashboardController::class, 'index'])->name('home');
     Route::post('/home/update-room/{room}', [DashboardController::class, 'updateRoom'])->name('update_room');
@@ -59,4 +59,7 @@ Route::middleware('auth:web')->group(function () {
         Route::get('/status-toggle', [RoomManagerController::class, 'toggleStatus'])->name('toggle_status');
         Route::get('table', [RoomManagerController::class, 'getTableData'])->name('table');
     });
+
 });
+// Lock Route
+Route::get('account-locked' , [DashboardController::class , 'lockAccount'])->name('account_locked');

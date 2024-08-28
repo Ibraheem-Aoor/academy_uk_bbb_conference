@@ -3,6 +3,7 @@
 namespace App\Http;
 
 use App\Http\Middleware\IsActiveMeeting;
+use App\Http\Middleware\User\ActiveMiddleware;
 use App\Http\Middleware\User\MaxParticipantMiddleware;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
@@ -66,6 +67,6 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'is_active_meeting' => IsActiveMeeting::class,
-        'max_participants' => MaxParticipantMiddleware::class,
+        'active_account' => ActiveMiddleware::class,
     ];
 }
