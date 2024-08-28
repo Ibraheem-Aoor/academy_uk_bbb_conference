@@ -65,7 +65,7 @@ class UserTransformer extends TransformerAbstract
     {
         $is_checked = $user->status ? 'checked' : null;
         $html = '<div class="form-check form-switch">
-        <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" name="status"  ' . $is_checked . ' data-route="' . route('admin.meeting.toggle_status') . '" data-id="' . $user->id . '" onclick="toggleStatus($(this));">
+        <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" name="status"  ' . $is_checked . ' data-route="' . route('admin.user.toggle_status') . '" data-id="' . $user->id . '" onclick="toggleStatus($(this));">
     </div>';
         return $html;
     }
