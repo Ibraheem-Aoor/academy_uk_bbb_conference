@@ -8,6 +8,7 @@ use Illuminate\Auth\MustVerifyEmail;
 use Illuminate\Notifications\Notifiable;
 use App\Jobs\SendEmailVerficationNotificationJob;
 use App\Transformers\Admin\UserTransformer;
+use App\Transformers\User\RoomManagerTransformer;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -15,6 +16,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use \Illuminate\Contracts\Auth\MustVerifyEmail as MustVerifyEmailContract;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Support\Facades\Crypt;
 
 class User extends Authenticatable
 {
@@ -30,6 +33,9 @@ class User extends Authenticatable
         'email',
         'password',
         'plan_id',
+        'is_room_manager',
+        'password_text',
+        'created_by',
     ];
 
     /**
@@ -52,15 +58,32 @@ class User extends Authenticatable
     ];
 
     public $modal =  '#user-modal';
+    public $room_manager_modal =  '#room-manager-modal';
     public $transformer = UserTransformer::class;
+    public $room_manager_transformer = RoomManagerTransformer::class;
 
     public function plan():BelongsTo
     {
         return $this->belongsTo(Plan::class , 'plan_id');
     }
 
-    public function rooms():HasMany
+    public function rooms():BelongsToMany
     {
-        return $this->hasMany(UserMeetingRoom::class , 'user_id');
+        return $this->belongsToMany(UserMeetingRoom::class , 'user_rooms' , 'user_id' , 'room_id');
     }
+
+
+    public function scopeIsRoomManager($query , $value = 1)
+    {
+        return $query->where('is_room_manager' , $value);
+    }
+
+    // public function getPasswordTextAttribute()
+    // {
+    //     return Crypt::decryptString($this->attributes['password_text']);
+    // }
+    // public function setPasswordTextAttribute($value)
+    // {
+    //     $this->attributes['password_text'] = Crypt::encryptString($value);
+    // }
 }

@@ -20,6 +20,7 @@ class UserMeetingTransformer extends TransformerAbstract
             'name' => $meeting->name,
             'room' => $meeting->room->name,
             'meeting_id' => $meeting->meeting_id,
+            'user' => $meeting->user->name,
             'status' => $this->getStatusColumn($meeting),
             'created_at' => date($meeting->created_at),
             'actions' => $this->getActions($meeting),

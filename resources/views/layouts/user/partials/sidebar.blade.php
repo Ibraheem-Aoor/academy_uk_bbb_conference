@@ -10,8 +10,7 @@
 
            <ul class="sidebar-menu">
                <li class="">
-                   <a href="{{ route('user.home') }}"><i
-                           class="ti ti-home me-2"></i>{{ __('general.dashboard') }}</a>
+                   <a href="{{ route('user.home') }}"><i class="ti ti-home me-2"></i>{{ __('general.dashboard') }}</a>
                </li>
                <li class="">
                    <a href="{{ route('user.dashboard') }}"><i
@@ -21,18 +20,20 @@
                    <a href="{{ route('user.meeting.index') }}"><i
                            class="ti ti-camera me-2"></i>{{ __('general.meetings') }}</a>
                </li>
-                <li class="">
+               <li class="">
                    <a href="{{ route('user.recording.index') }}"><i
                            class="ti ti-video me-2"></i>{{ __('general.recordings') }}</a>
                </li>
-                <li class="">
+               @if(!getAuthUser('web')->is_room_manager)
+               <li class="">
                    <a href="{{ route('user.plan.index') }}"><i
                            class="ti ti-cash me-2"></i>{{ __('general.subscriptions') }}</a>
                </li>
-               {{-- <li class="">
-                   <a href="{{ route('user.recording.all') }}"><i
-                           class="ti ti-video me-2"></i>{{ __('general.all_recordings') }}</a>
-               </li> --}}
+               <li class="">
+                   <a href="{{ route('user.room_managers.index') }}"><i
+                           class="ti ti-video me-2"></i>{{ __('general.managers') }}</a>
+               </li>
+               @endif
                <li class="sidebar-dropdown d-none">
                    <a href="javascript:void(0)"><i class="ti ti-license me-2"></i>Example</a>
                    <div class="sidebar-submenu">

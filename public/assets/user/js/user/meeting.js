@@ -36,7 +36,7 @@ function getTableColumns() {
         },
         {
             data: 'room',
-            name: 'room',
+            name: 'room.name',
             searchable: true,
             orderable: true,
         },
@@ -44,6 +44,12 @@ function getTableColumns() {
             data: 'meeting_id',
             name: 'meeting_id',
             searchable: true,
+            orderable: true,
+        },
+        {
+            data: 'user',
+            name: 'user.name',
+            searchable: false,
             orderable: true,
         },
         {

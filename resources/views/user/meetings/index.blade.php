@@ -64,6 +64,9 @@
                                     <th class="text-center border-bottom p-3" style="min-width: 200px;">
                                         {{ __('general.meeting_id') }}
                                     </th>
+                                    <th class="text-center border-bottom p-3" style="min-width: 200px;">
+                                        {{ __('general.created_by') }}
+                                    </th>
                                     </th>
                                     <th class="text-center border-bottom p-3">{{ __('general.status') }}</th>
                                     <th class="text-center border-bottom p-3">{{ __('general.date') }}</th>

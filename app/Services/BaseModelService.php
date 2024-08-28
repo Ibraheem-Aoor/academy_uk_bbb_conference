@@ -130,8 +130,9 @@ abstract class BaseModelService
      * get the modal binded with the current model
      * @reutrn string
      */
-    public function getModal()
+    public function getModal($alter_modal = null)
     {
-        return str_replace('#' , '' ,$this->model->modal);
+        $modal = is_null($alter_modal) ? $this->model->modal : $this->model->$alter_modal;
+        return str_replace('#' , '' , $modal);
     }
 }

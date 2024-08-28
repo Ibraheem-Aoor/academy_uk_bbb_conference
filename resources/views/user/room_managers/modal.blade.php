@@ -50,74 +50,22 @@
                                 </div>
                             </div><!--end col-->
 
-                            <div class="col-md-12">
-                                <div class="mb-3">
-                                    <h4>{{ __('general.plan_settings') }}</h4>
-                                </div>
-                            </div><!--end col-->
 
                             <!-- Plan Type -->
-                            <div class="col-6">
+                            <div class="col-12">
                                 <div class="mb-3">
-                                    <label class="form-label">{{ __('general.plan.type') }}<span
+                                    <label class="form-label">{{ __('general.rooms') }}<span
                                             class="text-danger">*</span></label>
                                     <div class="form-icon position-relative">
-                                        <select name="type" id="type" class="form-control">
-                                            @foreach ($plan_types as $planType)
-                                                <option value="{{ $planType->value }}">{{ $planType->value }}</option>
+                                        <select name="rooms[]" id="room" class="form-control select2"  multiple="multiple" required style="width: 100% !important;">
+                                            @foreach ($rooms as $room)
+                                                <option value="{{ $room->id }}">{{ $room->name }}</option>
                                             @endforeach
                                         </select>
                                     </div>
                                 </div>
                             </div><!--end col-->
 
-                            <!-- Max Meetings -->
-                            <div class="col-6">
-                                <div class="mb-3">
-                                    <label class="form-label">{{ __('general.plan.max_meetings') }}<span
-                                            class="text-danger">*</span></label>
-                                    <div class="form-icon position-relative">
-                                        <input type="number" name="max_meetings" id="max_meetings" class="form-control"
-                                            required>
-                                    </div>
-                                </div>
-                            </div><!--end col-->
-
-                            <!-- Max Participants -->
-                            <div class="col-6">
-                                <div class="mb-3">
-                                    <label class="form-label">{{ __('general.plan.max_participants') }}<span
-                                            class="text-danger">*</span></label>
-                                    <div class="form-icon position-relative">
-                                        <input type="number" name="max_participants" id="max_participants"
-                                            class="form-control" required>
-                                    </div>
-                                </div>
-                            </div><!--end col-->
-
-                            <!-- Max Storage Allowed -->
-                            <div class="col-6">
-                                <div class="mb-3">
-                                    <label class="form-label">{{ __('general.plan.max_storage_allowed') }}<span
-                                            class="text-danger">*</span></label>
-                                    <div class="form-icon position-relative">
-                                        <input type="number" name="max_storage_allowed" id="max_storage_allowed"
-                                            class="form-control" required>
-                                    </div>
-                                </div>
-                            </div><!--end col-->
-
-                            <!-- Backup Enabled -->
-                            <div class="col-6">
-                                <div class="mb-3">
-                                    <label class="form-label">{{ __('general.plan.is_backup_enabled') }}</label>
-                                    <div class="form-check form-switch">
-                                        <input class="form-check-input" type="checkbox" id="is_backup_enabled"
-                                            name="is_backup_enabled"
-                                            >
-                                    </div>
-                                </div>
-                            </div><!--end col-->
                         </div><!--end row-->
                     </div>
                 </div>

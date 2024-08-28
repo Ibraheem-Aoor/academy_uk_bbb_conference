@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\MeetingController;
 use App\Http\Controllers\User\ParticipantController;
+use App\Http\Controllers\User\RoomManagerController;
 use App\Http\Controllers\User\UserMeetingController;
 use App\Http\Controllers\User\UserPlanController;
 use App\Http\Controllers\User\UserRecordingController;
@@ -44,8 +45,17 @@ Route::middleware('auth:web')->group(function () {
     Route::prefix('subscription')->as('plan.')->group(function () {
         Route::get('', [UserPlanController::class, 'index'])->name('index');
     });
+    // Saved Reordings
     Route::prefix('recording')->as('recording.')->group(function () {
         Route::get('', [UserRecordingController::class, 'index'])->name('index');
         Route::get('table', [UserRecordingController::class, 'getTableData'])->name('table');
+    });
+    // Room Managers
+    Route::prefix('room_managers')->as('room_managers.')->group(function () {
+        Route::get('', [RoomManagerController::class, 'index'])->name('index');
+        Route::post('store', [RoomManagerController::class, 'store'])->name('store');
+        Route::post('update/{id}', [RoomManagerController::class, 'update'])->name('update');
+        Route::get('/status-toggle', [RoomManagerController::class, 'toggleStatus'])->name('toggle_status');
+        Route::get('table', [RoomManagerController::class, 'getTableData'])->name('table');
     });
 });

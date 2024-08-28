@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Log;
 use Throwable;
 use Yajra\DataTables\Facades\DataTables;
 use App\Models\Plan;
+use App\Models\User;
 use App\Models\User\UserMeetingRoom;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
@@ -20,6 +21,7 @@ class UserMeetingRoomService extends BaseModelService
         parent::__construct(new UserMeetingRoom());
         $this->allow_all_records = true;
     }
+
 
 
     public function updateName($id, Request $request)
@@ -48,26 +50,26 @@ class UserMeetingRoomService extends BaseModelService
         try {
             DB::beginTransaction();
             $rooms = $this->getModelAttributes($request)['rooms'];
-            $existing_rooms = $this->model::where('user_id', $user_id)->pluck('id')->toArray();
-            $rooms_ids = array_column($rooms, 'id');
-            $rooms_ids_to_delete = array_diff($existing_rooms, $rooms_ids);
-            $this->model::whereIn('id', $rooms_ids_to_delete)->delete();
+            $user = User::query()->findOrFail($user_id);
             foreach ($rooms as $room) {
-                $this->findOrCreate($room, $user_id)->fill($room)->save();
+                $room_to_save =  $this->findOrCreate($room);
+                $room_to_save->fill($room)->save();
+                $rooms_to_sync[] = $room_to_save->id;
             }
+            $user->rooms()->sync(array_values($rooms_to_sync));
             DB::commit();
             return generateResponse(status: true, modal_to_hide: $this->model->modal, table_reload: true, table: '#myTable');
         } catch (Throwable $e) {
+            dd($e);
             DB::rollBack();
             Log::error("Fail with adding rooms: " . $e->getMessage());
             return generateResponse(status: false, message: __('response.faild_created'));
         }
     }
 
-    private function findOrCreate($room, $user_id)
+    private function findOrCreate($room)
     {
         return $this->model::query()->firstOrCreate(['id' => @$room['id'] ?? null], [
-            'user_id' => $user_id,
             'name' => $room['name'],
             'max_meetings' => $room['max_meetings'],
             'max_participants' => $room['max_participants'],

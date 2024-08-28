@@ -2,9 +2,11 @@
 
 namespace App\Models\User;
 
+use App\Models\User;
 use App\Transformers\User\UserMeetingRoomTransformer;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class UserMeetingRoom extends Model
@@ -28,6 +30,12 @@ class UserMeetingRoom extends Model
     {
         $lastMeeting = $this->meetings()->latest()->first();
         return $lastMeeting ? $lastMeeting->created_at->format('M d, Y h:i A') : '';
+    }
+
+
+    public function users():BelongsToMany
+    {
+        return $this->belongsToMany(User::class , 'user_rooms' , 'room_id' , 'user_id');
     }
 
     public function getAtiveToString()

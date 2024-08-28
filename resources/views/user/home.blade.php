@@ -1,5 +1,12 @@
 @extends('layouts.user.master')
 @section('page-title', __('general.dashbaord'))
+@push('css')
+    <style>
+        .card{
+            height: 350px !important;
+        }
+    </style>
+@endpush
 @section('content')
     <div class="d-flex align-items-center justify-content-between">
         <div>
@@ -10,7 +17,7 @@
 
     <div class="row ">
         @foreach ($rooms as $room)
-            <div class="col-lg-3 mt-4 order-md-1 order-lg-2 order-1">
+            <div class="col-lg-4 mt-4 order-md-1 order-lg-2 order-1">
                 <div class="card border-0 shadow rounded p-4">
                     <div class="d-flex justify-content-between align-items-center">
                         <div class="d-flex align-items-center">

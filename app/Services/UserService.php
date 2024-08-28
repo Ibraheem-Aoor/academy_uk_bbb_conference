@@ -10,6 +10,8 @@ use Yajra\DataTables\Facades\DataTables;
 use App\Models\Meeting;
 use App\Models\Plan;
 use App\Models\User;
+use App\Transformers\User\RoomManagerTransformer;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
@@ -37,7 +39,6 @@ class UserService extends BaseModelService
             return generateResponse(status: true, modal_to_hide: $this->model->modal, table_reload: true, table: '#myTable');
         } catch (Throwable $e) {
             DB::rollBack();
-            dd($e);
             Log::error("Fail with adding participants: " . $e->getMessage());
             return generateResponse(status: false, message: __('response.faild_created'));
         }
@@ -119,8 +120,20 @@ class UserService extends BaseModelService
     public function getTableData(Request $request)
     {
         $query = $this->model::query();
+        return $this->getDataTableObject($query , $this->model->transformer);
+    }
+
+
+    public function getRoomMangersTable(Request $request)
+    {
+        $query = $this->model::query()->isRoomManager();
+        return $this->getDataTableObject($query , $this->model->room_manager_transformer);
+    }
+
+    private function getDataTableObject($query , $transformer)
+    {
         return DataTables::of($query)
-            ->setTransformer($this->model->transformer)
+            ->setTransformer($transformer)
             ->make(true);
     }
 
@@ -132,12 +145,73 @@ class UserService extends BaseModelService
      * @param string $service The name of the service to retrieve.
      * @return BaseModelService The instance of the requested service.
      */
-    public function getService(string $service) : BaseModelService
+    public function getService(string $service): BaseModelService
     {
         return $this->$service;
     }
 
 
+    /**
+     * Create a new manager user with associated rooms.
+     *
+     * @param Request $request The request object containing the user data.
+     * @return JsonResponse The JSON response indicating the success of the operation.
+     */
+    public function createManager($request)
+    {
+        try {
+            DB::beginTransaction();
+            $manager = $this->model::create([
+                'email' => $request->input('email'), // Email of the user.
+                'password' => makeHash($request->input('password')), // Hashed password of the user.
+                'name' => $request->input('name'), // Name of the user.
+                // 'password_text' => Crypt::encryptString($request->input('password')), // Encrypted password of the user.
+                'is_room_manager' => true,
+                'plan_id' => getAuthUser('web')->plan_id,
+                'created_by' => getAuthUser('web')->id,
+            ]);
+
+            // Sync the associated rooms with the newly created manager user.
+            $manager->rooms()->sync($request->input('rooms'));
+            DB::commit();
+            // Return a success response.
+            return generateResponse(status: true, modal_to_hide: $this->model->room_manager_modal, table_reload: true, table: '#myTable');
+        } catch (Throwable $e) {
+            DB::rollBack();
+            dd($e);
+            return generateResponse(status: false, message: __('response.faild_created'));
+        }
+    }
+    /**
+     * Update Room Manager
+     *
+     * @param Request $request The request object containing the user data.
+     * @return JsonResponse The JSON response indicating the success of the operation.
+     */
+    public function updateManager($id , $request)
+    {
+        try {
+            DB::beginTransaction();
+            $manager = User::query()->findOrFail($id);
+            $manager->update([
+                'email' => $request->input('email'), // Email of the user.
+                'password' => makeHash($request->input('password')), // Hashed password of the user.
+                'name' => $request->input('name'), // Name of the user.
+                // 'password_text' => Crypt::encryptString($request->input('password')), // Encrypted password of the user.
+                'is_room_manager' => true,
+            ]);
+
+            // Sync the associated rooms with the newly created manager user.
+            $manager->rooms()->sync($request->input('rooms'));
+            DB::commit();
+            // Return a success response.
+            return generateResponse(status: true, modal_to_hide: $this->model->room_manager_modal, table_reload: true, table: '#myTable');
+        } catch (Throwable $e) {
+            DB::rollBack();
+            dd($e);
+            return generateResponse(status: false, message: __('response.faild_created'));
+        }
+    }
 
 
 }

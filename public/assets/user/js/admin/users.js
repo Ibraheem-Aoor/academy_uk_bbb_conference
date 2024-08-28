@@ -2,6 +2,9 @@ $(document).ready(function () {
     // render The datatable if we are at a table page
     if (table_data_url !== 'undefined') {
         renderDataTable();
+        setTimeout(function() {
+            $('.dt-empty').html("No data available in table");
+        }, 300);
     }
 
 
@@ -67,6 +70,7 @@ function getTableColumns() {
 
 $(modal).on('show.bs.modal', function (e) {
     var btn = e.relatedTarget;
+
     var action = btn.getAttribute('data-action');
     var method = btn.getAttribute('data-method');
     var isCreate = btn.getAttribute('data-is-create');
@@ -81,13 +85,17 @@ $(modal).on('show.bs.modal', function (e) {
         // $('.image-input-wrapper').css('background-image', 'url("' + btn.getAttribute('data-image') + '")');
         $(this).find('#name').val(btn.getAttribute('data-name'));
         $(this).find('#email').val(btn.getAttribute('data-email'));
-        $(this).find('#password').val(null);
+        $(this).find('#password').val(btn.getAttribute('data-password'));
         $(this).find('#type').val(btn.getAttribute('data-plan-type'));
         $(this).find('#max_meetings').val(btn.getAttribute('data-plan-max-meetings'));
         $(this).find('#parallel_rooms').val(btn.getAttribute('data-plan-paralell-rooms'));
         $(this).find('#max_storage_allowed').val(btn.getAttribute('data-plan-max-storage'));
         var status = btn.getAttribute('data-plan-is-backup-enabled') == 1 ? 'checked' : null;
         $(this).find('#is_backup_enabled').prop('checked', status);
+        if (btn.getAttribute('data-rooms')) {
+
+            $('.select2').val(JSON.parse(btn.getAttribute('data-rooms'))).trigger('change');
+        }
     }
 });
 
@@ -203,3 +211,5 @@ $(room_modal).on('show.bs.modal', function (e) {
     var btn = e.relatedTarget;
     $(this).find("#modal-title").text(btn.getAttribute('data-header-title'));
 });
+
+

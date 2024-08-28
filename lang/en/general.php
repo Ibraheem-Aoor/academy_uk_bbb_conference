@@ -73,4 +73,8 @@ return [
     'all_recordings' => 'All Recordings',
     'active'  => 'Active',
     'inactive' => 'Inactive',
+    'managers' => 'Managers',
+    'rooms' => 'Rooms',
+    'created_by' => 'Created By',
+
 ];

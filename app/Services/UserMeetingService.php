@@ -184,7 +184,7 @@ class UserMeetingService extends BaseModelService
      */
     public function getTableData(Request $request)
     {
-        $query = $this->model::query()->whereBelongsTo(getAuthUser('web'));
+        $query = $this->model::query()->whereIn('room_id' , getAuthUser('web')->rooms()->pluck('room_id')->toArray())->with(['user' , 'room']);
         return DataTables::of($query)
             ->setTransformer($this->model->transformer)
             ->make(true);
