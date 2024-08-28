@@ -167,7 +167,7 @@ class UserService extends BaseModelService
                 'name' => $request->input('name'), // Name of the user.
                 // 'password_text' => Crypt::encryptString($request->input('password')), // Encrypted password of the user.
                 'is_room_manager' => true,
-                'plan_id' => getAuthUser('web')->plan_id,
+                'plan_id' => getAuthUser('web')->plan_id,   
                 'created_by' => getAuthUser('web')->id,
             ]);
 

@@ -87,6 +87,7 @@
     {{-- UpdateOrCreate Modal --}}
     @include('user.meetings.modal')
     @include('user.meetings.user_modal')
+    @include('partials.confirm-delete-modal')
 @endsection
 
 @push('js')

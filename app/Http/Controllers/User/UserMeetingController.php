@@ -40,6 +40,7 @@ class UserMeetingController extends UserBaseController
         $data['table_data_url'] = route($this->base_route_path . '.table');
         $data['route'] = $this->base_route_path;
         $data['rooms'] = getAuthUser('web')->rooms;
+        // dd(getAuthUser('web')->plan);
         return view($this->base_view_path . '.index', $data);
     }
 
@@ -58,6 +59,12 @@ class UserMeetingController extends UserBaseController
     public function quickStore(StoreQuickMeetingRequest $request)
     {
         return $this->service->createQuickMeeting($request);
+    }
+
+
+    public function destroy(Request $request , $id)
+    {
+        return  $this->service->delete(decrypt($id));
     }
 
     public function toggleStatus(Request $request)

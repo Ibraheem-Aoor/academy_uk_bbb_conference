@@ -24,15 +24,15 @@
                    <a href="{{ route('user.recording.index') }}"><i
                            class="ti ti-video me-2"></i>{{ __('general.recordings') }}</a>
                </li>
-               @if(!getAuthUser('web')->is_room_manager)
-               <li class="">
-                   <a href="{{ route('user.plan.index') }}"><i
-                           class="ti ti-cash me-2"></i>{{ __('general.subscriptions') }}</a>
-               </li>
                <li class="">
                    <a href="{{ route('user.room_managers.index') }}"><i
-                           class="ti ti-video me-2"></i>{{ __('general.managers') }}</a>
+                           class="ti ti-users me-2"></i>{{ __('general.managers') }}</a>
                </li>
+               @if (!getAuthUser('web')->is_room_manager)
+                   <li class="">
+                       <a href="{{ route('user.plan.index') }}"><i
+                               class="ti ti-cash me-2"></i>{{ __('general.subscriptions') }}</a>
+                   </li>
                @endif
                <li class="sidebar-dropdown d-none">
                    <a href="javascript:void(0)"><i class="ti ti-license me-2"></i>Example</a>

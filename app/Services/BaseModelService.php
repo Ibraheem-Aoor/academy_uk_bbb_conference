@@ -114,6 +114,7 @@ abstract class BaseModelService
             $model = $this->find($id);
             $model->delete();
         } catch (Throwable $e) {
+            dd($e);
             Log::error("Fail with Deleted in Model : " . get_class($this) . " erorr:" . $e->getMessage());
             return generateResponse(status: false, message: __('response.faild_delete'));
         }

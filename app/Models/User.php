@@ -35,6 +35,7 @@ class User extends Authenticatable
         'plan_id',
         'is_room_manager',
         'password_text',
+        'status',
         'created_by',
     ];
 

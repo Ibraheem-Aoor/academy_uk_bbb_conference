@@ -85,7 +85,7 @@ class LoginController extends Controller
      */
     public function logout(Request $request)
     {
-        $redirect = !is_null(getAuthUser('web')) ? route('user.login') : route('admin.login');
+        $redirect = !is_null(getAuthUser('web')) ? route('user.login') : route('admin.dashboard');
         $this->guard()->logout();
 
         $request->session()->invalidate();

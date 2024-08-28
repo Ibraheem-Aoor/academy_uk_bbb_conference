@@ -30,17 +30,20 @@ class UserMeetingTransformer extends TransformerAbstract
 
     public function getActions($meeting)
     {
-        return '<div class="text-end p-3">
+        return '<div class="d-flex justify-content-between align-items-center">
         <a title="Add Participants" data-bs-toggle="modal" data-bs-target="#add-meeting-users-modal" data-action="' . route('user.meeting.add_user', ($meeting->id)) . '"
         data-method="POST" data-header-title="' . __('general.add_meeting_users', ['meeting' => $meeting->name]) . '"
         href="#" class="btn btn-sm btn-primary ms-2 editParticipantsBtn" data-fetchUrl="' . route('user.meeting.get_participants', encrypt($meeting->id)) . '"
         data-actionUrl="' . route('user.meeting.update_participants', encrypt($meeting->id)) . '"
          onclick="fetchParticipants(this);">
-        <img loading="lazy" width="10" height="10" src="' . asset('assets/user/libs/feather-icons/icons/users.svg') . '"><i class="fa fa-eye"></i></a> &nbsp;
+        <img loading="lazy" width="10" height="10" src="' . asset('assets/user/libs/feather-icons/icons/users.svg') . '"><i class="fa fa-eye"></i></a>&nbsp;
         <a title="Excel" class="btn btn-sm btn-info" href="' . route('user.meeting.export', $meeting->id) . '">
-        <img loading="lazy" width="10" height="10" src="' . asset('assets/user/libs/feather-icons/icons/file.svg') . '"><i class="fa fa-eye"></i></a>
+        <img loading="lazy" width="10" height="10" src="' . asset('assets/user/libs/feather-icons/icons/file.svg') . '"><i class="fa fa-eye"></i></a>&nbsp;
         <a  title="Public Link" class="btn btn-sm btn-success link-to-copy" href="#"  data-url="' . route('site.user.join_public_meeting', ($meeting->meeting_id)) . '">
         <img loading="lazy" width="10" height="10" src="' . asset('assets/user/libs/feather-icons/icons/copy.svg') . '"></a>
+        <a data-bs-toggle="modal" data-bs-target="#delete-modal" data-delete-url="' . route('user.meeting.destroy', encrypt($meeting->id)) . '"
+        data-message="' . __('general.confirm_delete') . '" data-name="' . $meeting->name . '" id="row-' . $meeting->id . '"
+        class="btn btn-sm btn-danger ms-2"><img loading="lazy" width="10" height="10" src="' . asset('assets/user/libs/feather-icons/icons/trash.svg') . '"><i class="fa fa-trash"></i></a>
         </div>';
     }
 

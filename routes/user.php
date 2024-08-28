@@ -33,6 +33,7 @@ Route::middleware('auth:web')->group(function () {
     Route::prefix('meetings')->as('meeting.')->group(function () {
         Route::get('', [UserMeetingController::class, 'index'])->name('index');
         Route::post('store', [UserMeetingController::class, 'store'])->name('store');
+        Route::delete('delete/{id}', [UserMeetingController::class, 'destroy'])->name('destroy');
         Route::post('store/quick', [UserMeetingController::class, 'quickStore'])->name('create_quick');
         Route::get('/status-toggle', [UserMeetingController::class, 'toggleStatus'])->name('toggle_status');
         Route::get('table', [UserMeetingController::class, 'getTableData'])->name('table');
