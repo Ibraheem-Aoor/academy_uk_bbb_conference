@@ -18,9 +18,10 @@ class IsActiveMeeting
      */
     public function handle(Request $request, Closure $next , $model = null)
     {
-        $meeting = UserMeeting::query()->where('meeting_id' , ($request->route('meeting')))->firstOrFail();
         if($model == 'Meeting'){
             $meeting = Meeting::query()->findOrFail(decrypt($request->route('meeting')));
+        }else{
+            $meeting = UserMeeting::query()->where('meeting_id' , ($request->route('meeting')))->firstOrFail();
         }
         return $meeting->status ? $next($request) : abort(404);
     }

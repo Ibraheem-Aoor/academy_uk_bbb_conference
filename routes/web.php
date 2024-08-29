@@ -26,7 +26,6 @@ Route::group([
     // Join Meeting Routes.
     Route::group(['prefix' => 'meeting'], function () {
         Route::middleware('is_active_meeting:Meeting')->group(function () {
-
             Route::get('join/{meeting}/{user}', [HomeController::class, 'joinMeetingShowForm'])->name('join_meeting');
             Route::get('join-public/{meeting}/', [HomeController::class, 'joinPublicMeetingShowForm'])->name('join_public_meeting');
             Route::post('join/{meeting}/{user}', [HomeController::class, 'joinMeeting'])->name('join_meeting.submit');
