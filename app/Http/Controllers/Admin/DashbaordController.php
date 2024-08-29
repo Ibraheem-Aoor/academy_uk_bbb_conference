@@ -7,6 +7,10 @@ use App\Http\Controllers\Controller;
 use App\Mail\TestMail;
 use App\Models\Meeting;
 use App\Models\Participant;
+use App\Models\User;
+use App\Models\User\UserMeeting;
+use App\Models\User\UserMeetingParticipant;
+use App\Models\User\UserMeetingRoom;
 use App\Models\Webshop;
 use App\Notifications\MeetingScheduled;
 use App\Services\Api\BolService;
@@ -21,6 +25,10 @@ class DashbaordController extends Controller
     {
         $data['meetings_count'] = Meeting::query()->count();
         $data['participants_count'] = Participant::query()->count();
+        $data['users_meeting_count'] = UserMeeting::query()->count();
+        $data['user_meeting_participants_count'] = UserMeetingParticipant::query()->count();
+        $data['user_room_count'] = UserMeetingRoom::query()->count();
+        $data['user_room_manager_count'] = User::query()->isRoomManager(1)->count();
         return view('admin.dashboard', $data);
     }
 
