@@ -41,6 +41,8 @@ Route::middleware(['auth:web' , 'active_account'])->group(function () {
         Route::post('add-user/{meeting}', [ParticipantController::class, 'store'])->name('add_user');
         Route::get('/{meeting}/participants', [ParticipantController::class, 'getParticipants'])->name('get_participants');
         Route::post('/{id}/update-participants/', [ParticipantController::class, 'updateParticipants'])->name('update_participants');
+        Route::get('join_as_moderator/{meeting}', [UserMeetingController::class, 'joinAsModerator'])->name('join_as_moderator');
+
     });
     // User Subscription
     Route::prefix('subscription')->as('plan.')->group(function () {
@@ -61,5 +63,4 @@ Route::middleware(['auth:web' , 'active_account'])->group(function () {
     });
 
 });
-// Lock Route
-Route::get('account-locked' , [DashboardController::class , 'lockAccount'])->name('account_locked');
+// Lock Routeq');

@@ -40,7 +40,9 @@ class UserMeetingTransformer extends TransformerAbstract
         <a title="Excel" class="btn btn-sm btn-info" href="' . route('user.meeting.export', $meeting->id) . '">
         <img loading="lazy" width="10" height="10" src="' . asset('assets/user/libs/feather-icons/icons/file.svg') . '"><i class="fa fa-eye"></i></a>&nbsp;
         <a  title="Public Link" class="btn btn-sm btn-success link-to-copy" href="#"  data-url="' . route('site.user.join_public_meeting', ($meeting->meeting_id)) . '">
-        <img loading="lazy" width="10" height="10" src="' . asset('assets/user/libs/feather-icons/icons/copy.svg') . '"></a>
+        <img loading="lazy" width="10" height="10" src="' . asset('assets/user/libs/feather-icons/icons/copy.svg') . '"></a>&nbsp;
+            <a  title="Join Meeting"  class="btn btn-sm btn-success " href="' . route('user.meeting.join_as_moderator', encrypt($meeting->id)) . '" target="__blank">
+        <img loading="lazy" width="10" height="10" src="' . asset('assets/user/libs/feather-icons/icons/arrow-right.svg') . '"></a>
         <a data-bs-toggle="modal" data-bs-target="#delete-modal" data-delete-url="' . route('user.meeting.destroy', encrypt($meeting->id)) . '"
         data-message="' . __('general.confirm_delete') . '" data-name="' . $meeting->name . '" id="row-' . $meeting->id . '"
         class="btn btn-sm btn-danger ms-2"><img loading="lazy" width="10" height="10" src="' . asset('assets/user/libs/feather-icons/icons/trash.svg') . '"><i class="fa fa-trash"></i></a>

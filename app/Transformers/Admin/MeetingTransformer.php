@@ -35,7 +35,9 @@ class MeetingTransformer extends TransformerAbstract
         <a title="Excel" class="btn btn-sm btn-info" href="' . route('admin.meeting.export', $meeting->id) . '">
         <img loading="lazy" width="10" height="10" src="' . asset('assets/user/libs/feather-icons/icons/file.svg') . '"><i class="fa fa-eye"></i></a>
         <a  title="Public Link" class="btn btn-sm btn-success link-to-copy" href="#"  data-url="' . route('site.join_public_meeting', encrypt($meeting->id)) . '">
-        <img loading="lazy" width="10" height="10" src="' . asset('assets/user/libs/feather-icons/icons/copy.svg') . '"></a>
+        <img loading="lazy" width="10" height="10" src="' . asset('assets/user/libs/feather-icons/icons/copy.svg') . '"></a>&nbsp;
+        <a  title="Join Meeting"  class="btn btn-sm btn-success " href="' . route('admin.meeting.join_as_moderator', encrypt($meeting->id)) . '" target="__blank">
+        <img loading="lazy" width="10" height="10" src="' . asset('assets/user/libs/feather-icons/icons/arrow-right.svg') . '"></a>
         </div>';
     }
 

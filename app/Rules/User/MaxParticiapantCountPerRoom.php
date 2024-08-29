@@ -31,24 +31,22 @@ class MaxParticiapantCountPerRoom implements Rule
      */
     public function passes($attribute, $value)
     {
-        $total_max_participants = ($this->room->meetings()?->sum('max_participants') ?? 0) + $value;
-        $total_room_meetings = $this->room->meetings()->count() + 1;
-        if ($this->room->max_meetings < $total_room_meetings || $this->room->max_meetings < $this->room->meetings()->count()) {
+        $maxRoomParticipants = $attribute === 'room' ? $this->room->max_participants : $value;
+
+        $totalParticipants = $this->room->meetings()->sum('max_participants') + $maxRoomParticipants;
+        $totalRoomMeetings = $this->room->meetings()->count() + 1;
+
+        if ($this->room->max_meetings < $totalRoomMeetings) {
             $this->message = __('general.max_meetings_per_room_reached', ['count' => $this->room->max_meetings]);
             return false;
         }
-        if (
-            $attribute == 'max_participants'  && $total_max_participants > $this->room->max_participants
-        ) {
+
+        if ($totalParticipants > $this->room->max_participants) {
             $this->message = __('general.max_particpants_per_room_reached', ['count' => $this->room->max_participants]);
             return false;
         }
-        if (
-            $this->room->max_participants >= $value
-        ) {
-            return true;
-        }
-        return false;
+
+        return true;
     }
 
     /**

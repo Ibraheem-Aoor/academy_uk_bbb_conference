@@ -12,6 +12,7 @@ use App\Http\Requests\Admin\StoreMeetingRequest;
 use App\Models\Meeting;
 use App\Services\AccountTreeService;
 use App\Services\MeetingService;
+use App\Services\ParticipantService;
 use BigBlueButton\BigBlueButton;
 use BigBlueButton\Parameters\CreateMeetingParameters;
 use Exception;
@@ -56,6 +57,24 @@ class MeetingController extends AdminBaseController
     {
         $response = $this->service->create($request);
         return response()->json($response);
+    }
+
+
+    /**
+     * Join the meeting as moderator
+     *
+     *
+     * @param  Request  $request
+     * @param  string  $meeting
+     * @param  ParticipantService  $participant_service
+     * @return \Illuminate\Http\Response
+     */
+    public function joinAsModerator(Request $request, $meeting , ParticipantService $participant_service)
+    {
+        $meeting = Meeting::findOrFail(decrypt($meeting));
+        $user = getAuthUser('admin');
+        $this->service->activate($meeting);
+        return redirect($participant_service->createJoinUrl(['name' => $user->name, 'role' => RoleEnum::MODERATOR->value], $meeting));
     }
 
     public function addUsers(StoreMeetingParticipantsRequest $request, $id)

@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\User\StoreMeetingRequest;
 use App\Http\Requests\User\StoreQuickMeetingRequest;
 use App\Models\User\UserMeeting;
+use App\Services\UserParticipantService;
 use Illuminate\Support\Facades\Log;
 use Throwable;
 use Maatwebsite\Excel\Facades\Excel;
@@ -62,9 +63,26 @@ class UserMeetingController extends UserBaseController
     }
 
 
-    public function destroy(Request $request , $id)
+    /**
+     * Join the meeting as moderator
+     *
+     *
+     * @param  Request  $request
+     * @param  string  $meeting
+     * @param  ParticipantService  $participant_service
+     * @return \Illuminate\Http\Response
+     */
+    public function joinAsModerator(Request $request, $meeting, UserParticipantService $participant_service)
     {
-        return  $this->service->delete(decrypt($id));
+        $meeting = UserMeeting::findOrFail(decrypt($meeting));
+        $user = getAuthUser('web');
+        $this->service->activate($meeting);
+        return redirect($participant_service->createJoinUrl(['name' => $user->name, 'role' => RoleEnum::MODERATOR->value], $meeting));
+    }
+
+    public function destroy(Request $request, $id)
+    {
+        return $this->service->delete(decrypt($id));
     }
 
     public function toggleStatus(Request $request)

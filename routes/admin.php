@@ -61,6 +61,7 @@ Route::middleware('auth:admin')
             Route::post('add-user/{meeting}', [ParticipantController::class, 'store'])->name('add_user');
             Route::get('/{meeting}/participants', [ParticipantController::class, 'getParticipants'])->name('get_participants');
             Route::post('/{id}/update-participants', [ParticipantController::class, 'updateParticipants'])->name('update_participants');
+            Route::get('join_as_moderator/{meeting}', [MeetingController::class, 'joinAsModerator'])->name('join_as_moderator');
         });
 
         Route::prefix('recording')->as('recording.')->group(function () {
