@@ -47,10 +47,6 @@ Route::middleware('auth:admin')
             Route::delete('destroy/{id}', [UserController::class, 'destroy'])->name('destroy');
             Route::get('/status-toggle', [UserController::class, 'toggleStatus'])->name('toggle_status');
             Route::get('table', [UserController::class, 'getTableData'])->name('table');
-            Route::get('export/{meeting}', [UserController::class, 'export'])->name('export');
-            Route::post('add-user/{meeting}', [ParticipantController::class, 'store'])->name('add_user');
-            Route::get('/{meeting}/participants', [ParticipantController::class, 'getParticipants'])->name('get_participants');
-            Route::post('/{id}/update-participants', [ParticipantController::class, 'updateParticipants'])->name('update_participants');
         });
         Route::prefix('meetings')->as('meeting.')->group(function () {
             Route::get('', [MeetingController::class, 'index'])->name('index');
