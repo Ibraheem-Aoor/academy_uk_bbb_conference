@@ -33,6 +33,7 @@ class ParticipantController extends AdminBaseController
 
     public function store(StoreMeetingParticipantsRequest $request, $id)
     {
+        dd($request->all());
         return $this->service->create($request);
     }
 

@@ -13,9 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('participants', function (Blueprint $table) {
-            $table->text('bridge_url')->nullable()->after('join_url');
-            $table->text('bridge_password')->nullable()->after('join_url');
+        Schema::table('meetings', function (Blueprint $table) {
+            $table->softDeletes();
         });
     }
 
@@ -26,8 +25,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('participants', function (Blueprint $table) {
-            $table->dropColumn(['bridge_url' , 'bridge_password']);
+        Schema::table('meetings', function (Blueprint $table) {
+            $table->dropSoftDeletes();
         });
     }
 };

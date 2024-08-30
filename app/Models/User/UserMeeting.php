@@ -22,6 +22,12 @@ class UserMeeting extends Model
 
     protected $guarded = ['id', '_token'];
 
+
+    /**
+     * Register the observer on the model.
+     *
+     * @return void
+     */
     protected static function booted()
     {
         static::observe(UserMeetingObserver::class);
@@ -29,24 +35,46 @@ class UserMeeting extends Model
 
 
 
+    /**
+     * Get all participants that belong to this meeting
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function participants(): HasMany
     {
         return $this->hasMany(UserMeetingParticipant::class, 'meeting_id');
     }
 
+    /**
+     * Get all participants created by user
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function createdParticipants(): HasMany
     {
         return $this->hasMany(UserMeetingParticipant::class, 'meeting_id')->whereNotNull('created_by');
     }
 
 
+    /**
+     * The user that created this meeting
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id');
     }
 
+    /**
+     * The room that this meeting belongs to
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function room(): BelongsTo
     {
         return $this->belongsTo(UserMeetingRoom::class, 'room_id');
     }
+
+
 }

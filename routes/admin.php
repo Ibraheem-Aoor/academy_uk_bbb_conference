@@ -54,7 +54,6 @@ Route::middleware('auth:admin')
             Route::get('/status-toggle', [MeetingController::class, 'toggleStatus'])->name('toggle_status');
             Route::get('table', [MeetingController::class, 'getTableData'])->name('table');
             Route::get('export/{meeting}', [MeetingController::class, 'export'])->name('export');
-            Route::post('add-user/{meeting}', [ParticipantController::class, 'store'])->name('add_user');
             Route::get('/{meeting}/participants', [ParticipantController::class, 'getParticipants'])->name('get_participants');
             Route::post('/{id}/update-participants', [ParticipantController::class, 'updateParticipants'])->name('update_participants');
             Route::get('join_as_moderator/{meeting}', [MeetingController::class, 'joinAsModerator'])->name('join_as_moderator');

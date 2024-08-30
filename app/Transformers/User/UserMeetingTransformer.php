@@ -31,7 +31,7 @@ class UserMeetingTransformer extends TransformerAbstract
     public function getActions($meeting)
     {
         return '<div class="d-flex justify-content-between align-items-center">
-        <a title="Add Participants" data-bs-toggle="modal" data-bs-target="#add-meeting-users-modal" data-action="' . route('user.meeting.add_user', ($meeting->id)) . '"
+        <a title="Add Participants" data-bs-toggle="modal" data-bs-target="#add-meeting-users-modal" 
         data-method="POST" data-header-title="' . __('general.add_meeting_users', ['meeting' => $meeting->name]) . '"
         href="#" class="btn btn-sm btn-primary ms-2 editParticipantsBtn" data-fetchUrl="' . route('user.meeting.get_participants', encrypt($meeting->id)) . '"
         data-actionUrl="' . route('user.meeting.update_participants', encrypt($meeting->id)) . '"

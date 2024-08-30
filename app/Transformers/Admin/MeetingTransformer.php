@@ -28,7 +28,7 @@ class MeetingTransformer extends TransformerAbstract
     public function getActions($meeting)
     {
         return '<div class="text-end p-3">
-        <a title="Add Participants" data-bs-toggle="modal" data-bs-target="#add-meeting-users-modal" data-action="' . route('admin.meeting.add_user', ($meeting->id)) . '"
+        <a title="Add Participants" data-bs-toggle="modal" data-bs-target="#add-meeting-users-modal" 
         data-method="POST" data-header-title="' . __('general.add_meeting_users', ['meeting' => $meeting->name]) . '"
         href="#" class="btn btn-sm btn-primary ms-2 editParticipantsBtn" data-meetingId="' . $meeting->id . '" onclick="fetchParticipants(this);">
         <img loading="lazy" width="10" height="10" src="' . asset('assets/user/libs/feather-icons/icons/users.svg') . '"><i class="fa fa-eye"></i></a> &nbsp;

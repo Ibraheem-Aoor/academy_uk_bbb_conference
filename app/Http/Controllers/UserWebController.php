@@ -45,6 +45,7 @@ class UserWebController extends Controller
     }
     public function joinPublicMeetingShowForm($meeting)
     {
+
         $db_meeting = UserMeeting::query()->where('meeting_id', ($meeting))->firstOrFail();
         $data = [
             'meeting' => $db_meeting,
