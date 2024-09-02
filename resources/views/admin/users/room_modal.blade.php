@@ -1,4 +1,4 @@
-<div class="modal fade modal-lg" id="{{ $room_modal }}" tabindex="-1" aria-labelledby="LoginForm-title" aria-hidden="true">
+<div class="modal fade modal-xl" id="{{ $room_modal }}" tabindex="-1" aria-labelledby="LoginForm-title" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content rounded shadow border-0">
             <form name="user-rooms-form" id="user-rooms-form" class="custom-form" method="POST">
@@ -9,13 +9,15 @@
                 </div>
                 <div class="modal-body">
                     <div class="p-3 rounded box-shadow">
-                        <table class="table" id="roomTable">
+                        <table class="table table-responsive" id="roomTable">
                             <thead>
                                 <tr>
                                     <th>{{ __('general.name') }}</th>
                                     <th>{{ __('general.plan.max_meetings') }}</th>
                                     <th>{{ __('general.plan.max_participants') }}</th>
                                     <th>{{ __('general.plan.max_storage_allowed') }}</th>
+                                    <th>{{ __('general.start_date') }}</th>
+                                    <th>{{ __('general.end_date') }}</th>
                                     <th>{{ __('general.actions') }}</th>
                                 </tr>
                             </thead>

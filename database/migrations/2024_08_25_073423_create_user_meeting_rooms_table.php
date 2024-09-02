@@ -19,6 +19,8 @@ return new class extends Migration
             $table->integer('max_meetings')->comment('per room');
             $table->integer('max_participants')->comment('per room');
             $table->integer('max_storage_allowed')->comment('per room');
+            $table->date('start_date');
+            $table->date('end_date');
             $table->timestamps();
         });
     }

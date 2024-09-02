@@ -70,70 +70,37 @@ class User extends Authenticatable
         return $this->belongsTo(Plan::class, 'plan_id');
     }
 
+    /**
+     * Get the rooms the user is allowed to enter.
+     *
+     * @return BelongsToMany
+     */
     public function rooms(): BelongsToMany
+    {
+        return $this->belongsToMany(UserMeetingRoom::class, 'user_rooms', 'user_id', 'room_id')->wherePivot('status', 1);
+    }
+    /**
+     * Get all rooms the user is associated with, regardless of whether or not
+     * the user is currently allowed to enter the room.
+     *
+     * @return BelongsToMany
+     */
+    public function allRooms(): BelongsToMany
     {
         return $this->belongsToMany(UserMeetingRoom::class, 'user_rooms', 'user_id', 'room_id');
     }
 
 
+    /**
+     * Scope a query to only include users that are room managers.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param int $value
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
     public function scopeIsRoomManager($query, $value = 1)
     {
         return $query->where('is_room_manager', $value);
     }
 
-    /**
-     * Check User Subscription and disable if needed
-     */
-    public function updateSubscriptionStatus()
-    {
-        $this->status = 1;
-        if (!$this->isPlanActive()) {
-            $this->status = 0;
-            info('Expired Subscription for User: ' . 'Name: ' . $this->name . ' ID: ' . $this->id);
-        }
-        $this->save();
-    }
-    /**
-     * Check if the user's plan is currently active.
-     *
-     * This function checks the renewal date of the user's plan and compares it
-     * to the current date. If the renewal date is not set, it uses the plan's
-     * creation date instead. It then checks the plan type and calculates the
-     * expiration date based on the plan type. If the expiration date is in the
-     * future, the plan is considered active.
-     *
-     * @return bool True if the plan is active, false otherwise.
-     */
-    protected function isPlanActive(): bool
-    {
-        if(is_null($this->plan))
-        {
-            return false;
-        }
-        $last_history = $this->plan?->history()?->latest()?->first();
-        $renewal_date = $last_history?->renewed_at;
-        $plan_creation_date = $this->plan?->created_at;
-        $date_to_compate = $renewal_date ?: $plan_creation_date;
-        switch ($this->plan?->type) {
-            case PlanTypeEnum::DAILY:
-                return $date_to_compate->addDay()->isFuture();
-            case PlanTypeEnum::WEEKLY:
-                return $date_to_compate->addWeek()->isFuture();
-            case PlanTypeEnum::MONTHLY:
-                return $date_to_compate->addMonth()->isFuture();
-            case PlanTypeEnum::ANNUALY:
-                return $date_to_compate->addDays(365)->isFuture();
-            default:
-                return false;
-        }
-        return false;
-    }
-    // public function getPasswordTextAttribute()
-    // {
-    //     return Crypt::decryptString($this->attributes['password_text']);
-    // }
-    // public function setPasswordTextAttribute($value)
-    // {
-    //     $this->attributes['password_text'] = Crypt::encryptString($value);
-    // }
 }

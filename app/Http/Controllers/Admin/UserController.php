@@ -119,6 +119,6 @@ class UserController extends AdminBaseController
     public function getRooms($user , Request $request)
     {
         $user = $this->service->find(decrypt($user));
-        return response()->json(['rooms' => $user->rooms]);
+        return response()->json(['rooms' => $user->allRooms]);
     }
 }

@@ -2,7 +2,9 @@
 
 namespace App\Console;
 
+use App\Console\Commands\CheckUserSubscription;
 use App\Console\Commands\DownloadPresentations;
+use App\Console\Commands\EnableUserSubscription;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -11,6 +13,7 @@ class Kernel extends ConsoleKernel
 
     protected $command = [
         DownloadPresentations::class,
+        CheckUserSubscription::class,
     ];
 
     /**
@@ -22,7 +25,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         // $schedule->command('download:presentations')->everyMinute();
-        // $schedule->command('user-account:check')->everyMinute();
+        $schedule->command('user-rooms:check')->everyMinute();
     }
 
     /**

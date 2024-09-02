@@ -3,6 +3,8 @@
 namespace App\Console\Commands;
 
 use App\Models\User;
+use App\Models\User\UserMeetingRoom;
+use App\Models\User\UserRoom;
 use Illuminate\Console\Command;
 
 class CheckUserSubscription extends Command
@@ -12,16 +14,17 @@ class CheckUserSubscription extends Command
      *
      * @var string
      */
-    protected $signature = 'user-account:check';
+    protected $signature = 'user-rooms:check';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Check User Accounts And Disable If Subscription Expired';
+    protected $description = 'Disable User Expired Rooms and Enable Active Rooms';
 
-    public function __construct(){
+    public function __construct()
+    {
         parent::__construct();
     }
 
@@ -32,12 +35,10 @@ class CheckUserSubscription extends Command
      */
     public function handle()
     {
-        User::query()->chunk(20, function ($users) {
-            foreach ($users as $user) {
-                $user->updateSubscriptionStatus();
-            }
-        });
-        info('Update Users Subscription Status Command Done');
+        $active_rooms = UserMeetingRoom::query()->where('start_date', today()->toDateString())->pluck('id');
+        $expired_rooms = UserMeetingRoom::query()->where('end_date', today()->toDateString())->pluck('id');
+        UserRoom::query()->whereIn('room_id', $active_rooms)->update(['status' => 1]);
+        UserRoom::query()->whereIn('room_id', $expired_rooms)->update(['status' => 0]);
         return Command::SUCCESS;
     }
 }

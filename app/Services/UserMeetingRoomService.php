@@ -9,6 +9,7 @@ use Yajra\DataTables\Facades\DataTables;
 use App\Models\Plan;
 use App\Models\User;
 use App\Models\User\UserMeetingRoom;
+use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -49,14 +50,27 @@ class UserMeetingRoomService extends BaseModelService
     {
         try {
             DB::beginTransaction();
+
             $rooms = $this->getModelAttributes($request)['rooms'];
             $user = User::query()->findOrFail($user_id);
+            $rooms_to_sync = [];
+
             foreach ($rooms as $room) {
-                $room_to_save =  $this->findOrCreate($room);
+                // Find or create the room and save it
+                $room_to_save = $this->findOrCreate($room);
                 $room_to_save->fill($room)->save();
-                $rooms_to_sync[] = $room_to_save->id;
+
+                // Determine the status based on the room's start date
+                $start_date = $room_to_save->start_date;
+                $status = Carbon::today()->isSameDay($start_date) ? 1 : 0;
+
+                // Prepare the sync data with the status
+                $rooms_to_sync[$room_to_save->id] = ['status' => $status];
             }
-            $user->rooms()->sync(array_values($rooms_to_sync));
+
+            // Sync the rooms with the status in the pivot table
+            $user->allRooms()->sync($rooms_to_sync);
+
             DB::commit();
             return generateResponse(status: true, modal_to_hide: $this->model->modal, table_reload: true, table: '#myTable');
         } catch (Throwable $e) {
@@ -74,6 +88,8 @@ class UserMeetingRoomService extends BaseModelService
             'max_meetings' => $room['max_meetings'],
             'max_participants' => $room['max_participants'],
             'max_storage_allowed' => $room['max_storage_allowed'],
+            'start_date' => $room['start_date'],
+            'end_date' => $room['end_date'],
         ]);
     }
 

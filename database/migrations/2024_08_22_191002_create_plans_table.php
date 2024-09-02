@@ -14,7 +14,6 @@ return new class extends Migration {
     {
         Schema::create('plans', function (Blueprint $table) {
             $table->id();
-            $table->string('type')->comment('monthly, yearly');
             $table->integer('parallel_rooms')->default(1)->comment('per plan');
             $table->boolean('is_backup_enabled')->default(false)->comment('per plan');
             $table->timestamps();

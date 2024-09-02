@@ -100,6 +100,6 @@
         <script src="{{ asset('assets/user/js/datatable-en.js') }}"></script>
     @endif
     <script src="https://cdn.datatables.net/2.0.0/js/dataTables.min.js"></script>
-    <script src="{{ asset('assets/user/js/admin/users.js') }}?v=0.05"></script>
+    <script src="{{ asset('assets/user/js/admin/users.js') }}?v=0.07"></script>
 
 @endpush

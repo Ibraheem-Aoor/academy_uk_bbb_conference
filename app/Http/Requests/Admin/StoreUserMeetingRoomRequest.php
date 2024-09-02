@@ -22,6 +22,8 @@ class StoreUserMeetingRoomRequest extends BaseAdminRequest
             'rooms.*.max_meetings' => 'required|numeric|integer',
             'rooms.*.max_participants' => 'required|numeric|integer',
             'rooms.*.max_storage_allowed' => 'required|numeric|integer',
+            'rooms.*.start_date' => 'required|date|after_or_equal:today',
+            'rooms.*.end_date' => 'required|date|after:start_date',
 
         ];
     }
@@ -38,6 +40,8 @@ class StoreUserMeetingRoomRequest extends BaseAdminRequest
             'rooms.*.max_participants.required' => 'The max participants field is required',
             'rooms.*.max_participants.numeric' => 'The max participants field must be a numeric value',
             'rooms.*.max_participants.integer' => 'The max participants field must be an integer value',
+            'rooms.*.start_date.after_or_equal' => 'The start date must today or after',
+            'rooms.*.end_date.after' => 'The end date must be after the start date',
         ];
     }
 

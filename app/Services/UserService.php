@@ -33,12 +33,12 @@ class UserService extends BaseModelService
             DB::beginTransaction();
             $data = $this->getModelAttributes($request);
             $plan = Plan::query()->create($data['plan']);
-            $plan->history()->create(['renewed_at' => null]);
             $data['plan_id'] = $plan->id;
             $this->model::query()->create($data);
             DB::commit();
             return generateResponse(status: true, modal_to_hide: $this->model->modal, table_reload: true, table: '#myTable');
         } catch (Throwable $e) {
+            dd($e);
             DB::rollBack();
             Log::error("Fail with adding participants: " . $e->getMessage());
             return generateResponse(status: false, message: __('response.faild_created'));
@@ -133,7 +133,6 @@ class UserService extends BaseModelService
         $data = $request->toArray();
         $data['password'] = Hash::make($data['password']);
         $data['plan'] = [
-            'type' => $data['type'],
             'is_backup_enabled' => @$data['is_backup_enabled'] == 'on',
             'parallel_rooms' => $data['parallel_rooms'],
         ];

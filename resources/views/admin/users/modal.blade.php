@@ -56,20 +56,6 @@
                                 </div>
                             </div><!--end col-->
 
-                            <!-- Plan Type -->
-                            <div class="col-6">
-                                <div class="mb-3">
-                                    <label class="form-label">{{ __('general.plan.type') }}<span
-                                            class="text-danger">*</span></label>
-                                    <div class="form-icon position-relative">
-                                        <select name="type" id="type" class="form-control">
-                                            @foreach ($plan_types as $planType)
-                                                <option value="{{ $planType->value }}">{{ $planType->value }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-                            </div><!--end col-->
 
                             <div class="col-6">
                                 <div class="mb-3">

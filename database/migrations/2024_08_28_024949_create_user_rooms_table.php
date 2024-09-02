@@ -19,6 +19,7 @@ return new class extends Migration
             $table->foreign('user_id')->references('id')->on('users')->cascadeOnDelete();
             $table->unsignedBigInteger('room_id');
             $table->foreign('room_id')->references('id')->on('user_meeting_rooms')->cascadeOnDelete();
+            $table->boolean('status')->default(0);
             $table->timestamps();
         });
     }
