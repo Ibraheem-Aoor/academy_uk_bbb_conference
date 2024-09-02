@@ -65,6 +65,10 @@
                                                 <li class="h6 text-muted mb-0"><span class="text-primary h5 me-2"><i
                                                             class="uil uil-check-circle align-middle"></i></span>{{ $room->max_storage_allowed }}
                                                     GB Storage</li>
+
+                                                <li class="h6 text-muted mb-0 @if($room->end_date == today()->toDateString()) text-danger @endif"><span class="text-primary h5 me-2"><i
+                                                            class="uil uil-check-circle align-middle"></i></span>Expiry Date: {{ $room->end_date }}
+                                                    </li>
                                                 @if ($plan->is_backup_enabled)
                                                     <li class="h6 text-muted mb-0"><span class="text-primary h5 me-2"><i
                                                                 class="uil uil-check-circle align-middle"></i></span>Auto

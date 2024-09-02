@@ -58,11 +58,11 @@ return [
         'submit' => 'Create Plan',
         'parallel_rooms' => 'Paralell Rooms',
     ],
-    'users' => 'Users',
+    'users' => 'Customers',
     'create_quick_meeting' => 'Create Quick Meeting',
-    'create_new_user' => 'Create New User',
-    'edit_user' => 'Edit User :user',
-    'update_rooms_for_user' => 'Update Rooms For User :user',
+    'create_new_user' => 'Create New Customer',
+    'edit_user' => 'Edit Customer :user',
+    'update_rooms_for_user' => 'Update Rooms For Customer :user',
     'room' => 'Room',
     'max_particpants_count' => 'Max Number Of Participants Allowed Is: :count',
     'max_particpants_per_room_reached' => 'Max Number Of Participants Per Room Is: :count',
@@ -77,6 +77,9 @@ return [
     'rooms' => 'Rooms',
     'created_by' => 'Created By',
     'renew_plan_confirmation' => 'Are you sure you want to renew subscription?',
-    'renew_plan_for_user' => 'Renew Subscription For User :user',
+    'renew_plan_for_user' => 'Renew Subscription For Customer :user',
+    'create_new_manager' => 'Create New Manager',
+    'edit_manager' => 'Edit Manager: :manager',
+
 
 ];

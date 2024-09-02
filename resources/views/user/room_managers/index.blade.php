@@ -40,7 +40,7 @@
                         <a class="btn btn-md btn-primary text-white m-1" data-bs-toggle="modal"
                             data-bs-target="#{{ $modal }}" data-action="{{ route($route . '.store') }}"
                             data-method="POST" data-is-create="1"
-                            data-header-title= "{{ __('general.create_new_meeting') }}">{{ __('general.new') }}</a>
+                            data-header-title= "{{ __('general.create_new_manager') }}">{{ __('general.new') }}</a>
                     </li>
                 </ul>
             </nav>
@@ -107,7 +107,7 @@
                     dropdownParent: $(modal),
                 });
             });
-            
+
         </script>
 
     @endpush

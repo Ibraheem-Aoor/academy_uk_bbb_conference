@@ -46,7 +46,7 @@ class UserTransformer extends TransformerAbstract
                 href="#">
                 <img loading="lazy" width="10" height="10" src="' . asset('assets/user/libs/feather-icons/icons/home.svg') . '">
             </a>&nbsp;
-            </a> &nbsp;  <a title="Renew Subscription" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#renew-plan-modal"
+            </a> &nbsp;  <a title="Renew Subscription" class="btn btn-sm btn-success d-none" data-bs-toggle="modal" data-bs-target="#renew-plan-modal"
                 data-action="' . route('admin.user.renew_plan', encrypt($user->id)) . '"
                 data-method="POST"
                 data-header-title="' . __('general.renew_plan_for_user', ['user' => $user->name]) . '"

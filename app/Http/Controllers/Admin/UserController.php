@@ -43,7 +43,7 @@ class UserController extends AdminBaseController
      */
     public function index()
     {
-        $data['page_title'] = 'Users';
+        $data['page_title'] = __('general.users');
         $data['table_data_url'] = route($this->base_route_path . '.table');
         $data['route'] = $this->base_route_path;
         $data['modal'] = $this->service->getModal();
@@ -72,7 +72,7 @@ class UserController extends AdminBaseController
 
     public function renewPlan($user)
     {
-        return $this->service->renewPlan($user);
+        // return $this->service->renewPlan($user);
     }
 
 

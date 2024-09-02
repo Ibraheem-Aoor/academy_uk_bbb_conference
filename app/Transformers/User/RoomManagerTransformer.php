@@ -30,7 +30,7 @@ class  RoomManagerTransformer extends TransformerAbstract
         return '<div class="text-end p-3">
             <a title="Edit" class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="' . $user->room_manager_modal . '"
                 data-action="' . route('user.room_managers.update', encrypt($user->id)) . '"
-                data-method="POST" data-header-title="' . __('general.edit_user', ['user' => $user->name]) . '"
+                data-method="POST" data-header-title="' . __('general.edit_manager', ['manager' => $user->name]) . '"
                 data-name="' . $user->name . '" data-email="' . $user->email . '" data-rooms="'.json_encode($user->rooms()->pluck('room_id')->toArray()).'"
                 href="#" >
 
