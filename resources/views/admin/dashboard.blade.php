@@ -51,7 +51,7 @@
                         <i class="uil uil-user-circle fs-4 mb-0"></i>
                     </div>
                     <div class="flex-1 ms-3">
-                        <h6 class="mb-0 text-muted">User Meetings</h6>
+                        <h6 class="mb-0 text-muted">Customer Meetings</h6>
                         <p class="fs-5 text-dark fw-bold mb-0"><span class="counter-value"
                                 data-target="{{ $users_meeting_count }}">{{ $users_meeting_count }}</span></p>
                     </div>
@@ -67,7 +67,7 @@
                         <i class="uil uil-user-check fs-4 mb-0"></i>
                     </div>
                     <div class="flex-1 ms-3">
-                        <h6 class="mb-0 text-muted">User Meeting Participants</h6>
+                        <h6 class="mb-0 text-muted">Customer Meeting Participants</h6>
                         <p class="fs-5 text-dark fw-bold mb-0"><span class="counter-value"
                                 data-target="{{ $user_meeting_participants_count }}">{{ $user_meeting_participants_count }}</span>
                         </p>
@@ -84,7 +84,7 @@
                         <i class="uil uil-building fs-4 mb-0"></i>
                     </div>
                     <div class="flex-1 ms-3">
-                        <h6 class="mb-0 text-muted">User Meeting Rooms</h6>
+                        <h6 class="mb-0 text-muted">Customer Meeting Rooms</h6>
                         <p class="fs-5 text-dark fw-bold mb-0"><span class="counter-value"
                                 data-target="{{ $user_room_count }}">{{ $user_room_count }}</span></p>
                     </div>
@@ -100,7 +100,7 @@
                         <i class="uil uil-user-md fs-4 mb-0"></i>
                     </div>
                     <div class="flex-1 ms-3">
-                        <h6 class="mb-0 text-muted">User Room Managers</h6>
+                        <h6 class="mb-0 text-muted">Customer Room Managers</h6>
                         <p class="fs-5 text-dark fw-bold mb-0"><span class="counter-value"
                                 data-target="{{ $user_room_manager_count }}">{{ $user_room_manager_count }}</span></p>
                     </div>
